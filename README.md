@@ -1,13 +1,22 @@
-#. Tarot Project Outline
+# Tarot Project Outline
 
 Tarot-root
 
 - backend
-  - .venv (virtualenv for this project)
-  - tarot (source code)
-  - requirements.txt(python module installation for virtualenv)
-  - tests (Unit tests live there)
+
+   - .venv (virtualenv for this project)
+   - config (Configuration for development)
+   - instance (where .db are being stored; either tarot.db or test.db)
+   - routes (subdirectory should contain mapping files)
+   - requirements.txt(python module installation for virtualenv)
+   - app.py (main instigator)
+   - models.py (database table definitions ORM style)
+   - extensions.py (export db from there )
+   - tests (Unit tests live there)
+
 - frontend
+
+   - Under construction
 
 ## to create the virtual environment
 
@@ -18,21 +27,34 @@ pip install -r requirements.txt
 Prompt: `(.venv)`
 
 ```sh
-# source backend/venv/bin/activate
-# In the tarot-root directory
-cd backend
 source .venv/bin/activate
+cd backend
 pip3 install -r requirements.txt
 ```
 
-
 ## To run the flask code
 
+```sh
+cd backend
+flask run --debug 
+```
+
+## to run continous unittests
+
+```sh
+cd backend
+ptw
+```
+
+```sh
+
+```
 
 ## To test the flask code
-```sh
-cd \tarot-root\backend\tarot
-python -m unittest tests/tests.py
+
+```sh {"background":"false"}
+cd backend
+pytest -v 
 ```
 
 
