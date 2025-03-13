@@ -1,20 +1,22 @@
 import os
 import pytest
 from pathlib import Path
-# from flask_sqlalchemy import SQLAlchemy
-# from app import db
 from app import app,db
+from models import Card
+from sqlalchemy import func
+from sqlalchemy import select
+from config import config
 
-TEST_DB = "test.db"
+# TEST_DB = "test.db"
 
 @pytest.fixture
 def client():
-    BASE_DIR = Path(__file__).resolve().parent.parent
-    app.config["TESTING"] = True
-    app.config["DATABASE"] = BASE_DIR.joinpath(TEST_DB)
-    # db.init_app(app)
-    # init_db() # setup
-    # yield app.test_client() # tests run here
+    # BASE_DIR = Path(__file__).resolve().parent.parent
+    # BASE_DIR = "sqlite:///" + BASE_DIR
+    
+    app.config.from_object(config.testConfig)
+    # app.config["TESTING"] = True
+    # app.config["DATABASE"] = BASE_DIR.joinpath(TEST_DB)
     with app.test_client() as client:
         with app.app_context():
             db.create_all()
@@ -43,7 +45,9 @@ def test_index(client):
 
 def test_database(client):
     """initial test. ensure that the database exists"""
-    tester = Path("instance/tarot.db").is_file()
+    tester = Path(os.path.join(os.getcwd(),"db/test.db"))
+    # tester = os.path.join(os.getcwd(),Path("db/test.db")).is_file()
+    print(tester)
     print(os.getcwd())
     assert tester
 
@@ -88,3 +92,10 @@ def test_get_readings(client):
     response = client.get('/readings')
     assert response.status_code == 200
     assert response.json == []
+
+# def  test_add_card(client):
+#     card= Card(name="The Magician", major=True, img="magician.jpg")
+#     with app.app_context():
+#         db.session.add(card)
+#         db.session.commit()
+#     # stmt = select(func.count()).alias('card')

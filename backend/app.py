@@ -3,11 +3,11 @@ from extensions import db
 from models import Card, Reading
 from routes.card_routes import card_routes
 from routes.reading_routes import reading_routes
+from config import config
 
 def create_app():
     app = Flask(__name__)
-    app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///tarot.db'
-    app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
+    app.config.from_object(config.devConfig)
 
     db.init_app(app)
     with app.app_context():
@@ -37,6 +37,6 @@ def test_db():
     with app.app_context():
         db.session.add(card)
         db.session.commit()
-    response = client.post('/readings', json={"position": 1, "card_id": card.id})
+    # response = client.post('/readings', json={"position": 1, "card_id": card.id})
     # assert response.status_code == 201
     return jsonify('still under construction')

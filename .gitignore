@@ -1,12 +1,9 @@
 
 .venv/*
-.env
 *.pyc
-
-
-backend/.tarot/*
+backend/db
 frontend/*
-
+README-*.md
 
 logs
 *.log

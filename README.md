@@ -34,7 +34,8 @@ pip3 install -r requirements.txt
 
 ## To run the flask code
 
-```sh
+```sh {"promptEnv":"never"}
+source .venv/bin/activate
 cd backend
 flask run --debug 
 ```
@@ -42,6 +43,7 @@ flask run --debug
 ## to run continous unittests
 
 ```sh
+source .venv/bin/activate
 cd backend
 ptw
 ```
@@ -53,8 +55,9 @@ ptw
 ## To test the flask code
 
 ```sh {"background":"false"}
+source .venv/bin/activate
 cd backend
-pytest -v 
+pytest  -v 
 ```
 
 
