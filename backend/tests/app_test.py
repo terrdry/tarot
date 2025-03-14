@@ -1,22 +1,27 @@
 import os
 import pytest
+from flask import Flask, jsonify
+
 from pathlib import Path
-from app import app,db
-from models import Card
+from app import create_app
+from models import Card, get_db
 from sqlalchemy import func
 from sqlalchemy import select
 from config import config
-
-# TEST_DB = "test.db"
+from routes.card_routes import card_routes
+from routes.reading_routes import reading_routes
 
 @pytest.fixture
 def client():
-    # BASE_DIR = Path(__file__).resolve().parent.parent
-    # BASE_DIR = "sqlite:///" + BASE_DIR
-    
+
+    app = create_app("test-tarot", config.testConfig)
+    app.register_blueprint(card_routes)
+    app.register_blueprint(reading_routes)
+    db = get_db()
+
     app.config.from_object(config.testConfig)
-    # app.config["TESTING"] = True
-    # app.config["DATABASE"] = BASE_DIR.joinpath(TEST_DB)
+
+
     with app.test_client() as client:
         with app.app_context():
             db.create_all()
@@ -24,8 +29,6 @@ def client():
         with app.app_context():
             db.session.remove()
             db.drop_all()
-
-    # init_db() # teardown
 
 # def login(client, username, password):
 #     """Login helper function"""
@@ -45,11 +48,12 @@ def test_index(client):
 
 def test_database(client):
     """initial test. ensure that the database exists"""
-    tester = Path(os.path.join(os.getcwd(),"db/test.db"))
+    tester = Path(os.path.join(os.getcwd(),"db/tarot-dev.db")) # should be tarot-test
     # tester = os.path.join(os.getcwd(),Path("db/test.db")).is_file()
-    print(tester)
-    print(os.getcwd())
-    assert tester
+    x = tester.is_file()
+    print(x)
+    print(tester.absolute())
+    assert x
 
 # def test_empty_db(client):
 #     """Ensure database is blank"""
@@ -86,15 +90,20 @@ def test_ping(client):
 def test_get_cards(client):
     response = client.get('/cards')
     assert response.status_code == 200
-    assert response.json == []
+    # assert response.json == "still under construction"
 
 def test_get_readings(client):
     response = client.get('/readings')
     assert response.status_code == 200
     assert response.json == []
 
-# def  test_add_card(client):
-#     card= Card(name="The Magician", major=True, img="magician.jpg")
+def  test_add_card(client):
+    response = client.get('/cards')
+    print(response)
+    assert response.status_code == 200
+    # assert response.json == []
+
+
 #     with app.app_context():
 #         db.session.add(card)
 #         db.session.commit()

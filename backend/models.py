@@ -1,8 +1,11 @@
-from flask_sqlalchemy import SQLAlchemy
 from datetime import datetime
-from extensions import db
+from flask_sqlalchemy import SQLAlchemy
 
 
+db = SQLAlchemy()
+def get_db():
+    from app import db
+    return db
 
 class Card(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -17,3 +20,4 @@ class Reading(db.Model):
     position = db.Column(db.Integer, nullable=False)
     card_id = db.Column(db.Integer, db.ForeignKey('card.id'), nullable=False)
     card = db.relationship('Card', backref=db.backref('readings', lazy=True))
+
