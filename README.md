@@ -45,7 +45,16 @@ flask run --debug
 ```sh
 source .venv/bin/activate
 cd backend
+pytest -v -o log_file=test-tarot.log
 ptw
+```
+
+```sh
+
+```
+
+```sh
+
 ```
 
 ```sh
@@ -57,8 +66,35 @@ ptw
 ```sh {"background":"false"}
 source .venv/bin/activate
 cd backend
-pytest  -v 
+pytest -v -o log_file=test-tarot.log
 ```
+
+format = """
+$os  
+$username  
+$hostname  
+$directory  
+$git_branch  
+$git_commit  
+$git_status  
+$c  
+$python  
+$conda  
+$golang  
+$gradle  
+$haskell  
+$java  
+$julia  
+$nodejs  
+$nim  
+$rust  
+$scala  
+$docker_context  
+$time  
+$cmd_duration  
+$line_break  
+$character
+"""
 
 
 

@@ -1,5 +1,7 @@
 from pathlib import Path
 import os
+import logging
+logger = logging.getLogger(os.path.basename(__file__))
 
 BASE_DIR = Path(__file__).resolve().parent.parent
 BASE_DIR = os.path.join(BASE_DIR, "db")
@@ -19,5 +21,3 @@ class prodConfig:
     SQLALCHEMY_DATABASE_URI = os.path.join(BASE_DIR, DB_NAME)
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
-
-

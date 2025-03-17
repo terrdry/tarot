@@ -1,10 +1,14 @@
+import os
 from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
-
+import logging 
+logger = logging.getLogger(os.path.basename(__file__))
 
 db = SQLAlchemy()
+logger.warning("In models.py")
 def get_db():
     from app import db
+    logger.info("In get_db") 
     return db
 
 class Card(db.Model):

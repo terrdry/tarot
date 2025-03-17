@@ -1,19 +1,27 @@
 import os
 import pytest
+
 from flask import Flask, jsonify
 
 from pathlib import Path
-from app import create_app
+# from app import create_app
 from models import Card, get_db
-from sqlalchemy import func
+from sqlalchemy import func, inspect
 from sqlalchemy import select
 from config import config
 from routes.card_routes import card_routes
 from routes.reading_routes import reading_routes
 
+from logging_config import setup_logging
+import logging
+logger = logging.getLogger(os.path.basename(__file__))
+
 @pytest.fixture
 def client():
+    from app import create_app
+    
 
+    setup_logging(filename="tarot-test.log")
     app = create_app("test-tarot", config.testConfig)
     app.register_blueprint(card_routes)
     app.register_blueprint(reading_routes)
@@ -21,20 +29,27 @@ def client():
 
     app.config.from_object(config.testConfig)
 
-
     with app.test_client() as client:
         with app.app_context():
             db.create_all()
+            pytest.names = get_table_names(app)
+            logger.warning("From tester--")
         yield client
         with app.app_context():
             db.session.remove()
             db.drop_all()
 
+def get_table_names(app):
+    with app.app_context():
+        inspector = inspect(get_db().get_engine()) 
+        table_names = inspector.get_table_names()
+    return table_names
+
 # def login(client, username, password):
 #     """Login helper function"""
 #     return client.post(
 #         "/login",
-#         data=dict(username=username, password=password),
+#         data=dict(username=username, password=passw
 #         follow_redirects=True,
 #     )
 
@@ -43,22 +58,39 @@ def client():
 #     return client.get("/logout", follow_redirects=True)
 
 def test_index(client):
+    logger.info("hello")
     response = client.get("/", content_type="html/text")
     assert response.status_code == 200
 
 def test_database(client):
     """initial test. ensure that the database exists"""
-    tester = Path(os.path.join(os.getcwd(),"db/tarot-dev.db")) # should be tarot-test
+    tester = Path(os.path.join(os.getcwd(),"db/tarot-test.db")) # should be tarot-test
     # tester = os.path.join(os.getcwd(),Path("db/test.db")).is_file()
     x = tester.is_file()
     print(x)
     print(tester.absolute())
     assert x
 
-# def test_empty_db(client):
-#     """Ensure database is blank"""
-#     rv = client.get("/")
-#     assert b"No entries yet. Add some!" in rv.data
+def test_for_cards(client):
+    table_names = pytest.names
+    for elem in table_names:
+        print(elem) 
+    assert 'card' in table_names
+
+def test_for_readings(client):
+    table_names = pytest.names
+    for elem in table_names:
+        print(elem) 
+    assert 'reading' in table_names
+
+
+
+
+def test_empty_db(client):
+    """Ensure database is blank"""
+    # client.get
+    rv = client.get("/")
+    assert b"Welcome" in rv.data
 
 # def test_login_logout(client):
 #     """Test login and logout using helper functions"""
