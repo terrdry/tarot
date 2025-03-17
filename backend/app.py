@@ -23,7 +23,7 @@ logger.info("what")
 
 with app.app_context():
     db.create_all()
-    logger.warn("created databases")
+    logger.warning("created databases")
 
 app.register_blueprint(card_routes)
 app.register_blueprint(reading_routes)

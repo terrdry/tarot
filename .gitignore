@@ -4,6 +4,7 @@
 backend/db
 frontend/*
 README-*.md
+.coverage
 
 logs
 *.log

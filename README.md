@@ -40,33 +40,29 @@ cd backend
 flask run --debug 
 ```
 
-## to run continous unittests
-
-```sh
-source .venv/bin/activate
-cd backend
-pytest -v -o log_file=test-tarot.log
-ptw
-```
-
-```sh
-
-```
-
-```sh
-
-```
-
-```sh
-
-```
-
 ## To test the flask code
 
 ```sh {"background":"false"}
 source .venv/bin/activate
 cd backend
 pytest -v -o log_file=test-tarot.log
+```
+
+### Pytest Coverage
+
+```sh
+source .venv/bin/activate
+cd backend
+pytest --cov=app --cov-config .coveragerc --cov-report=term
+```
+
+### pyTest Continuous
+
+```sh
+source .venv/bin/activate
+cd backend
+pytest -v -o log_file=test-tarot.log
+ptw
 ```
 
 format = """
