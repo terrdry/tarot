@@ -1,16 +1,32 @@
+# Standard Library imports
+import os
+import logging
+
+# Third-party imports
 from flask import Flask, jsonify
+
+# Local applicaion imports
 from models import Card, Reading
 from routes.card_routes import card_routes
 from routes.reading_routes import reading_routes
 from config.config import prodConfig, devConfig
 from models import db 
-
 from logging_config import setup_logging
-import logging
-import os
 
 logger = logging.getLogger(os.path.basename(__file__))
+
 def create_app(name, config):
+    """create_app 
+    Create the Flask application
+    This was modularized to be callable in imports
+
+    Args:
+        name (String): Name of APP
+        config (object): Name of options in config/config
+
+    Returns:
+        NoneValue : null
+    """
     app = Flask(name)
     setup_logging(logging.WARNING)
     app.config.from_object(config)
@@ -28,13 +44,3 @@ with app.app_context():
 app.register_blueprint(card_routes)
 app.register_blueprint(reading_routes)
 
-
-# def get_db():
-#     app.logger.info("In get_db")yy
-#     from app import db
-#     return db
-
-# # Sanity check route
-# @app.route('/')
-# def index():
-#     return jsonify('Hello World')

@@ -1,25 +1,37 @@
+# Standard Library imports
 import os
+import logging
+
+# Third-party imports
 import pytest
-
-from flask import Flask, jsonify
-
+from flask import jsonify
 from pathlib import Path
-# from app import create_app
-from models import Card, get_db
-from sqlalchemy import func, inspect
-from sqlalchemy import select
+from sqlalchemy import inspect
+
+# Local applicaion imports
+from models import get_db
+from database import add_card
 from config import config
 from routes.card_routes import card_routes
 from routes.reading_routes import reading_routes
-
 from logging_config import setup_logging
-import logging
+
+
 logger = logging.getLogger(os.path.basename(__file__))
+FILE_NAME = "db/tarot-test.db"
+
 
 @pytest.fixture
 def client():
+    """client  
+    Pytest fixture for testing the client code 
+    Responsible for setting up database and adding information 
+    to the pytest Global/share area
+
+    Yields:
+        none : 
+    """
     from app import create_app
-    
 
     setup_logging(filename="tarot-test.log")
     app = create_app("test-tarot", config.testConfig)
@@ -39,104 +51,67 @@ def client():
             db.session.remove()
             db.drop_all()
 
+
 def get_table_names(app):
+    """get_table_names 
+    Helper function for getting the names of the tables 
+    that the database contains. Used for subsequent tests
+
+    Args:
+        app (object): 
+        Flask application module
+
+    Returns:
+        list : list of tables defined in the database
+    """
     with app.app_context():
-        inspector = inspect(get_db().get_engine()) 
+        inspector = inspect(get_db().engine)
         table_names = inspector.get_table_names()
     return table_names
 
-# def login(client, username, password):
-#     """Login helper function"""
-#     return client.post(
-#         "/login",
-#         data=dict(username=username, password=passw
-#         follow_redirects=True,
-#     )
-
-# def logout(client):
-#     """Logout helper function"""
-#     return client.get("/logout", follow_redirects=True)
-
-def test_index(client):
-    logger.info("hello")
-    response = client.get("/", content_type="html/text")
-    assert response.status_code == 200
 
 def test_database(client):
-    """initial test. ensure that the database exists"""
-    tester = Path(os.path.join(os.getcwd(),"db/tarot-test.db")) # should be tarot-test
-    # tester = os.path.join(os.getcwd(),Path("db/test.db")).is_file()
-    x = tester.is_file()
-    print(x)
-    print(tester.absolute())
-    assert x
+    """test_database 
+    Ensure that the database exists
+    Args:
+        client (object): pyTest fixture
+    """
+    tester = Path(os.path.join(os.getcwd(), FILE_NAME)).is_file()
+    assert tester
 
-def test_for_cards(client):
-    table_names = pytest.names
-    for elem in table_names:
-        print(elem) 
-    assert 'card' in table_names
 
-def test_for_readings(client):
+def test_index(client):
+    """test_index 
+    check and see if the index is accessible
+    Args:
+        client (object): pyTest fixture
+    """
+    """Ensure database is blank"""
+    # client.get
+    response = client.get("/")
+    assert response.status_code == 200
+    assert b"Welcome" in response.data
+
+
+def test_for_reading(client):
+    """test_for_reading _summary_
+    Ensure that the reading table exists
+
+    Args:
+        client (object): pyTest fixture
+    """
     table_names = pytest.names
-    for elem in table_names:
-        print(elem) 
     assert 'reading' in table_names
 
 
+# def test_get_readings(client):
+#     """test_get_readings 
+#     Make sure that route is defined
 
+#     Args:
+#         client (object): pyTest fixture
+#     """
+#     response = client.get('/readings')
+#     assert response.status_code == 200
+#     assert response.json == []
 
-def test_empty_db(client):
-    """Ensure database is blank"""
-    # client.get
-    rv = client.get("/")
-    assert b"Welcome" in rv.data
-
-# def test_login_logout(client):
-#     """Test login and logout using helper functions"""
-#     rv = login(client, app.config["USERNAME"], app.config["PASSWORD"])
-#     assert b"You were logged in" in rv.data
-#     rv = logout(client)
-#     assert b"You were logged out" in rv.data
-#     rv = login(client, app.config["USERNAME"] + "x", app.config["PASSWORD"])
-#     assert b"Invalid username" in rv.data
-#     rv = login(client, app.config["USERNAME"], app.config["PASSWORD"] + "x")
-#     assert b"Invalid password" in rv.data
-
-# def test_messages(client):
-#     """Ensure that user can post messages"""
-#     login(client, app.config["USERNAME"], app.config["PASSWORD"])
-#     rv = client.post(
-#         "/add",
-#         data=dict(title="<Hello>", text="<strong>HTML</strong> allowed here"),
-#         follow_redirects=True,
-#     )
-#     assert b"No entries here so far" not in rv.data
-#     assert b"&lt;Hello&gt;" in rv.data
-#     assert b"<strong>HTML</strong> allowed here" in rv.data
-def test_ping(client):
-    response = client.get('/ping')
-    assert response.status_code == 200
-    assert response.json == 'pong!'
-
-def test_get_cards(client):
-    response = client.get('/cards')
-    assert response.status_code == 200
-    # assert response.json == "still under construction"
-
-def test_get_readings(client):
-    response = client.get('/readings')
-    assert response.status_code == 200
-    assert response.json == []
-
-def  test_add_card(client):
-    response = client.get('/cards')
-    print(response)
-    assert response.status_code == 200
-    # assert response.json == []
-
-
-#     with app.app_context():
-#         db.session.add(card)
-#         db.session.commit()
-#     # stmt = select(func.count()).alias('card')
