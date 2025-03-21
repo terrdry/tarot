@@ -13,15 +13,22 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 
 def add_card(name, major, img="TODO"):
-    """add_card 
+    """add_card Add Card
+    Add the card record to the database name 
+
+    name is a unique key and Integretiy error will be triggered 
+    when there is a duplicate.
 
     Args:
-        name (string): Name of tarot card
+        name (string): name of the tarot card
         major (bool): Major arcana card
-        img (byte): Tarot card image
+        img (str, optional): Tarot card image. Defaults to "TODO".
+
+    Raises:
+        e: Integrity Error for cards and card record
 
     Returns:
-        int : returns the id of the card record if successful
+        string: the name of the tarot card
     """
     try:
         db = get_db()
@@ -31,19 +38,33 @@ def add_card(name, major, img="TODO"):
                     img=img)
         db.session.add(card)
         db.session.commit()
-        return card.id
+        return card.name
     except IntegrityError as e:
         logger.warning('Duplicate card Record')
         raise e
 
 
 def delete_card(name):
+    """delete_card Delete Card
+    Delete the card by name of card; since this is a unique
+    value we can trust it to work with an existant card. 
+
+    Args:
+        name (string): name of the tarot card
+
+    Raises:
+        e: Integrity Error for cards and card record
+
+    Returns:
+        string: the name of the tarot card
+    """
     try:
         db = get_db()
         card = db.session.query(Card).filter_by(name=name).first()
         if card:
             db.session.delete(card)
             db.session.commit()
+            return card.name
         else:
             logger.warning("Record not found")
     except IntegrityError as e:
@@ -53,6 +74,14 @@ def delete_card(name):
 
 def add_reading(position, card_id):
     """add_reading 
+    Add a reading record into the database
+
+    Args:
+        position (_type_): _description_
+        card_id (_type_): _description_
+
+    Raises:
+        e: _description_
 
     Returns:
         _type_: _description_
@@ -70,6 +99,19 @@ def add_reading(position, card_id):
 
 
 def get_count(table_object):
+    """get_count 
+    This is a database helper function to get the count of records
+    for the table object 
+
+    Args:
+        table_object (object): Table reference 
+
+    Raises:
+        e: Error for any integrity errors.
+
+    Returns:
+        int: Number of records in table_object
+    """
     try:
         db = get_db()
         count = db.session.query(table_object).count()
@@ -80,6 +122,18 @@ def get_count(table_object):
 
 
 def get_all(table_object):
+    """get_all Get all records in table
+
+    Args:
+        table_object (object): Table reference
+
+    Raises:
+        e: Error for any integrity errors.
+
+    Returns:
+        list: dictionary for all cards in card table 
+    """
+
     try:
         db = get_db()
         card_list = db.session.query(table_object).all()

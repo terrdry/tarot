@@ -34,17 +34,16 @@ pip3 install -r requirements.txt
 
 ## To run the flask code
 
-```sh {"promptEnv":"never"}
+```sh {"language":"sh","promptEnv":"never"}
 source .venv/bin/activate
-cd backend
-flask run --debug 
+flask run  --debug 
 ```
 
 ## To test the flask code
 
 ```sh {"background":"false"}
 source .venv/bin/activate
-cd backend
+# cd backend
 pytest -v -o log_file=test-tarot.log
 ```
 
@@ -52,16 +51,15 @@ pytest -v -o log_file=test-tarot.log
 
 ```sh
 source .venv/bin/activate
-cd backend
-pytest --cov . --cov-config .coveragerc.ini -cov-report=html 
+pytest --cov . --cov-config backend/.coveragerc.ini -cov-report=html 
 ```
 
 ### pyTest Continuous
 
 ```sh
 source .venv/bin/activate
-cd backend
-pytest -v -o log_file=test-tarot.log
+# cd backend
+pytest -v --cov-config backend/.coveragerc.ini -o log_file=test-tarot.log
 ptw
 ```
 

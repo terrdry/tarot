@@ -12,7 +12,8 @@ from models import Reading
 logger = logging.getLogger(os.path.basename(__file__))
 
 reading_routes = Blueprint('reading_routes', __name__)
-logger.info("Reading routes") 
+logger.info("Reading routes")
+
 
 @reading_routes.route('/readings', methods=['GET'])
 def get_readings():

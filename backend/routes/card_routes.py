@@ -7,7 +7,7 @@ from flask import Blueprint, jsonify
 
 # Local applicaion imports
 from models import Card
-import database 
+from database import add_card, delete_card
 
 
 
@@ -16,23 +16,21 @@ logger = logging.getLogger(os.path.basename(__file__))
 
 card_routes = Blueprint('card_routes', __name__)
 
-# @card_routes.route('/cards', methods=['GET'])
-# def get_cards():
-#     logger.info("Calling")
-#     print("Call X")
-#     cards = Card.query.all()
-#     return jsonify("hello")
-#     # return jsonify([{ 'id': c.id, 'name': c.name, 'major': c.major, 'img': c.img } for c in cards])
+@card_routes.route('/cards', methods=['GET'])
+def get_cards():
+    cards = Card.query.all()
+    return jsonify([{ 'id': c.id, 'name': c.name, 'major': c.major, 'img': c.img } for c in cards])
 
 
 @card_routes.route("/cards/add/<string:card_name>/<string:isMajor>")
 def adding_card(card_name, isMajor):
-    record_id = database.add_card( card_name, isMajor)
+    record_id = add_card( card_name, True)
     return jsonify({ "name": card_name, "isMajor": isMajor, "image": "TOOD"})
 
-@card_routes.route("/cards/delete")
-def delete_card(indexNumber):
-    # logger.warning("In Add_card")
+@card_routes.route("/cards/delete/<string:name>")
+def deleting_card(name):
+    card_deleted = delete_card(name)
+    logger.warning("In deleting_card")
     # return jsonify('pong!')   
     # add_card()
     # assert response.status_code == 200
@@ -42,7 +40,7 @@ def delete_card(indexNumber):
     #     db.session.commit()
     # response = client.post('/readings', json={"position": 1, "card_id": card.id})
     # assert response.status_code == 201
-    return jsonify('still under construction')
+    return jsonify(f'Deleted  {card_deleted}')
 
 @card_routes.route('/')
 def index():

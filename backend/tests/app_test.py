@@ -18,7 +18,7 @@ from logging_config import setup_logging
 
 
 logger = logging.getLogger(os.path.basename(__file__))
-FILE_NAME = "db/tarot-test.db"
+FILE_NAME = "backend/db/tarot-test.db"
 
 
 @pytest.fixture
@@ -33,19 +33,19 @@ def client():
     """
     from app import create_app
 
+
     setup_logging(filename="tarot-test.log")
     app = create_app("test-tarot", config.testConfig)
     app.register_blueprint(card_routes)
     app.register_blueprint(reading_routes)
     db = get_db()
-
     app.config.from_object(config.testConfig)
+
 
     with app.test_client() as client:
         with app.app_context():
             db.create_all()
             pytest.names = get_table_names(app)
-            logger.warning("From tester--")
         yield client
         with app.app_context():
             db.session.remove()
@@ -76,6 +76,7 @@ def test_database(client):
     Args:
         client (object): pyTest fixture
     """
+    x = os.getcwd()
     tester = Path(os.path.join(os.getcwd(), FILE_NAME)).is_file()
     assert tester
 
@@ -105,7 +106,7 @@ def test_for_reading(client):
 
 
 # def test_get_readings(client):
-#     """test_get_readings 
+#     """test_get_readings
 #     Make sure that route is defined
 
 #     Args:
@@ -114,4 +115,3 @@ def test_for_reading(client):
 #     response = client.get('/readings')
 #     assert response.status_code == 200
 #     assert response.json == []
-
