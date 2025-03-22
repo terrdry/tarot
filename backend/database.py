@@ -6,8 +6,9 @@ import logging
 from sqlalchemy.exc import IntegrityError
 
 # Local applicaion imports
-from models import Card, get_db, Reading
-
+from models import Card
+from models import get_db
+from models import Reading
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -46,6 +47,7 @@ def add_card(name, major, img="TODO"):
 
 def delete_card(name):
     """delete_card Delete Card
+
     Delete the card by name of card; since this is a unique
     value we can trust it to work with an existant card. 
 
@@ -74,6 +76,7 @@ def delete_card(name):
 
 def add_reading(name):
     """add_reading 
+
     Add a reading record into the database
 
     Args:
@@ -97,19 +100,18 @@ def add_reading(name):
 
 
 def delete_reading(name):
-    """delete_card Delete reading
-    Delete the reading by name of the reading; since this is a unique
-    value we can trust it to work with an existant card. 
+    """delete_reading Delete a reading record by name
 
     Args:
-        name (string): name of the reading event
+        name (string): name of reading record
 
     Raises:
-        e: Integrity Error for reading and reading record
+        e: Integrity Error for reads and read record
 
     Returns:
-        string: the id of the reading 
+        int: the id of the reading 
     """
+
     try:
         db = get_db()
         reading = db.session.query(Reading).filter_by(name=name).first()
@@ -120,13 +122,14 @@ def delete_reading(name):
         else:
             logger.warning("Record not found")
     except IntegrityError as e:
-        logger.warning('Duplicate reading Record')
+        logger.warning('Cannot delete reading Record')
         raise e
-# Should be in a seperate file like /db/helpers
+# TODO Should be in a seperate file like /db/helpers
 
 
 def get_count(table_object):
-    """get_count 
+    """get_count Get count of records in a table
+
     This is a database helper function to get the count of records
     for the table object 
 
@@ -149,7 +152,11 @@ def get_count(table_object):
 
 
 def get_all(table_object):
-    """get_all Get all records in table
+    """get_all Get all records in a table
+
+    Call the query.all() on a table and returns 
+    a JSON object that contains all the records 
+    in the database
 
     Args:
         table_object (object): Table reference
