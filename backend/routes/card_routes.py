@@ -25,21 +25,12 @@ def get_cards():
 @card_routes.route("/cards/add/<string:card_name>/<string:isMajor>")
 def adding_card(card_name, isMajor):
     record_id = add_card( card_name, True)
-    return jsonify({ "name": card_name, "isMajor": isMajor, "image": "TOOD"})
+    return jsonify({"id": record_id,  "name": card_name, "isMajor": isMajor, "image": "TOOD"})
 
 @card_routes.route("/cards/delete/<string:name>")
 def deleting_card(name):
     card_deleted = delete_card(name)
     logger.warning("In deleting_card")
-    # return jsonify('pong!')   
-    # add_card()
-    # assert response.status_code == 200
-    # card = Card(name="The Magician", major=True, img="magician.jpg")
-    # with app.app_context():
-    #     db.session.add(card)
-    #     db.session.commit()
-    # response = client.post('/readings', json={"position": 1, "card_id": card.id})
-    # assert response.status_code == 201
     return jsonify(f'Deleted  {card_deleted}')
 
 @card_routes.route('/')

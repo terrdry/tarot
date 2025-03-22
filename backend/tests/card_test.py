@@ -9,7 +9,8 @@ from sqlalchemy.exc import IntegrityError
 # Local applicaion imports
 from .app_test import client
 from database import add_card, get_count, delete_card, get_all
-from models import Card, get_db, Reading
+#from models import Card, get_db, Reading
+from models import Card, get_db 
 
 logger = logging.getLogger(os.path.basename(__file__))
 CARD_LIST = ["The Magician",
@@ -42,17 +43,15 @@ def test_add_card(client):
     Args:
         client (object): pyTest fixture
     """
-    response = client.get('/cards/add/TheMagician/True')
-    print(response)
-    # rec_no = add_card("TheMagician", True)
-    # assert rec_no
+    response = client.get('/cards/add/The Magician/True')
+    assert response.status_code == 200
 
 
 def test_add_duplicate_card(client):
     """test_add_duplicate_card
     Add a duplicate card and make sure that if forces an exception
     Args:
-        client (_type_): _description_
+        client (object): pyTest fixture
     """
     name = 'The Magician'
     isMajor = True
@@ -63,6 +62,11 @@ def test_add_duplicate_card(client):
 
 
 def test_add_multiple_cards(client):
+    """test_add_multiple_cards _summary_
+
+    Args:
+        client (object): pyTest fixture
+    """    
     isMajor = True
     for elem in CARD_LIST:
         response = client.get(f'/cards/add/{elem}/{isMajor}')
@@ -70,6 +74,11 @@ def test_add_multiple_cards(client):
 
 
 def test_delete_card(client):
+    """test_delete_card 
+
+    Args:
+        client (object): pyTest fixture
+    """ 
     isMajor = True
     for elem in CARD_LIST:
         response = client.get(f'/cards/add/{elem}/{isMajor}')

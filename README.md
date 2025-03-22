@@ -41,7 +41,7 @@ flask run  --debug
 
 ## To test the flask code
 
-```sh {"background":"false"}
+```sh {"background":"false","language":"sh"}
 source .venv/bin/activate
 # cd backend
 pytest -v -o log_file=test-tarot.log

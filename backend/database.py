@@ -72,30 +72,57 @@ def delete_card(name):
         raise e
 
 
-def add_reading(position, card_id):
+def add_reading(name):
     """add_reading 
     Add a reading record into the database
 
     Args:
-        position (_type_): _description_
-        card_id (_type_): _description_
+        name (string): Reading name
 
     Raises:
-        e: _description_
+        e: Integrity Error for reads and read record
 
     Returns:
-        _type_: _description_
+        string: the name of the tarot reading
     """
     try:
         db = get_db()
-        reading = Reading(position=position,
-                          card_id=card_id)
+        reading = Reading(name=name)
         db.session.add(reading)
         db.session.commit()
     except IntegrityError as e:
         logger.warning('Duplicate reading Record')
         raise e
     return reading.id
+
+
+def delete_reading(name):
+    """delete_card Delete reading
+    Delete the reading by name of the reading; since this is a unique
+    value we can trust it to work with an existant card. 
+
+    Args:
+        name (string): name of the reading event
+
+    Raises:
+        e: Integrity Error for reading and reading record
+
+    Returns:
+        string: the id of the reading 
+    """
+    try:
+        db = get_db()
+        reading = db.session.query(Reading).filter_by(name=name).first()
+        if Reading:
+            db.session.delete(reading)
+            db.session.commit()
+            return reading.name
+        else:
+            logger.warning("Record not found")
+    except IntegrityError as e:
+        logger.warning('Duplicate reading Record')
+        raise e
+# Should be in a seperate file like /db/helpers
 
 
 def get_count(table_object):
