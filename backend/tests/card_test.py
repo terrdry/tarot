@@ -8,9 +8,14 @@ from sqlalchemy.exc import IntegrityError
 
 # Local applicaion imports
 from .app_test import client
-from database import add_card, get_count, delete_card, get_all
-#from models import Card, get_db, Reading
-from models import Card, get_db 
+from database import add_card
+from database import get_count
+from database import edit_card
+from database import delete_card
+from database import get_all
+
+from models import Card
+from models import get_db
 
 logger = logging.getLogger(os.path.basename(__file__))
 CARD_LIST = ["The Magician",
@@ -27,7 +32,8 @@ CARD_LIST = ["The Magician",
 
 
 def test_for_card(client):
-    """test_for_card
+    """test_for_card check for the existance of the table
+
     Ensure that the cards table exists
     Args:
         client (object): pyTest fixture
@@ -38,6 +44,7 @@ def test_for_card(client):
 
 def test_add_card(client):
     """test_add_card
+
     Add a card to the card table
 
     Args:
@@ -48,8 +55,10 @@ def test_add_card(client):
 
 
 def test_add_duplicate_card(client):
-    """test_add_duplicate_card
+    """test_add_duplicate_card Test Duplicate cards
+
     Add a duplicate card and make sure that if forces an exception
+
     Args:
         client (object): pyTest fixture
     """
@@ -62,23 +71,47 @@ def test_add_duplicate_card(client):
 
 
 def test_add_multiple_cards(client):
-    """test_add_multiple_cards _summary_
+    """test_add_multiple_cards Add multiple records
+
+    Add 10 records and check to see if you have 10 records in
+    the card table
 
     Args:
         client (object): pyTest fixture
-    """    
+    """
     isMajor = True
     for elem in CARD_LIST:
         response = client.get(f'/cards/add/{elem}/{isMajor}')
     assert get_count(Card) == len(CARD_LIST)
 
 
+def test_edit_card(client):
+    """test_edit_card Edit the Card
+
+    Change the name from one name to another
+
+    Args:
+        client (string): Name of the tarot card
+    """
+    isMajor = True
+    card_name = "The Magician"
+    for elem in CARD_LIST:
+        response = client.get(f'/cards/add/{elem}/{isMajor}')
+    # response = client.get(f'/cards/edit/{card_name}')
+    assert response.status_code == 200
+    db = get_db()
+    card_data = edit_card("The Magician", "Terry")
+    assert "Terry" in card_data.name
+
+
 def test_delete_card(client):
-    """test_delete_card 
+    """test_delete_card Delete card
+
+    Delete an existant record
 
     Args:
         client (object): pyTest fixture
-    """ 
+    """
     isMajor = True
     for elem in CARD_LIST:
         response = client.get(f'/cards/add/{elem}/{isMajor}')
@@ -96,8 +129,12 @@ def test_delete_card(client):
     assert "King of Cups" in card_names
     assert "Death" not in card_names
 
+
 def test_delete_card_badname(client):
-    isMajor = True
-    for elem in CARD_LIST:
-        response = client.get(f'/cards/add/{elem}')
-    response = client.get(f'/cards/delete/{elem}')
+    response = client.get(f'/cards/delete/nonesuch')
+    assert response.status_code == 200
+
+
+def test_count_bad_table(client):
+    response = client.get(f"/cards")
+    assert response.status_code == 200

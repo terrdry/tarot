@@ -103,15 +103,3 @@ def test_for_reading(client):
     """
     table_names = pytest.names
     assert 'reading' in table_names
-
-
-# def test_get_readings(client):
-#     """test_get_readings
-#     Make sure that route is defined
-
-#     Args:
-#         client (object): pyTest fixture
-#     """
-#     response = client.get('/readings')
-#     assert response.status_code == 200
-#     assert response.json == []

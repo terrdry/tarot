@@ -8,8 +8,8 @@ from sqlalchemy.exc import IntegrityError
 
 # Local applicaion imports
 from .app_test import client
-from database import add_reading, delete_reading, get_count, get_all
-from models import Reading
+from database import add_reading, edit_reading, delete_reading, get_count, get_all
+from models import Reading, get_db
 
 logger = logging.getLogger(os.path.basename(__file__))
 
@@ -67,6 +67,18 @@ def test_add_multiple_reading(client):
     assert get_count(Reading) == len(READING_LIST)
 
 
+def test_edit_card(client):
+    isMajor = True
+    read_name = "The Magician"
+    for elem in READING_LIST:
+        response = client.get(f'/reading/add/{elem}')
+
+    assert response.status_code == 200
+    db = get_db()
+    reading_data = edit_reading("The Magician", "Terry")
+    assert "Terry" in reading_data.name
+
+
 def test_delete_reading(client):
     """test_delete_reading 
 
@@ -82,9 +94,19 @@ def test_delete_reading(client):
     assert get_count(Reading) == len(READING_LIST) - 1
     delete_reading("Death")
     assert get_count(Reading) == len(READING_LIST) - 2
-    readings = get_all(Reading) 
+    readings = get_all(Reading)
     reading_names = [card.name for card in get_all(Reading)]
     assert "The Magician" not in reading_names
     assert "Bonzo" not in reading_names
     assert "King of Cups" in reading_names
     assert "Death" not in reading_names
+
+
+def test_delete_reading_badname(client):
+    response = client.get(f'/reading/delete/nonesuch')
+    assert response.status_code == 200
+
+
+def test_count_bad_table(client):
+    response = client.get(f"/reading")
+    assert response.status_code == 200

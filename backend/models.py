@@ -41,7 +41,6 @@ class Reading(db.Model):
     name = db.Column(db.String(100), nullable=False, unique=True)
     date_created = db.Column(db.DateTime, default=datetime.utcnow)
     date_modified = db.Column(db.DateTime, onupdate=datetime.utcnow)
-    # position = db.Column(db.Integer, nullable=False)
 
     cards_relation = db.relationship(
         "Readcard", back_populates="readings_relation")

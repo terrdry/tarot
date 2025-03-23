@@ -33,18 +33,20 @@ pip3 install -r requirements.txt
 ```
 
 ## To create the documentation
+
 This will be created in the `tarot/backend/docs`
 
 ```sh
 source .venv/bin/activate
 cd backend
-pdoc ./app.py routes models -o ./docs 
+pdoc ./*.py routes tests -o ./docs 
 ```
 
 ## To run the flask code
 
 ```sh {"language":"sh","promptEnv":"never"}
 source .venv/bin/activate
+cd backend
 flask run  --debug 
 ```
 

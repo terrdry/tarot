@@ -10,6 +10,8 @@ from flask import jsonify
 from models import Card
 from database import add_card
 from database import delete_card
+from database import edit_card
+
 
 logger = logging.getLogger(os.path.basename(__file__))
 card_routes = Blueprint('card_routes', __name__)
@@ -58,6 +60,23 @@ def deleting_card(name):
     card_deleted = delete_card(name)
     logger.warning("In deleting_card")
     return jsonify(f'Deleted  {card_deleted}')
+
+
+@card_routes.route("/cards/edit/<string:name>/<string:other_name>")
+def editing_card(name, other_name):
+    """editing_card Edit card
+
+    Edit the Tarot card
+
+    Args:
+        name (string): name of card
+
+    Returns:
+        string: result of operation encoded in JSON 
+    """
+    card_edit = edit_card(name, other_name)
+    logger.warning("In edit_card")
+    return jsonify(f'Editing  {card_edit}')
 
 
 @card_routes.route('/')
