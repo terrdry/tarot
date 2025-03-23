@@ -3,44 +3,48 @@ import os
 import logging
 
 # Third-party imports
-from flask import Flask, jsonify
+from flask import Flask
+from flask import jsonify
 
 # Local applicaion imports
-from models import Card, Reading
+from models import Card
+from models import Reading
 from routes.card_routes import card_routes
 from routes.reading_routes import reading_routes
-from config.config import prodConfig, devConfig
-from models import db 
+from config.config import devConfig
+from config.config import prodConfig
+from models import db
 from logging_config import setup_logging
 
 logger = logging.getLogger(os.path.basename(__file__))
 
+
 def create_app(name, config):
-    """create_app 
-    Create the Flask application
-    This was modularized to be callable in imports
+    """create_app Create the Flask Application
+
+    This will create the application instance and return 
+    the app handle for subsequent use by other modules using 
+    a simple import
 
     Args:
-        name (String): Name of APP
-        config (object): Name of options in config/config
+        name (String): Flask application name
+        config (object): Name of `Class` in config/config
 
     Returns:
-        NoneValue : null
+        object: Flask app
     """
+
     app = Flask(name)
     setup_logging(logging.WARNING)
     app.config.from_object(config)
     db.init_app(app)
     return app
 
-app = create_app("tarot", devConfig )
 
-logger.info("what")
-
+app = create_app("tarot", devConfig)
 with app.app_context():
     db.create_all()
     logger.warning("created databases")
 
 app.register_blueprint(card_routes)
 app.register_blueprint(reading_routes)
-
