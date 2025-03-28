@@ -47,30 +47,35 @@ header {
 </style> -->
 <template>
   <div id="app">
+    <main>
+      <CardList />
+    </main> 
+  </div>
+
+  <!-- <div id="app">
     <h1>Top Page</h1>
     <h1>{{ message }}</h1>
-     <button @click="updateMessage">Click</button>
-  </div> 
+    <button @click="updateMessage">Click</button>
+  </div> -->
 </template>
 
-<script>
-import { ref } from 'vue'
+<script setup>
+import CardList from './components/CardList.vue'
 
-export default {
-  setup() {
-    const message = ref('Hello, Vue!')
 
-    const updateMessage = () => {
-      message.value = 'You clicked the button!'
-    }
-    return {
-      message,
-      updateMessage,
-    }
-  },
-}
+// import { ref } from 'vue'
+
+// reactive state
+// const message = ref('Hello, Vue!')
+
+// Functions that mutate state and trigger updates
+// const updateMessage = () => {
+  // message.value = 'You clicked the button!'
+
+// lifecyle hooks
+
 </script>
-
+<!-- 
 <style scoped>
 button {
   padding: 10px;

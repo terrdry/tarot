@@ -6,12 +6,15 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 // https://vite.dev/config/
 export default defineConfig({
+  build: {
+    sourcemap: false
+  },
   plugins: [
     vue(),
     vueDevTools(),
   ],
   server: {
-    port: 8081
+    port: 4000
   },
   resolve: {
     alias: {

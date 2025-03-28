@@ -9,8 +9,9 @@
 
 // import Vue from "eslint-plugin-vue";
 // const { createApp } = Vue;
-import { createApp, ref } from "vue";
+import { createApp } from "vue";
 import App from "./App.vue"
+// import router from "./router"
 
 const app = createApp(App)
 
@@ -29,7 +30,7 @@ const app = createApp(App)
 //     }
 // });
 
-app.mount('#app');
+// app.router(router).mount('#app');
 
 
-
+app.mount("#app")
