@@ -47,7 +47,7 @@ pdoc ./*.py routes tests -o ./docs
 ```sh {"language":"sh","promptEnv":"never"}
 source .venv/bin/activate
 cd backend
-flask run  --debug 
+flask run 
 ```
 
 ## To test the flask code

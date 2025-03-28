@@ -8,7 +8,7 @@
             class="form-control"
             id="title"
             required
-            v-model="tutorial.title"
+            v-model="tarot.title"
             name="title"
           />
         </div>
@@ -19,7 +19,7 @@
             class="form-control"
             id="description"
             required
-            v-model="tutorial.description"
+            v-model="tarot.description"
             name="description"
           />
         </div>

@@ -1,5 +1,8 @@
 {
   "dependencies": {
     "vue-router": "^4.5.0"
+  },
+  "devDependencies": {
+    "@vitest/coverage-v8": "^3.0.9"
   }
 }
