@@ -5,10 +5,10 @@ import HelloWorld from '../components/HelloWorld.vue';
 
 
 const routes = [
-  { path: '/', component: CardList },
-  { path: '/:pathMatch(.*)*', redirect: '/' },
-  { path: '/cards', component: HelloWorld }
-//   { path: '/card/new', component: AddCard },
+  { path: '/', component: HelloWorld },
+  // { path: '/:pathMatch(.*)*', redirect: '/' },
+  { path: '/cards', component: CardList },
+  // { path: '/card/new', component: CardList },
 //   { path: '/card/:id', component: CardDetail },
 // //   { path: '/card/:id/edit', component: CardForm },
 ];
