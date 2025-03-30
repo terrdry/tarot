@@ -8,9 +8,11 @@ import CardList from '../CardList.vue';
 // jest.mock('axios');
 
 
-describe(  "THis is a test to do something useful", () => {
-  it('renders properly', () => {
-    const wrapper = mount(CardList, {props: {msg: "Hello Vitest"}})
-    expect(wrapper.text()).toContain('Oppostiorn' )
+describe(  'Main View', () => {
+  it('See if the title is correct', () => {
+    // const wrapper = mount(CardList, { props: { item: [ ]  } } )
+    const wrapper = mount(CardList, { } )
+    // expect(wrapper.text()).toContain('Items' )
+    expect(wrapper.text()).toContain('Items' )
   })
 })

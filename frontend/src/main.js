@@ -11,26 +11,11 @@
 // const { createApp } = Vue;
 import { createApp } from "vue";
 import App from "./App.vue"
-// import router from "./router"
+import router from "./router"
 
 const app = createApp(App)
+app.use(router)
 
-// const app = createApp({
-//     setup() {
-//         const message = ref("Hello, Vue!");
-
-//         const updateMessage = () => {
-//             message.value = "You clicked the button!";
-//         };
-
-//         return {
-//             message,
-//             updateMessage
-//         };
-//     }
-// });
-
-// app.router(router).mount('#app');
 
 
 app.mount("#app")

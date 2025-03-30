@@ -1,7 +1,7 @@
 // src/services/api/cardService.js
-import axios from 'axios';
+// import axios from 'axios';
 
-const API_URL = 'http://127.0.0.1:5000/cards';
+// const API_URL = 'http://127.0.0.1:5000/cards';
 
 // export const getCards = () => axios.get(API_URL);
 

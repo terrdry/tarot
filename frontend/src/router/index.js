@@ -1,12 +1,13 @@
-// // src/router/index.js
+// src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
 import CardList from '../components/CardList.vue';
-// // // import CardForm from '../components/CardForm.vue';
-// // import CardDetail from '../components/CardDetail.vue';
-// // import AddCard from '../components/AddCard.vue';
+import HelloWorld from '../components/HelloWorld.vue';
+
 
 const routes = [
-  { path: '/cards', component: CardList }
+  { path: '/', component: CardList },
+  { path: '/:pathMatch(.*)*', redirect: '/' },
+  { path: '/cards', component: HelloWorld }
 //   { path: '/card/new', component: AddCard },
 //   { path: '/card/:id', component: CardDetail },
 // //   { path: '/card/:id/edit', component: CardForm },
@@ -27,7 +28,7 @@ const routes = [
 
 const router = createRouter({
   history: createWebHistory(),
-  routes,
+  routes: routes,
 
 });
 

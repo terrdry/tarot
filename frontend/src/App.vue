@@ -52,11 +52,6 @@ header {
     </main> 
   </div>
 
-  <!-- <div id="app">
-    <h1>Top Page</h1>
-    <h1>{{ message }}</h1>
-    <button @click="updateMessage">Click</button>
-  </div> -->
 </template>
 
 <script setup>
