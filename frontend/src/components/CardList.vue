@@ -1,10 +1,13 @@
 <template>
   <h2>Items</h2>
+  <p>
+    <strong>Current route path:</strong> {{ $route.fullPath }}
+  </p>
   <p>{{ items.data }}</p>
   <ul>
     <li v-for="item in items.data" :key="item.id">
       {{ item.name }} - {{ item.major }}
-      <router-link :to="{ name: 'cardEdit/', params: { id: item.id } }">Edit</router-link>
+      <!-- <router-link :to="{ name: 'cardEdit/', params: { id: item.id } }">Edit</router-link> -->
       <button @click="deleteItem(item.id)">Delete</button>
     </li>
   </ul>
