@@ -50,6 +50,11 @@ def test_add_reading(client):
 
 
 def test_add_duplicate_reading(client):
+    """test_add_duplicate_reading _summary_
+
+    Args:
+        client (_type_): _description_
+    """
     read_name = "Reading with Client35"
     response = client.get(f'/reading/add/{read_name}')
     with pytest.raises(IntegrityError):

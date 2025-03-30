@@ -1,10 +1,4 @@
-
-.venv/*
-*.pyc
-backend/db
-README-*.md
-.coverage
-
+# Logs
 logs
 *.log
 npm-debug.log*

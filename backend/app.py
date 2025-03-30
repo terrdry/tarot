@@ -5,6 +5,7 @@ import logging
 # Third-party imports
 from flask import Flask
 from flask import jsonify
+from flask_cors import CORS
 
 # Local applicaion imports
 from models import Card
@@ -42,6 +43,8 @@ def create_app(name, config):
 
 
 app = create_app("tarot", devConfig)
+# CORS(app, resources={r"/*": {"origins": "http://localhost:4000"}})
+CORS(app, resources={r"/*": {"origins": "*"}})
 with app.app_context():
     db.create_all()
     logger.warning("created databases")
