@@ -13,7 +13,7 @@ from models import Reading
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-def add_card(name, major, img="TODO"):
+def add_card(payload):
     """add_card Add Card
 
     Add the card record to the database name 
@@ -32,15 +32,15 @@ def add_card(name, major, img="TODO"):
     Returns:
         string: the name of the tarot card
     """
+
     try:
         db = get_db()
-
-        card = Card(name=name,
-                    major=major,
-                    img=img)
+        card = Card(name=payload["name"],
+                    major=payload["isMajor"],
+                    img="TODO.JPG")
         db.session.add(card)
         db.session.commit()
-        return card.name
+        return card.id
     except IntegrityError as e:
         logger.warning('Duplicate card Record')
         raise e

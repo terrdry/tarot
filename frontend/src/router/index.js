@@ -8,6 +8,7 @@ const routes = [
   { path: '/', component: HelloWorld },
   // { path: '/:pathMatch(.*)*', redirect: '/' },
   { path: '/cards', component: CardList },
+  { path: '/cards/add', component: CardList },
   // { path: '/card/new', component: CardList },
 //   { path: '/card/:id', component: CardDetail },
 // //   { path: '/card/:id/edit', component: CardForm },

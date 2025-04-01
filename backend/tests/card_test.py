@@ -50,7 +50,9 @@ def test_add_card(client):
     Args:
         client (object): pyTest fixture
     """
-    response = client.get('/cards/add/The Magician/True')
+
+    payload = {"name": "The Runt", "isMajor": True}
+    response = client.post('/cards/add', json=payload)
     assert response.status_code == 200
 
 
@@ -62,12 +64,11 @@ def test_add_duplicate_card(client):
     Args:
         client (object): pyTest fixture
     """
-    name = 'The Magician'
-    isMajor = True
 
-    response = client.get(f'/cards/add/{name}/{isMajor}')
+    payload = {"name": "The Runt", "isMajor": True}
+    response = client.post('/cards/add', json=payload)
     with pytest.raises(IntegrityError):
-        add_card(name, isMajor)
+        add_card(payload)
 
 
 def test_add_multiple_cards(client):
@@ -79,9 +80,9 @@ def test_add_multiple_cards(client):
     Args:
         client (object): pyTest fixture
     """
-    isMajor = True
     for elem in CARD_LIST:
-        response = client.get(f'/cards/add/{elem}/{isMajor}')
+        payload = {"name": elem, "isMajor": True}
+        response = client.post('/cards/add', json=payload)
     assert get_count(Card) == len(CARD_LIST)
 
 
@@ -96,9 +97,7 @@ def test_edit_card(client):
     isMajor = True
     card_name = "The Magician"
     for elem in CARD_LIST:
-        response = client.get(f'/cards/add/{elem}/{isMajor}')
-    # response = client.get(f'/cards/edit/{card_name}')
-    assert response.status_code == 200
+        response = client.get('/cards/add')
     db = get_db()
     card_data = edit_card("The Magician", "Terry")
     assert "Terry" in card_data.name
@@ -114,10 +113,9 @@ def test_delete_card(client):
     """
     isMajor = True
     for elem in CARD_LIST:
-        response = client.get(f'/cards/add/{elem}/{isMajor}')
-
+        payload = {"name": elem, "isMajor": True}
+        response = client.post('/cards/add', payload)
     assert get_count(Card) == len(CARD_LIST)
-    # database setup for deletion of the
     delete_card("The Magician")
     assert get_count(Card) == len(CARD_LIST) - 1
     delete_card("Death")

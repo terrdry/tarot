@@ -4,13 +4,15 @@ class TarotDataService {
     getAll() {
         return http.get("/cards");
     }
-//     get(id) {
-//         return http.get(`/tarot/${id}`);
-//     }
-
-//     create(data) {
-//         return http.post("/tarot", data);
-//     }
+    get() {
+        return http.get('/cards/add');
+    }
+    post(data) {
+        return http.post('/cards/add', data );
+    }
+    create(data) {
+        return http.post("/tarot", data);
+    }
 
 //     update(id, data) {
 //         return http.put(`/tarot/${id}`, data);

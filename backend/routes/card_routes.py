@@ -5,6 +5,7 @@ import logging
 # Third-party imports
 from flask import Blueprint
 from flask import jsonify
+from flask import request
 
 # Local applicaion imports
 from models import Card
@@ -22,15 +23,15 @@ def get_cards():
     """get_cards Get all cards in a table
 
     Returns:
-        string: result of operation encoded in JSON 
+        string: result of operation encoded in JSON
     """
     cards = Card.query.all()
     return jsonify([{'id': c.id, 'name': c.name, 'major': c.major, 'img': c.img} for c in cards])
 
 
-@card_routes.route("/cards/add/<string:card_name>/<string:isMajor>")
-def adding_card(card_name, isMajor):
-    """adding_card Add card 
+@card_routes.route('/cards/add', methods=["POST"])
+def adding_card():
+    """adding_card Add card
 
     Add the tarot card
 
@@ -39,10 +40,16 @@ def adding_card(card_name, isMajor):
         isMajor (bool): Major Arcana card flag
 
     Returns:
-        string: result of operation encoded in JSON 
+        string: result of operation encoded in JSON
     """
-    record_id = add_card(card_name, True)
-    return jsonify({"id": record_id,  "name": card_name, "isMajor": isMajor, "image": "TOOD"})
+    try:
+        data = request.get_json()
+    except Exception as e:
+        return jsonify({"error", str(e)}), 500
+
+    # add the record
+    record_id = add_card(data)
+    return jsonify({"id": record_id})
 
 
 @card_routes.route("/cards/delete/<string:name>")
