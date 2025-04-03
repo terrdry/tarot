@@ -11,7 +11,8 @@ from flask import request
 from models import Card
 from database import add_card
 from database import delete_card
-from database import edit_card
+from database import read_card
+from database import update_card
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -52,8 +53,8 @@ def adding_card():
     return jsonify({"id": record_id})
 
 
-@card_routes.route("/cards/delete/<string:name>")
-def deleting_card(name):
+@card_routes.route("/cards/delete/<int:id>", methods=["POST"])
+def deleting_card(id):
     """deleting_card Delete card
 
     Delete the Tarot card
@@ -64,13 +65,31 @@ def deleting_card(name):
     Returns:
         string: result of operation encoded in JSON 
     """
-    card_deleted = delete_card(name)
+    card_deleted = delete_card(id)
     logger.warning("In deleting_card")
     return jsonify(f'Deleted  {card_deleted}')
 
 
-@card_routes.route("/cards/edit/<string:name>/<string:other_name>")
-def editing_card(name, other_name):
+@card_routes.route("/cards/read/<int:id>",  methods=["GET"])
+def reading_card(id):
+    """editing_card Edit card
+
+#     Edit the Tarot card
+
+#     Args:
+#         name (string): name of card
+
+#     Returns:
+#         string: result of operation encoded in JSON 
+#     """
+    # data = request.get_json()
+    card_read = read_card(id)
+    logger.warning("In card_read")
+    return jsonify(card_read.json)
+
+
+@card_routes.route("/cards/update/<int:id>",  methods=["POST"])
+def updating_card(id):
     """editing_card Edit card
 
     Edit the Tarot card
@@ -81,9 +100,18 @@ def editing_card(name, other_name):
     Returns:
         string: result of operation encoded in JSON 
     """
-    card_edit = edit_card(name, other_name)
-    logger.warning("In edit_card")
-    return jsonify(f'Editing  {card_edit}')
+    pass
+    try:
+        data = request.get_json()
+    #     card = read_card(id)
+    #     card.name = cargo['name']
+    #     card.isMajor = cargo['isMajor']
+        update_card(id, data)
+    #     pass
+    except Exception as e:
+        return jsonify({"post  error", str(e)}), 500
+
+    return jsonify(data)
 
 
 @card_routes.route('/')

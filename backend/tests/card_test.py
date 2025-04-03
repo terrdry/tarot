@@ -5,12 +5,13 @@ import pytest
 
 # Third-party imports
 from sqlalchemy.exc import IntegrityError
+from flask import jsonify
 
 # Local applicaion imports
 from .app_test import client
 from database import add_card
 from database import get_count
-from database import edit_card
+from database import read_card
 from database import delete_card
 from database import get_all
 
@@ -52,6 +53,8 @@ def test_add_card(client):
     """
 
     payload = {"name": "The Runt", "isMajor": True}
+
+    answer = map(lambda x: x.to_dict(), payload)
     response = client.post('/cards/add', json=payload)
     assert response.status_code == 200
 
@@ -86,21 +89,43 @@ def test_add_multiple_cards(client):
     assert get_count(Card) == len(CARD_LIST)
 
 
-def test_edit_card(client):
-    """test_edit_card Edit the Card
+def test_read_card(client):
+    """test_read_card Read the Card
+
+    Read from a list; 
+    - add 10 records
+    - use ge
+
+
+
+    Args:
+        client (string): Name of the tarot card
+    """
+    for elem in CARD_LIST:
+        payload = {"name": elem, "isMajor": True}
+        response = client.post('/cards/add', json=payload)
+
+    response = client.get('/cards/read/1')
+    assert "Magician" in response.json["name"]
+    response = client.get('/cards/read/3')
+    assert "Swords" in response.json["name"]
+
+
+def test_update_card(client):
+    """test_edit_update_card Edit and update the Card
 
     Change the name from one name to another
 
     Args:
         client (string): Name of the tarot card
     """
-    isMajor = True
-    card_name = "The Magician"
     for elem in CARD_LIST:
-        response = client.get('/cards/add')
-    db = get_db()
-    card_data = edit_card("The Magician", "Terry")
-    assert "Terry" in card_data.name
+        payload = {"name": elem, "isMajor": True}
+        response = client.post('/cards/add', json=payload)
+
+    payload = {"name": "nosferatu", "isMajor": True}
+    response = client.post('/cards/update/1', json=payload)
+    assert "nosferatu" in response.json["name"]
 
 
 def test_delete_card(client):
@@ -114,25 +139,17 @@ def test_delete_card(client):
     isMajor = True
     for elem in CARD_LIST:
         payload = {"name": elem, "isMajor": True}
-        response = client.post('/cards/add', payload)
+        response = client.post('/cards/add', json=payload)
+
     assert get_count(Card) == len(CARD_LIST)
-    delete_card("The Magician")
+    response = client.post('/cards/delete/1')  # The Magician
     assert get_count(Card) == len(CARD_LIST) - 1
-    delete_card("Death")
+    response = client.post('/cards/delete/3')  # Ace of Swords
     assert get_count(Card) == len(CARD_LIST) - 2
     cards = get_all(Card)
     card_names = [card.name for card in get_all(Card)]
     assert "The Magician" not in card_names
+    assert "Ace of Swords" not in card_names
     assert "Bonzo" not in card_names
     assert "King of Cups" in card_names
-    assert "Death" not in card_names
-
-
-def test_delete_card_badname(client):
-    response = client.get(f'/cards/delete/nonesuch')
-    assert response.status_code == 200
-
-
-def test_count_bad_table(client):
-    response = client.get(f"/cards")
-    assert response.status_code == 200
+    assert "Death" in card_names

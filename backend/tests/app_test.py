@@ -33,14 +33,12 @@ def client():
     """
     from app import create_app
 
-
     setup_logging(filename="tarot-test.log")
     app = create_app("test-tarot", config.testConfig)
     app.register_blueprint(card_routes)
     app.register_blueprint(reading_routes)
     db = get_db()
     app.config.from_object(config.testConfig)
-
 
     with app.test_client() as client:
         with app.app_context():
