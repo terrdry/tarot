@@ -1,6 +1,7 @@
 # Standard Library imports
 import os
 import logging
+from flask import jsonify
 
 # Third-party imports
 from sqlalchemy.exc import IntegrityError
@@ -13,7 +14,7 @@ from models import Reading
 logger = logging.getLogger(os.path.basename(__file__))
 
 
-def add_card(name, major, img="TODO"):
+def add_card(payload):
     """add_card Add Card
 
     Add the card record to the database name 
@@ -32,43 +33,43 @@ def add_card(name, major, img="TODO"):
     Returns:
         string: the name of the tarot card
     """
+
     try:
         db = get_db()
-
-        card = Card(name=name,
-                    major=major,
-                    img=img)
+        card = Card(name=payload["name"],
+                    major=payload["isMajor"],
+                    img="TODO.JPG")
         db.session.add(card)
         db.session.commit()
-        return card.name
+        return card.id
     except IntegrityError as e:
         logger.warning('Duplicate card Record')
         raise e
 
 
-def edit_card(name, new_name):
-    """ edit_card Edit Card
+def read_card(id):
+    """ read_card Read Card
 
-        Edit the card by name of card; since this is a unique
+        Read the card by id of card; since this is a unique
         value we can trust it to work with an existant card. 
 
         Args:
-            name (string): name of the tarot card
-            new_name (string): name that the tarot card will be changed to
+            id (int): id of the tarot card
 
         Raises:
             e: Integrity Error for cards and card record
 
         Returns:
-            string: the name of the tarot card
+            json: Contents of one record 
     """
     try:
         db = get_db()
-        card = db.session.query(Card).filter_by(name=name).first()
+        card = db.session.query(Card).get(id)
         if card:
-            card.name = new_name
-            db.session.commit()
-            return card
+            payload = {'name': card.name,
+                       'major': card.major,
+                       "img": "TODO.JGP"}
+            return jsonify(payload)
         else:
             logger.warning("Record not found")
     except IntegrityError as e:
@@ -76,7 +77,39 @@ def edit_card(name, new_name):
         raise e
 
 
-def delete_card(name):
+def update_card(id, payload):
+    """ edit_read  Write Card
+#TODO documentation
+        Delete the reading by name of a reading; since this is a unique
+        value we can trust it to work with an existant reading. 
+
+        Args:
+            name (string): name of the reading
+            new_name (string): name that the reading will be changed to
+
+        Raises:
+            e: Integrity Error for readings and reading record
+
+        Returns:
+            string: the name of the tarot reading
+    """
+    try:
+        db = get_db()
+        card = db.session.query(Card).get(id)
+        if card:
+            card.name = payload.get("name")
+            card.isMajor = payload.get("isMajor")
+            card.img = "TODO.txt"
+            db.session.commit()
+            return jsonify(card.id)
+        else:
+            logger.warning("Record not found")
+    except IntegrityError as e:
+        logger.warning('Duplicate card Record')
+        raise e
+
+
+def delete_card(id):
     """delete_card Delete Card
 
     Delete the card by name of card; since this is a unique
@@ -93,11 +126,11 @@ def delete_card(name):
     """
     try:
         db = get_db()
-        card = db.session.query(Card).filter_by(name=name).first()
+        card = db.session.query(Card).get(id)
         if card:
             db.session.delete(card)
             db.session.commit()
-            return card.name
+            return jsonify({"card_id": card.id})
         else:
             logger.warning("Record not found")
     except IntegrityError as e:

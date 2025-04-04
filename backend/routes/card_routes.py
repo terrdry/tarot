@@ -5,12 +5,14 @@ import logging
 # Third-party imports
 from flask import Blueprint
 from flask import jsonify
+from flask import request
 
 # Local applicaion imports
 from models import Card
 from database import add_card
 from database import delete_card
-from database import edit_card
+from database import read_card
+from database import update_card
 
 
 logger = logging.getLogger(os.path.basename(__file__))
@@ -22,15 +24,15 @@ def get_cards():
     """get_cards Get all cards in a table
 
     Returns:
-        string: result of operation encoded in JSON 
+        string: result of operation encoded in JSON
     """
     cards = Card.query.all()
     return jsonify([{'id': c.id, 'name': c.name, 'major': c.major, 'img': c.img} for c in cards])
 
 
-@card_routes.route("/cards/add/<string:card_name>/<string:isMajor>")
-def adding_card(card_name, isMajor):
-    """adding_card Add card 
+@card_routes.route('/cards/add', methods=["POST"])
+def adding_card():
+    """adding_card Add card
 
     Add the tarot card
 
@@ -39,14 +41,20 @@ def adding_card(card_name, isMajor):
         isMajor (bool): Major Arcana card flag
 
     Returns:
-        string: result of operation encoded in JSON 
+        string: result of operation encoded in JSON
     """
-    record_id = add_card(card_name, True)
-    return jsonify({"id": record_id,  "name": card_name, "isMajor": isMajor, "image": "TOOD"})
+    try:
+        data = request.get_json()
+    except Exception as e:
+        return jsonify({"error", str(e)}), 500
+
+    # add the record
+    record_id = add_card(data)
+    return jsonify({"id": record_id})
 
 
-@card_routes.route("/cards/delete/<string:name>")
-def deleting_card(name):
+@card_routes.route("/cards/delete/<int:id>", methods=["POST"])
+def deleting_card(id):
     """deleting_card Delete card
 
     Delete the Tarot card
@@ -57,35 +65,45 @@ def deleting_card(name):
     Returns:
         string: result of operation encoded in JSON 
     """
-    card_deleted = delete_card(name)
+    card_deleted = delete_card(id)
     logger.warning("In deleting_card")
     return jsonify(f'Deleted  {card_deleted}')
 
 
-@card_routes.route("/cards/edit/<string:name>/<string:other_name>")
-def editing_card(name, other_name):
-    """editing_card Edit card
+@card_routes.route("/cards/read/<int:id>",  methods=["GET"])
+def reading_card(id):
+    """reading_card Read card
 
-    Edit the Tarot card
+#     Read the Tarot card
+
+#     Args:
+#         id (int): id of card
+
+#     Returns:
+#         string: record of id returned encoded in JSON 
+#     """
+    card_read = read_card(id)
+    logger.warning("In card_read")
+    return jsonify(card_read.json)
+
+
+@card_routes.route("/cards/update/<int:id>",  methods=["POST"])
+def updating_card(id):
+    """updating_card Update card
+
+    Update the Tarot card
 
     Args:
-        name (string): name of card
+        id (int): id of card
 
     Returns:
         string: result of operation encoded in JSON 
     """
-    card_edit = edit_card(name, other_name)
-    logger.warning("In edit_card")
-    return jsonify(f'Editing  {card_edit}')
+    pass
+    try:
+        data = request.get_json()
+        update_card(id, data)
+    except Exception as e:
+        return jsonify({"post  error", str(e)}), 500
 
-
-@card_routes.route('/')
-def index():
-    """index HTML Index
-
-    Temporary here until we work on the main page
-
-    Returns:
-        string: JSON welcome string 
-    """
-    return jsonify('Welcome')
+    return jsonify(data)
