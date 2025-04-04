@@ -72,17 +72,16 @@ def deleting_card(id):
 
 @card_routes.route("/cards/read/<int:id>",  methods=["GET"])
 def reading_card(id):
-    """editing_card Edit card
+    """reading_card Read card
 
-#     Edit the Tarot card
+#     Read the Tarot card
 
 #     Args:
-#         name (string): name of card
+#         id (int): id of card
 
 #     Returns:
-#         string: result of operation encoded in JSON 
+#         string: record of id returned encoded in JSON 
 #     """
-    # data = request.get_json()
     card_read = read_card(id)
     logger.warning("In card_read")
     return jsonify(card_read.json)
@@ -90,12 +89,12 @@ def reading_card(id):
 
 @card_routes.route("/cards/update/<int:id>",  methods=["POST"])
 def updating_card(id):
-    """editing_card Edit card
+    """updating_card Update card
 
-    Edit the Tarot card
+    Update the Tarot card
 
     Args:
-        name (string): name of card
+        id (int): id of card
 
     Returns:
         string: result of operation encoded in JSON 
@@ -103,24 +102,8 @@ def updating_card(id):
     pass
     try:
         data = request.get_json()
-    #     card = read_card(id)
-    #     card.name = cargo['name']
-    #     card.isMajor = cargo['isMajor']
         update_card(id, data)
-    #     pass
     except Exception as e:
         return jsonify({"post  error", str(e)}), 500
 
     return jsonify(data)
-
-
-@card_routes.route('/')
-def index():
-    """index HTML Index
-
-    Temporary here until we work on the main page
-
-    Returns:
-        string: JSON welcome string 
-    """
-    return jsonify('Welcome')

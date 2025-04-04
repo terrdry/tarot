@@ -1,17 +1,23 @@
 // src/router/index.js
 import { createRouter, createWebHistory } from 'vue-router';
-import CardList from '../components/CardList.vue';
-import HelloWorld from '../components/HelloWorld.vue';
+import CardList from '@/components/CardList.vue';
+import CardDetail from '@/components/CardDetail.vue';
+import CardForm from '@/components/CardForm.vue';
+
+import HelloWorld from '@/components/HelloWorld.vue';
+
 
 
 const routes = [
-  { path: '/', component: HelloWorld },
+  { path: '/', component: HelloWorld, props: { msg: "Goto the Choppers" } },
   // { path: '/:pathMatch(.*)*', redirect: '/' },
   { path: '/cards', component: CardList },
   { path: '/cards/add', component: CardList },
-  // { path: '/card/new', component: CardList },
-//   { path: '/card/:id', component: CardDetail },
-// //   { path: '/card/:id/edit', component: CardForm },
+  { path: '/cards/delete/:id', component: CardList },
+  { path: '/cards/read/:id', component: CardDetail },
+  { path: '/cards/update/:id', component: CardList },
+  //   { path: '/card/:id', component: CardDetail },
+  { path: '/cards/:id/edit', component: CardForm },
 ];
 
 // vite.config.ts
