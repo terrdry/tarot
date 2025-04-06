@@ -74,14 +74,14 @@ def deleting_card(id):
 def reading_card(id):
     """reading_card Read card
 
-#     Read the Tarot card
+    Read the Tarot card
 
-#     Args:
-#         id (int): id of card
+    Args:
+        id (int): id of card
 
-#     Returns:
-#         string: record of id returned encoded in JSON 
-#     """
+    Returns:
+        string: record of id returned encoded in JSON 
+    """
     card_read = read_card(id)
     logger.warning("In card_read")
     return jsonify(card_read.json)
@@ -107,3 +107,7 @@ def updating_card(id):
         return jsonify({"post  error", str(e)}), 500
 
     return jsonify(data)
+
+# @card_routes.route("/",  methods=["GET"])
+# def index():
+#     return "Welcome to Tarot", 200

@@ -5,19 +5,20 @@ import CardDetail from '@/components/CardDetail.vue';
 import CardForm from '@/components/CardForm.vue';
 
 import HelloWorld from '@/components/HelloWorld.vue';
+import AddCard from '@/components/AddCard.vue';
 
 
 
 const routes = [
-  { path: '/', component: HelloWorld, props: { msg: "Goto the Choppers" } },
-  // { path: '/:pathMatch(.*)*', redirect: '/' },
+  { path: '/:pathMatch(.*)*', redirect: '/' },
   { path: '/cards', component: CardList },
-  { path: '/cards/add', component: CardList },
+  { path: '/cards/add', component: AddCard },
   { path: '/cards/delete/:id', component: CardList },
   { path: '/cards/read/:id', component: CardDetail },
   { path: '/cards/update/:id', component: CardList },
   //   { path: '/card/:id', component: CardDetail },
   { path: '/cards/:id/edit', component: CardForm },
+  { path: '/', component: HelloWorld, props: { msg: "Goto the Choppers" } },
 ];
 
 // vite.config.ts

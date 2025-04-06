@@ -10,8 +10,8 @@ class TarotDataService {
     post(data) {
         return http.post('/cards/add', data);
     }
-    create(data) {
-        return http.post("/tarot", data);
+    create() {
+        return http.post("/cards/add");
     }
 
     //     update(id, data) {

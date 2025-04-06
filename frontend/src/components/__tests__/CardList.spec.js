@@ -7,9 +7,14 @@ import router from '@/router'
 describe('Main View', () => {
   it('See if the title is correct', () => {
     // const wrapper = mount(CardList, { props: { item: [ ]  } } )
+    const items = [ {'name': 'The Magician', 'isMajor': 'True', 'id': 1 }]
+    // const items = [ ]
     const wrapper = mount(CardList, {
       global: {
         plugins: [router],
+      },
+      props: {
+        item: items
       }
     });
     // expect(wrapper.text()).toContain('Items' )
