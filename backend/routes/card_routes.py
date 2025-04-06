@@ -63,7 +63,7 @@ def deleting_card(id):
         name (string): name of card
 
     Returns:
-        string: result of operation encoded in JSON 
+        string: result of operation encoded in JSON
     """
     card_deleted = delete_card(id)
     logger.warning("In deleting_card")
@@ -80,7 +80,7 @@ def reading_card(id):
 #         id (int): id of card
 
 #     Returns:
-#         string: record of id returned encoded in JSON 
+#         string: record of id returned encoded in JSON
 #     """
     card_read = read_card(id)
     logger.warning("In card_read")
@@ -97,7 +97,7 @@ def updating_card(id):
         id (int): id of card
 
     Returns:
-        string: result of operation encoded in JSON 
+        string: result of operation encoded in JSON
     """
     pass
     try:
@@ -107,3 +107,9 @@ def updating_card(id):
         return jsonify({"post  error", str(e)}), 500
 
     return jsonify(data)
+
+
+@card_routes.route("/",  methods=["GET"])
+def index_cards():
+    pass
+    return jsonify("hello")

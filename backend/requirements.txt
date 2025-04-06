@@ -9,3 +9,6 @@ pytest-watch
 pytest-cov
 pdoc
 pexpect
+pre-commit
+pylint
+detect-secrets
