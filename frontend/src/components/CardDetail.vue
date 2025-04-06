@@ -25,7 +25,7 @@
             {{ tarot.title }}
           </li>
         </ul>
-  
+
         <button class="m-3 btn btn-sm btn-danger" @click="removeAllTarots">
           Remove All
         </button>
@@ -42,7 +42,7 @@
           <div>
             <label><strong>Status:</strong></label> {{ currentTarot.published ? "Published" : "Pending" }}
           </div>
-  
+
           <router-link :to="'/tarots/' + currentTarot.id" class="badge badge-warning">Edit</router-link>
         </div>
         <div v-else>
@@ -52,10 +52,10 @@
       </div>
     </div>
   </template>
-  
+
   <script>
   import TarotDataService from "../services/TarotDataService";
-  
+
   export default {
     name: "TarotCard-list",
     data() {
@@ -77,18 +77,18 @@
             console.log(e);
           });
       },
-  
+
       refreshList() {
         this.retrieveTarots();
         this.currentTarot = null;
         this.currentIndex = -1;
       },
-  
+
       setActiveTarot(tarot, index) {
         this.currentTarot = tarot;
         this.currentIndex = tarot ? index : -1;
       },
-  
+
       removeAllTarots() {
         TarotDataService.deleteAll()
           .then(response => {
@@ -99,7 +99,7 @@
             console.log(e);
           });
       },
-      
+
       searchTitle() {
         TarotDataService.findByTitle(this.title)
           .then(response => {
@@ -117,7 +117,7 @@
     }
   };
   </script>
-  
+
   <style>
   .list {
     text-align: left;

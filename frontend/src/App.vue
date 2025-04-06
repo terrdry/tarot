@@ -3,7 +3,7 @@
   <div id="app">
     <main>
       <router-view />
-    </main> 
+    </main>
   </div>
 
 </template>

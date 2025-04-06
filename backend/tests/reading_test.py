@@ -62,7 +62,7 @@ def test_add_duplicate_reading(client):
 
 
 def test_add_multiple_reading(client):
-    """test_add_multiple_reading 
+    """test_add_multiple_reading
 
     Args:
         client (object): pyTest fixture
@@ -85,7 +85,7 @@ def test_edit_card(client):
 
 
 def test_delete_reading(client):
-    """test_delete_reading 
+    """test_delete_reading
 
     Args:
         client (object): pyTest fixture

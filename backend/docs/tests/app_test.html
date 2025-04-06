@@ -67,7 +67,7 @@
                     <h1 class="modulename">
 <a href="./../tests.html">tests</a><wbr>.app_test    </h1>
 
-                
+
                         <input id="mod-app_test-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="mod-app_test-view-source"><span>View Source</span></label>
@@ -186,11 +186,11 @@
             <span class="name">logger</span>        =
 <span class="default_value">&lt;Logger app_test.py (WARNING)&gt;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#logger"></a>
-    
-    
+
+
 
                 </section>
                 <section id="FILE_NAME">
@@ -198,11 +198,11 @@
             <span class="name">FILE_NAME</span>        =
 <span class="default_value">&#39;backend/db/tarot-test.db&#39;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#FILE_NAME"></a>
-    
-    
+
+
 
                 </section>
                 <section id="client">
@@ -250,8 +250,8 @@
 
 
             <div class="docstring"><p>client<br />
-Pytest fixture for testing the client code 
-Responsible for setting up database and adding information 
+Pytest fixture for testing the client code
+Responsible for setting up database and adding information
 to the pytest Global/share area</p>
 
 <p>Yields:
@@ -263,7 +263,7 @@ to the pytest Global/share area</p>
                 <section id="get_table_names">
                             <input id="get_table_names-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-            
+
         <span class="def">def</span>
         <span class="name">get_table_names</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">app</span></span><span class="return-annotation">):</span></span>
 
@@ -290,12 +290,12 @@ to the pytest Global/share area</p>
 </span></pre></div>
 
 
-            <div class="docstring"><p>get_table_names 
-Helper function for getting the names of the tables 
+            <div class="docstring"><p>get_table_names
+Helper function for getting the names of the tables
 that the database contains. Used for subsequent tests</p>
 
 <p>Args:
-    app (object): 
+    app (object):
     Flask application module</p>
 
 <p>Returns:
@@ -307,7 +307,7 @@ that the database contains. Used for subsequent tests</p>
                 <section id="test_database">
                             <input id="test_database-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-            
+
         <span class="def">def</span>
         <span class="name">test_database</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">client</span></span><span class="return-annotation">):</span></span>
 
@@ -327,7 +327,7 @@ that the database contains. Used for subsequent tests</p>
 </span></pre></div>
 
 
-            <div class="docstring"><p>test_database 
+            <div class="docstring"><p>test_database
 Ensure that the database exists
 Args:
     client (object): pyTest fixture</p>
@@ -338,7 +338,7 @@ Args:
                 <section id="test_index">
                             <input id="test_index-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-            
+
         <span class="def">def</span>
         <span class="name">test_index</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">client</span></span><span class="return-annotation">):</span></span>
 
@@ -360,7 +360,7 @@ Args:
 </span></pre></div>
 
 
-            <div class="docstring"><p>test_index 
+            <div class="docstring"><p>test_index
 check and see if the index is accessible
 Args:
     client (object): pyTest fixture</p>
@@ -371,7 +371,7 @@ Args:
                 <section id="test_for_reading">
                             <input id="test_for_reading-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-            
+
         <span class="def">def</span>
         <span class="name">test_for_reading</span><span class="signature pdoc-code condensed">(<span class="param"><span class="n">client</span></span><span class="return-annotation">):</span></span>
 

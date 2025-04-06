@@ -129,7 +129,7 @@
                     <h1 class="modulename">
 models    </h1>
 
-                
+
                         <input id="mod-models-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 
                         <label class="view-source-button" for="mod-models-view-source"><span>View Source</span></label>
@@ -203,11 +203,11 @@ models    </h1>
             <span class="name">logger</span>        =
 <span class="default_value">&lt;Logger models.py (WARNING)&gt;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#logger"></a>
-    
-    
+
+
 
                 </section>
                 <section id="db">
@@ -215,17 +215,17 @@ models    </h1>
             <span class="name">db</span>        =
 <span class="default_value">&lt;SQLAlchemy&gt;</span>
 
-        
+
     </div>
     <a class="headerlink" href="#db"></a>
-    
-    
+
+
 
                 </section>
                 <section id="get_db">
                             <input id="get_db-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr function">
-            
+
         <span class="def">def</span>
         <span class="name">get_db</span><span class="signature pdoc-code condensed">(<span class="return-annotation">):</span></span>
 
@@ -240,13 +240,13 @@ models    </h1>
 </span></pre></div>
 
 
-    
+
 
                 </section>
                 <section id="Card">
                             <input id="Card-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-            
+
     <span class="def">class</span>
     <span class="name">Card</span><wbr>(<span class="base">sqlalchemy.orm.decl_api._DynamicAttributesType</span>, <span class="base">sqlalchemy.inspection.Inspectable[sqlalchemy.orm.mapper.Mapper[typing.Any]]</span>):
 
@@ -279,13 +279,13 @@ already created declarative model class as <code>model_class</code>.</p>
 
                             <div id="Card.__init__" class="classattr">
                                 <div class="attr function">
-            
+
         <span class="name">Card</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Card.__init__"></a>
-    
+
             <div class="docstring"><p>A simple constructor that allows initialization from kwargs.</p>
 
 <p>Sets attributes on the constructed instance using the names and
@@ -302,62 +302,62 @@ for example, any mapped columns or relationships.</p>
                                 <div class="attr variable">
             <span class="name">id</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Card.id"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Card.name" class="classattr">
                                 <div class="attr variable">
             <span class="name">name</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Card.name"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Card.major" class="classattr">
                                 <div class="attr variable">
             <span class="name">major</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Card.major"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Card.img" class="classattr">
                                 <div class="attr variable">
             <span class="name">img</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Card.img"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Card.readings_relation" class="classattr">
                                 <div class="attr variable">
             <span class="name">readings_relation</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Card.readings_relation"></a>
-    
-    
+
+
 
                             </div>
                 </section>
                 <section id="Reading">
                             <input id="Reading-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-            
+
     <span class="def">class</span>
     <span class="name">Reading</span><wbr>(<span class="base">sqlalchemy.orm.decl_api._DynamicAttributesType</span>, <span class="base">sqlalchemy.inspection.Inspectable[sqlalchemy.orm.mapper.Mapper[typing.Any]]</span>):
 
@@ -389,13 +389,13 @@ already created declarative model class as <code>model_class</code>.</p>
 
                             <div id="Reading.__init__" class="classattr">
                                 <div class="attr function">
-            
+
         <span class="name">Reading</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Reading.__init__"></a>
-    
+
             <div class="docstring"><p>A simple constructor that allows initialization from kwargs.</p>
 
 <p>Sets attributes on the constructed instance using the names and
@@ -412,62 +412,62 @@ for example, any mapped columns or relationships.</p>
                                 <div class="attr variable">
             <span class="name">id</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Reading.id"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Reading.name" class="classattr">
                                 <div class="attr variable">
             <span class="name">name</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Reading.name"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Reading.date_created" class="classattr">
                                 <div class="attr variable">
             <span class="name">date_created</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Reading.date_created"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Reading.date_modified" class="classattr">
                                 <div class="attr variable">
             <span class="name">date_modified</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Reading.date_modified"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Reading.cards_relation" class="classattr">
                                 <div class="attr variable">
             <span class="name">cards_relation</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Reading.cards_relation"></a>
-    
-    
+
+
 
                             </div>
                 </section>
                 <section id="Readcard">
                             <input id="Readcard-view-source" class="view-source-toggle-state" type="checkbox" aria-hidden="true" tabindex="-1">
 <div class="attr class">
-            
+
     <span class="def">class</span>
     <span class="name">Readcard</span><wbr>(<span class="base">sqlalchemy.orm.decl_api._DynamicAttributesType</span>, <span class="base">sqlalchemy.inspection.Inspectable[sqlalchemy.orm.mapper.Mapper[typing.Any]]</span>):
 
@@ -501,13 +501,13 @@ already created declarative model class as <code>model_class</code>.</p>
 
                             <div id="Readcard.__init__" class="classattr">
                                 <div class="attr function">
-            
+
         <span class="name">Readcard</span><span class="signature pdoc-code condensed">(<span class="param"><span class="o">**</span><span class="n">kwargs</span></span>)</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Readcard.__init__"></a>
-    
+
             <div class="docstring"><p>A simple constructor that allows initialization from kwargs.</p>
 
 <p>Sets attributes on the constructed instance using the names and
@@ -524,55 +524,55 @@ for example, any mapped columns or relationships.</p>
                                 <div class="attr variable">
             <span class="name">id</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Readcard.id"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Readcard.card_id" class="classattr">
                                 <div class="attr variable">
             <span class="name">card_id</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Readcard.card_id"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Readcard.read_id" class="classattr">
                                 <div class="attr variable">
             <span class="name">read_id</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Readcard.read_id"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Readcard.cards_relation" class="classattr">
                                 <div class="attr variable">
             <span class="name">cards_relation</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Readcard.cards_relation"></a>
-    
-    
+
+
 
                             </div>
                             <div id="Readcard.readings_relation" class="classattr">
                                 <div class="attr variable">
             <span class="name">readings_relation</span>
 
-        
+
     </div>
     <a class="headerlink" href="#Readcard.readings_relation"></a>
-    
-    
+
+
 
                             </div>
                 </section>
