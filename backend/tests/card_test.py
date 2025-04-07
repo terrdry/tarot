@@ -92,7 +92,7 @@ def test_add_multiple_cards(client):
 def test_read_card(client):
     """test_read_card Read the Card
 
-    Read from a list; 
+    Read from a list;
     - add 10 records
     - use ge
 

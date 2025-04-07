@@ -23,13 +23,13 @@ FILE_NAME = "backend/db/tarot-test.db"
 
 @pytest.fixture
 def client():
-    """client  
-    Pytest fixture for testing the client code 
-    Responsible for setting up database and adding information 
+    """client
+    Pytest fixture for testing the client code
+    Responsible for setting up database and adding information
     to the pytest Global/share area
 
     Yields:
-        none : 
+        none :
     """
     from app import create_app
 
@@ -51,12 +51,12 @@ def client():
 
 
 def get_table_names(app):
-    """get_table_names 
-    Helper function for getting the names of the tables 
+    """get_table_names
+    Helper function for getting the names of the tables
     that the database contains. Used for subsequent tests
 
     Args:
-        app (object): 
+        app (object):
         Flask application module
 
     Returns:
@@ -69,7 +69,7 @@ def get_table_names(app):
 
 
 def test_database(client):
-    """test_database 
+    """test_database
     Ensure that the database exists
     Args:
         client (object): pyTest fixture
@@ -80,16 +80,16 @@ def test_database(client):
 
 
 def test_index(client):
-    """test_index 
+    """test_index
     check and see if the index is accessible
     Args:
         client (object): pyTest fixture
     Ensure database is blank
-    
+
     """
     response = client.get("/")
     assert response.status_code == 200
-    # assert b"Welcome" in response.data
+    assert b"hello" in response.data
 
 
 def test_for_reading(client):

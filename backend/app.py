@@ -23,8 +23,8 @@ logger = logging.getLogger(os.path.basename(__file__))
 def create_app(name, config):
     """create_app Create the Flask Application
 
-    This will create the application instance and return 
-    the app handle for subsequent use by other modules using 
+    This will create the application instance and return
+    the app handle for subsequent use by other modules using
     a simple import
 
     Args:

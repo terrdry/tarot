@@ -39,7 +39,7 @@ This will be created in the `tarot/backend/docs`
 ```sh
 source .venv/bin/activate
 cd backend
-pdoc ./*.py routes tests -o ./docs 
+pdoc ./*.py routes tests -o ./docs
 ```
 
 ## To run the flask code
@@ -47,7 +47,7 @@ pdoc ./*.py routes tests -o ./docs
 ```sh {"language":"sh","promptEnv":"never"}
 source .venv/bin/activate
 cd backend
-flask run 
+flask run
 ```
 
 ## To test the flask code
@@ -62,7 +62,7 @@ pytest -v -o log_file=test-tarot.log
 
 ```sh
 source .venv/bin/activate
-pytest --cov . --cov-config backend/.coveragerc.ini -cov-report=html 
+pytest --cov . --cov-config backend/.coveragerc.ini -cov-report=html
 ```
 
 ### pyTest Continuous
@@ -76,7 +76,7 @@ ptw
 
 ## VUE essentials
 
-### Debugging 
+### Debugging
 
 It is essential that we run two processes when we are debugging the Vue portion of the code. If you have `axios` calls active in your Vue environment, You will need to start the flask debugger "Python Debugger: Flask".
 
@@ -84,9 +84,9 @@ To debug in Vue
 
 Starts npm with `Run npm start - tarot` which just starts Vue with `run dev` which in turn starts a fork of another process that is runnning as the debugger
 
+- Run Script: dev
+   Select from Run and Debug
 
-- Run Script: dev 
-Select from Run and Debug 
 ```json
 {
     "command": "npm run dev",
@@ -113,9 +113,10 @@ Start the chrome web server by running the `Launch Chrome Vue - tarot`
     }
 }
 
-Now you should be able to track errors in real time with the stack levels 
+Now you should be able to track errors in real time with the stack levels
 
 > The name of the files that have been compiled for this debugging run will appear in the stack trace on the side. Use those files to set breakpoints in the debugger.
 
 
 
+```

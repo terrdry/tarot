@@ -8,12 +8,12 @@ import { ref, onMounted } from 'vue'
 // import { useRoute } from 'vue-router'
 // const route = useRoute();
 
-var items = ref([{ name: 'hussein', id: 1, isMajor: 'True' }])
+var items = ref([])
 
 const fetchItems = async () => {
   try {
     items.value = await tarotDataService.getAll()
-    console.log(items)
+    console.log(items.value)
   } catch (error) {
     console.error('Error fetching items:', error)
   }
@@ -34,40 +34,18 @@ onMounted(fetchItems) // Fetch items when component mounts
 </script>
 
 <template>
-  <div class="container">
-    <div class="row">
-      <div class="col-sm-10">
-        <h1>Tarot Cards</h1>
-        <hr><br><br>
-        <button type="button" class="btn btn-success btn-sm" @click="addCard">Add Card</button>
-        <br><br>
-        <table class="table table-hover">
-          <thead>
-            <tr>
-              <th scope="col">Card Name</th>
-              <th scope="col">Major Arcana</th>
-              <th scope="col">Image</th>
-              <th></th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr v-for="item in items.data" :key="item.id">
-              <td>{{ item.name }}</td>
-              <td>
-                <span v-if="item.major">Yes</span>
-                <span v-else>No</span>
-              </td>
-              <td>{{ item.img }}</td>
-              <td>
-                <div class="btn-group" role="group">
-                  <button type="button" class="btn btn-warning btn-sm">Update</button>
-                  <button type="button" class="btn btn-danger btn-sm">Delete</button>
-                </div>
-              </td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  <h2>Items</h2>
+  <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
+  <p> Items:{{ items.data }}</p>
+  <div>
+    <b-table striped hover :items="items.data"></b-table>
   </div>
+  <!-- <ul>
+    <li v-for="item in items.data" :key="item.id">
+      {{ item.name }} - {{ item.major }} -->
+      <!-- <router-link :to="{ name: 'CardDetail', params: { id: item.id } }">Edit</router-link> -->
+      <!-- <button @click="deleteItem(item.id)">Delete</button> -->
+    <!-- </li>
+  </ul>
+  <router-link to="cards/add">Add New Item</router-link> -->
 </template>

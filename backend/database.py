@@ -17,9 +17,9 @@ logger = logging.getLogger(os.path.basename(__file__))
 def add_card(payload):
     """add_card Add Card
 
-    Add the card record to the database name 
+    Add the card record to the database name
 
-    name is a unique key and Integretiy error will be triggered 
+    name is a unique key and Integretiy error will be triggered
     when there is a duplicate.
 
     Args:
@@ -51,7 +51,7 @@ def read_card(id):
     """ read_card Read Card
 
         Read the card by id of card; since this is a unique
-        value we can trust it to work with an existant card. 
+        value we can trust it to work with an existant card.
 
         Args:
             id (int): id of the tarot card
@@ -60,7 +60,7 @@ def read_card(id):
             e: Integrity Error for cards and card record
 
         Returns:
-            json: Contents of one record 
+            json: Contents of one record
     """
     try:
         db = get_db()
@@ -81,7 +81,7 @@ def update_card(id, payload):
     """ edit_read  Write Card
 #TODO documentation
         Delete the reading by name of a reading; since this is a unique
-        value we can trust it to work with an existant reading. 
+        value we can trust it to work with an existant reading.
 
         Args:
             name (string): name of the reading
@@ -113,7 +113,7 @@ def delete_card(id):
     """delete_card Delete Card
 
     Delete the card by name of card; since this is a unique
-    value we can trust it to work with an existant card. 
+    value we can trust it to work with an existant card.
 
     Args:
         name (string): name of the tarot card
@@ -139,7 +139,7 @@ def delete_card(id):
 
 
 def add_reading(name):
-    """add_reading 
+    """add_reading
 
     Add a reading record into the database
 
@@ -167,7 +167,7 @@ def edit_reading(name, new_name):
     """ edit_read  Edit Card
 
         Delete the reading by name of a reading; since this is a unique
-        value we can trust it to work with an existant reading. 
+        value we can trust it to work with an existant reading.
 
         Args:
             name (string): name of the reading
@@ -203,7 +203,7 @@ def delete_reading(name):
         e: Integrity Error for readings and readings record
 
     Returns:
-        int: the id of the reading 
+        int: the id of the reading
     """
 
     db = get_db()
@@ -221,10 +221,10 @@ def get_count(table_object):
     """get_count Get count of records in a table
 
     This is a database helper function to get the count of records
-    for the table object 
+    for the table object
 
     Args:
-        table_object (object): Table reference 
+        table_object (object): Table reference
 
     Returns:
         int: Number of records in table_object
@@ -237,8 +237,8 @@ def get_count(table_object):
 def get_all(table_object):
     """get_all Get all records in a table
 
-    Call the query.all() on a table and returns 
-    a JSON object that contains all the records 
+    Call the query.all() on a table and returns
+    a JSON object that contains all the records
     in the database
 
     Args:
@@ -248,7 +248,7 @@ def get_all(table_object):
         e: Error for any integrity errors.
 
     Returns:
-        list: dictionary for all cards in card table 
+        list: dictionary for all cards in card table
     """
 
     try:

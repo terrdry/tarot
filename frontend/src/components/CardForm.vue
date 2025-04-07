@@ -14,13 +14,13 @@
             v-model="currentTarot.description"
           />
         </div>
-  
+
         <div class="form-group">
           <label><strong>Status:</strong></label>
           {{ currentTarot.published ? "Published" : "Pending" }}
         </div>
       </form>
-  
+
       <button class="badge badge-primary mr-2"
         v-if="currentTarot.published"
         @click="updatePublished(false)"
@@ -32,13 +32,13 @@
       >
         Publish
       </button>
-  
+
       <button class="badge badge-danger mr-2"
         @click="deleteTarot"
       >
         Delete
       </button>
-  
+
       <button type="submit" class="badge badge-success"
         @click="updateTarot"
       >
@@ -46,16 +46,16 @@
       </button>
       <p>{{ message }}</p>
     </div>
-  
+
     <div v-else>
       <br />
       <p>Please click on a Tarot...</p>
     </div>
   </template>
-  
+
   <script>
   import TarotDataService from "../services/TarotDataService";
-  
+
   export default {
     name: "TarotCard",
     data() {
@@ -75,7 +75,7 @@
             console.log(e);
           });
       },
-  
+
       updatePublished(status) {
         var data = {
           id: this.currentTarot.id,
@@ -83,7 +83,7 @@
           description: this.currentTarot.description,
           published: status
         };
-  
+
         TarotDataService.update(this.currentTarot.id, data)
           .then(response => {
             console.log(response.data);
@@ -94,7 +94,7 @@
             console.log(e);
           });
       },
-  
+
       updateTarot() {
         TarotDataService.update(this.currentTarot.id, this.currentTarot)
           .then(response => {
@@ -105,7 +105,7 @@
             console.log(e);
           });
       },
-  
+
       deleteTarot() {
         TarotDataService.delete(this.currentTarot.id)
           .then(response => {
@@ -123,7 +123,7 @@
     }
   };
   </script>
-  
+
   <style>
   .edit-form {
     max-width: 300px;

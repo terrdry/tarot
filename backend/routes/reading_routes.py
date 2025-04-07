@@ -31,14 +31,14 @@ def get_readings():
 
 @reading_routes.route('/reading/add/<string:read_name>', methods=['GET'])
 def adding_reading(read_name):
-    """adding_reading Add reading 
+    """adding_reading Add reading
 
     Add a reading record
     Args:
         read_name (string): Name of reading
 
     Returns:
-        string: result of operation encoded in JSON 
+        string: result of operation encoded in JSON
     """
     record_id = add_reading(read_name)
     return jsonify([{'id': record_id, 'read_name': read_name}])
