@@ -33,6 +33,7 @@
       <div class="col-md-6">
         <div v-if="currentTarot">
           <h4>Tarot</h4>
+          <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
           <div>
             <label><strong>Title:</strong></label> {{ currentTarot.title }}
           </div>
