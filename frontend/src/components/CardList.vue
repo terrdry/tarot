@@ -1,6 +1,7 @@
 <script setup>
 // import cardService from '@/services/api/cardService'
 
+import { BButton } from 'bootstrap-vue-3'
 import tarotDataService from '../services/TarotDataService'
 import { ref, onMounted } from 'vue'
 // import routes from "../router"
@@ -9,6 +10,13 @@ import { ref, onMounted } from 'vue'
 // const route = useRoute();
 
 var items = ref([])
+var fields = ['id', 'name', 'link']
+
+
+const goTo = (id, action) => {
+  console.log(id)
+  console.log(action)
+}
 
 const fetchItems = async () => {
   try {
@@ -19,15 +27,15 @@ const fetchItems = async () => {
   }
 }
 
-const addCard = () => {
-  try {
-    console.log('here')
-    const record_to_add = { 'name': "The Magician", 'isMajor': 'True' , 'img':'TODO.TXT'}
-    items.value = tarotDataService.post(record_to_add)
-  } catch (error) {
-    console.log(error)
-  }
-}
+// const addCard = () => {
+//   try {
+//     console.log('here')
+//     const record_to_add = { name: 'The Magician', isMajor: 'True', img: 'TODO.TXT' }
+//     items.value = tarotDataService.post(record_to_add)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 
 // const deleteItem = (items)
 onMounted(fetchItems) // Fetch items when component mounts
@@ -36,16 +44,37 @@ onMounted(fetchItems) // Fetch items when component mounts
 <template>
   <h2>Items</h2>
   <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
-  <p> Items:{{ items.data }}</p>
+  <!-- <p> Items:{{ items.data }}</p> -->
   <div>
-    <b-table striped hover :items="items.data"></b-table>
+    <b-table striped hover :items="items.data" :fields="fields">
+      <template #cell(link)="data">
+        <b-button-group>
+          <b-button
+            pill
+            variant="outline-success"
+            @click="goTo(data.item.id, 'edit')"
+            target="_blank"
+          >
+            EDIT
+          </b-button>
+          <b-button
+            pill
+            variant="outline-danger"
+            @click="goTo(data.id, 'delete')"
+            target="_blank"
+          >
+            DELETE
+          </b-button>
+        </b-button-group>
+      </template>
+    </b-table>
   </div>
   <!-- <ul>
     <li v-for="item in items.data" :key="item.id">
       {{ item.name }} - {{ item.major }} -->
-      <!-- <router-link :to="{ name: 'CardDetail', params: { id: item.id } }">Edit</router-link> -->
-      <!-- <button @click="deleteItem(item.id)">Delete</button> -->
-    <!-- </li>
-  </ul>
-  <router-link to="cards/add">Add New Item</router-link> -->
+  <!-- <router-link :to="{ name: 'CardDetail', params: { id: item.id } }">Edit</router-link> -->
+  <!-- <button @click="deleteItem(item.id)">Delete</button> -->
+  <!-- </li>
+        </ul> -->
+  <b-button pill variant="outline-primary" :href="hhref" target="_blank"> EDIT </b-button>
 </template>
