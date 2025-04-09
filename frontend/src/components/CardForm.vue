@@ -23,6 +23,7 @@
         <b-button-group>
           <b-button
             pill
+
             variant="success"
             target="_blank"
           >
@@ -53,15 +54,17 @@ import { useRoute, useRouter } from 'vue-router'
 import TarotDataService from '../services/TarotDataService'
 
 const route = useRoute()
+const cardId = route.params.id
+
 const router = useRouter()
 
 const currentTarot = ref(null)
 const message = ref('')
 const stat = ref({})
 
-const getTarot = async (id) => {
+const fetchItems = async () => {
   try {
-    const response = await TarotDataService.get(id)
+    const response = await TarotDataService.get(parseInt(cardId))
     currentTarot.value = response.data
     console.log(response.data)
   } catch (e) {
@@ -109,7 +112,7 @@ const updateTarot = async () => {
 
 onMounted(() => {
   message.value = 'The stars my destination'
-  getTarot(route.params.id)
+  fetchItems()
   console.log('hello')
 })
 </script>
