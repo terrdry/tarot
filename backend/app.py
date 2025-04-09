@@ -43,9 +43,9 @@ def create_app(name, config):
 
 
 app = create_app("tarot", devConfig)
-CORS(app, resources={r"/*": {"origins": "http://localhost:4000"}})
+# CORS(app, resources={r"/*": {"origins": "http://localhost:4000"}})
 # CORS(app, resources={r"/*": {"origins": "*"}})
-# CORS(app)  # least restrictive
+CORS(app)  # least restrictive
 
 with app.app_context():
     db.create_all()

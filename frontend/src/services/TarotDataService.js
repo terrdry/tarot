@@ -4,8 +4,8 @@ class TarotDataService {
     getAll() {
         return http.get("/cards");
     }
-    get() {
-        return http.get('/cards/read');
+    get(id) {
+        return http.get('/cards/read/'+id);
     }
     post(data) {
         return http.post('/cards/add', data);

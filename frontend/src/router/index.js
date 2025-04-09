@@ -10,11 +10,11 @@ import AddCard from '@/components/AddCard.vue';
 
 
 const routes = [
-  { path: '/:pathMatch(.*)*', redirect: '/' },
+  // { path: '/:pathMatch(.*)*', redirect: '/' },
   { path: '/cards', component: CardList },
   { path: '/cards/add', component: AddCard },
   { path: '/cards/delete/:id', component: CardList },
-  { path: '/cards/read/:id', component: CardDetail },
+  { path: '/cards/read/:id', component: CardForm, name: 'cardForm' },
   { path: '/cards/update/:id', component: CardList },
   //   { path: '/card/:id', component: CardDetail },
   { path: '/cards/:id/edit', component: CardForm },

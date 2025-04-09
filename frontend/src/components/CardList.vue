@@ -13,6 +13,7 @@ var items = ref([])
 var fields = ['id', 'name', 'link']
 
 
+
 const goTo = (id, action) => {
   console.log(id)
   console.log(action)
@@ -51,8 +52,10 @@ onMounted(fetchItems) // Fetch items when component mounts
         <b-button-group>
           <b-button
             pill
+            :to="{ name: 'CardDetail',
+                  // props: {default: true },
+                  params: { id: 1 } }"
             variant="outline-success"
-            @click="goTo(data.item.id, 'edit')"
             target="_blank"
           >
             EDIT
@@ -76,5 +79,5 @@ onMounted(fetchItems) // Fetch items when component mounts
   <!-- <button @click="deleteItem(item.id)">Delete</button> -->
   <!-- </li>
         </ul> -->
-  <b-button pill variant="outline-primary" :href="hhref" target="_blank"> EDIT </b-button>
+  <b-button pill variant="outline-primary" target="_blank"> EDIT </b-button>
 </template>
