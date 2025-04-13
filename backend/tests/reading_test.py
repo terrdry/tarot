@@ -73,7 +73,7 @@ def test_add_multiple_reading(client):
 
 
 def test_edit_card(client):
-    isMajor = True
+    major = True
     read_name = "The Magician"
     for elem in READING_LIST:
         response = client.get(f'/reading/add/{elem}')

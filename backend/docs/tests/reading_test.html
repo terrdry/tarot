@@ -151,7 +151,7 @@
 </span><span id="L-68"><a href="#L-68"><span class="linenos"> 68</span></a>
 </span><span id="L-69"><a href="#L-69"><span class="linenos"> 69</span></a>
 </span><span id="L-70"><a href="#L-70"><span class="linenos"> 70</span></a><span class="k">def</span><span class="w"> </span><span class="nf">test_edit_card</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
-</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="n">isMajor</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="L-71"><a href="#L-71"><span class="linenos"> 71</span></a>    <span class="n">major</span> <span class="o">=</span> <span class="kc">True</span>
 </span><span id="L-72"><a href="#L-72"><span class="linenos"> 72</span></a>    <span class="n">read_name</span> <span class="o">=</span> <span class="s2">&quot;The Magician&quot;</span>
 </span><span id="L-73"><a href="#L-73"><span class="linenos"> 73</span></a>    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">READING_LIST</span><span class="p">:</span>
 </span><span id="L-74"><a href="#L-74"><span class="linenos"> 74</span></a>        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;/reading/add/</span><span class="si">{</span><span class="n">elem</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>
@@ -351,7 +351,7 @@ Add a card to the read table</p>
     </div>
     <a class="headerlink" href="#test_edit_card"></a>
             <div class="pdoc-code codehilite"><pre><span></span><span id="test_edit_card-71"><a href="#test_edit_card-71"><span class="linenos">71</span></a><span class="k">def</span><span class="w"> </span><span class="nf">test_edit_card</span><span class="p">(</span><span class="n">client</span><span class="p">):</span>
-</span><span id="test_edit_card-72"><a href="#test_edit_card-72"><span class="linenos">72</span></a>    <span class="n">isMajor</span> <span class="o">=</span> <span class="kc">True</span>
+</span><span id="test_edit_card-72"><a href="#test_edit_card-72"><span class="linenos">72</span></a>    <span class="n">major</span> <span class="o">=</span> <span class="kc">True</span>
 </span><span id="test_edit_card-73"><a href="#test_edit_card-73"><span class="linenos">73</span></a>    <span class="n">read_name</span> <span class="o">=</span> <span class="s2">&quot;The Magician&quot;</span>
 </span><span id="test_edit_card-74"><a href="#test_edit_card-74"><span class="linenos">74</span></a>    <span class="k">for</span> <span class="n">elem</span> <span class="ow">in</span> <span class="n">READING_LIST</span><span class="p">:</span>
 </span><span id="test_edit_card-75"><a href="#test_edit_card-75"><span class="linenos">75</span></a>        <span class="n">response</span> <span class="o">=</span> <span class="n">client</span><span class="o">.</span><span class="n">get</span><span class="p">(</span><span class="sa">f</span><span class="s1">&#39;/reading/add/</span><span class="si">{</span><span class="n">elem</span><span class="si">}</span><span class="s1">&#39;</span><span class="p">)</span>

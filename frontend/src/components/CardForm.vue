@@ -10,7 +10,7 @@
       <div>
         <b-form-checkbox
           id="checkbox-1"
-          v-model="stat"
+          v-model="radioAttrib"
           name="checkbox-1"
           value="accepted"
           switch="true"
@@ -21,25 +21,13 @@
       </div>
       <div>
         <b-button-group>
-          <b-button
-            pill
-
-            variant="success"
-            target="_blank"
-          >
+          <b-button pill @click="addModCard(curentTarot)" variant="success" target="_blank">
             SAVE
           </b-button>
-          <b-button
-            pill
-            variant="warning"
-            target="_blank"
-          >
-            CANCEL
-          </b-button>
+          <b-button pill @click="goBack" variant="warning" target="_blank"> CANCEL </b-button>
         </b-button-group>
       </div>
     </form>
-    <p>{{ message }}</p>
   </div>
 
   <div v-else>
@@ -51,16 +39,14 @@
 <script setup>
 import { ref, onMounted } from 'vue'
 import { useRoute, useRouter } from 'vue-router'
-import TarotDataService from '../services/TarotDataService'
+import TarotDataService from '../services/api/TarotDataService'
 
 const route = useRoute()
+const router = useRouter()
 const cardId = route.params.id
 
-const router = useRouter()
-
-const currentTarot = ref(null)
-const message = ref('')
-const stat = ref({})
+const currentTarot = ref({})
+const radioAttrib = ref({})
 
 const fetchItems = async () => {
   try {
@@ -68,52 +54,40 @@ const fetchItems = async () => {
     currentTarot.value = response.data
     console.log(response.data)
   } catch (e) {
-    console.log(e)
+    console.log('fetchItems ' + e)
   }
 }
-
-// const updatePublished = async (status) => {
-//   try {
-//     const data = {
-//       id: currentTarot.value.id,
-//       title: currentTarot.value.title,
-//       description: currentTarot.value.description,
-//       published: status,
-//     }
-
-//     const response = await TarotDataService.update(currentTarot.value.id, data)
-//     console.log(response.data)
-//     currentTarot.value.published = status
-//     message.value = 'The status was updated successfully!'
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
-
-const updateTarot = async () => {
+const addModCard = async () => {
   try {
-    const response = await TarotDataService.update(currentTarot.value.id, currentTarot.value)
-    console.log(response.data)
-    message.value = 'The tarot was updated successfully!'
-  } catch (e) {
-    console.log(e)
+    if (route.params.id != 0) {
+      const response = await TarotDataService.update(parseInt(cardId), currentTarot.value)
+      currentTarot.value = response.data
+      console.log(currentTarot.value)
+    } else {
+      console.log(currentTarot.value)
+      const response = await TarotDataService.create(currentTarot.value)
+      currentTarot.value = response.data
+      goBack()
+    }
+  } catch (error) {
+    console.log('addModCard ' + error)
   }
 }
-
-// const deleteTarot = async () => {
-//   try {
-//     const response = await TarotDataService.delete(currentTarot.value.id)
-//     console.log(response.data)
-//     router.push({ name: 'tutorials' })
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
+const goBack = () => {
+  router.back()
+  console.log('hello')
+}
 
 onMounted(() => {
-  message.value = 'The stars my destination'
-  fetchItems()
-  console.log('hello')
+  if (cardId != 0) {
+    fetchItems()
+  } else {
+    currentTarot.value = {
+      id: 0,
+      name: '',
+      major: false,
+    }
+  }
 })
 </script>
 

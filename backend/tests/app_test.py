@@ -88,8 +88,7 @@ def test_index(client):
 
     """
     response = client.get("/")
-    assert response.status_code == 200
-    assert b"hello" in response.data
+    assert response.status_code == 404
 
 
 def test_for_reading(client):

@@ -38,7 +38,7 @@ def adding_card():
 
     Args:
         card_name (string): name of card
-        isMajor (bool): Major Arcana card flag
+        major (bool): Major Arcana card flag
 
     Returns:
         string: result of operation encoded in JSON

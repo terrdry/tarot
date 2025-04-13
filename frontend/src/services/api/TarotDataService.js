@@ -1,4 +1,4 @@
-import http from "../http-common";
+import http from "../../http-common";
 
 class TarotDataService {
     getAll() {
@@ -10,17 +10,18 @@ class TarotDataService {
     post(data) {
         return http.post('/cards/add', data);
     }
-    create() {
-        return http.post("/cards/add");
+    create(data) {
+        const response = http.post("/cards/add", data);
+        return response
     }
 
-    //     update(id, data) {
-    //         return http.put(`/tarot/${id}`, data);
-    //     }
+    update(id, data) {
+        return http.put(`/cards/update/${id}`, data);
+    }
 
-    //     delete(id) {
-    //         return http.delete(`/tarot/${id}`);
-    //     }
+    delete(id) {
+        return http.i('/cards/delete/'+id);
+    }
 
     //     deleteAll() {
     //         return http.delete(`/tarot`);

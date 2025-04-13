@@ -37,7 +37,7 @@ def add_card(payload):
     try:
         db = get_db()
         card = Card(name=payload["name"],
-                    major=payload["isMajor"],
+                    major=payload["major"],
                     img="TODO.JPG")
         db.session.add(card)
         db.session.commit()
@@ -98,7 +98,7 @@ def update_card(id, payload):
         card = db.session.query(Card).get(id)
         if card:
             card.name = payload.get("name")
-            card.isMajor = payload.get("isMajor")
+            card.major = payload.get("major")
             card.img = "TODO.txt"
             db.session.commit()
             return jsonify(card.id)

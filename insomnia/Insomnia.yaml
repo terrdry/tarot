@@ -1,0 +1,148 @@
+type: collection.insomnia.rest/5.0
+name: Tarot
+meta:
+  id: wrk_26f550ee409243928d93c92a2fc76c31
+  created: 1743449004305
+  modified: 1743449004305
+collection:
+  - url: "{{ _.SCHEMA }}{{ _.BASE_URL }}{{ _.PORT }}/{{ _.path }}"
+    name: Browse Records
+    meta:
+      id: req_545d50077eb04018aed9217051420850
+      created: 1743449013280
+      modified: 1744389895449
+      isPrivate: false
+      sortKey: -1743449013280
+    method: GET
+    body:
+      mimeType: application/json
+    parameters:
+      - id: pair_944cb4a7f94045e29067ef29b2ec5565
+        disabled: false
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.1
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.SCHEMA }}{{ _.BASE_URL }}{{ _.PORT }}/{{ _.path }}/delete/5"
+    name: Delete
+    meta:
+      id: req_664a900d88244c6aa9c179a4bc2bf0b2
+      created: 1744323065622
+      modified: 1744391156933
+      isPrivate: false
+      sortKey: -1744323065622
+    method: POST
+    body:
+      mimeType: application/json
+      text: |
+        {
+          "name": "SPINDLY",
+          "major": true,
+          "img": "TODO.TXT"
+        }
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.2
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+  - url: "{{ _.SCHEMA }}{{ _.BASE_URL }}{{ _.PORT }}/{{ _.path }}/add"
+    name: Add Records
+    meta:
+      id: req_54a7e48bbd1749478cfabdada11548d4
+      created: 1744389917067
+      modified: 1744391226686
+      isPrivate: false
+      sortKey: -1743449013230
+    method: POST
+    body:
+      mimeType: application/json
+      text: |-
+        {
+        	"name": "MARVIN",
+        	"major": true,
+        	"img": "TODO.TXT"
+        }
+    parameters:
+      - id: pair_ac0c2949e1e34817aef6aac9b317947d
+        disabled: false
+    headers:
+      - name: Content-Type
+        value: application/json
+      - name: User-Agent
+        value: insomnia/11.0.1
+    settings:
+      renderRequestBody: true
+      encodeUrl: true
+      followRedirects: global
+      cookies:
+        send: true
+        store: true
+      rebuildPath: true
+cookieJar:
+  name: Default Jar
+  meta:
+    id: jar_1440585c089d773cc5ae2fb89bed3c43131aaf13
+    created: 1743449004308
+    modified: 1743449004308
+environments:
+  name: Base Environment
+  meta:
+    id: env_1440585c089d773cc5ae2fb89bed3c43131aaf13
+    created: 1743449004307
+    modified: 1744324722479
+    isPrivate: false
+  data:
+    name: SPINDLY
+    major: true
+    img: TODO.TXT
+    SCHEMA: http://
+    BASE_URL: cards
+    PORT: 4000
+  subEnvironments:
+    - name: Tarot FRONTEND
+      meta:
+        id: env_04b081c02dc24487b45fa24d026b4ef8
+        created: 1744324498157
+        modified: 1744389662115
+        isPrivate: true
+        sortKey: 1744324498157
+      data:
+        name: SPINDLY
+        major: true
+        img: TODO.TXT
+        SCHEMA: http://
+        BASE_URL: localhost
+        path: cards
+        PORT: :4000
+    - name: Tarot Backend
+      meta:
+        id: env_f1f8578aba5c4675aac3cb83dc08c8af
+        created: 1744389628185
+        modified: 1744389749674
+        isPrivate: false
+        sortKey: 1744389628185
+      data:
+        name: SPINDLY
+        : true
+        img: TODO.TXT
+        SCHEMA: http://
+        BASE_URL: 127.0.0.1
+        path: cards
+        PORT: :5000

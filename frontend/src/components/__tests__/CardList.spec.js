@@ -7,7 +7,7 @@ import router from '@/router'
 describe('Main View', () => {
   it('See if the title is correct', () => {
     // const wrapper = mount(CardList, { props: { item: [ ]  } } )
-    const items = [ {'name': 'The Magician', 'isMajor': 'True', 'id': 1 }]
+    const items = [ {'name': 'The Magician', 'major': 'True', 'id': 1 }]
     // const items = [ ]
     const wrapper = mount(CardList, {
       global: {
@@ -18,6 +18,6 @@ describe('Main View', () => {
       }
     });
     // expect(wrapper.text()).toContain('Items' )
-    expect(wrapper.text()).toContain('Items')
+    expect(wrapper.text()).toContain('Tarot Cards')
   })
 })
