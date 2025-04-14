@@ -1,0 +1,63 @@
+name: Fullstack CI Pipeline
+
+on:
+  push:
+    branches: [main, "release/**"]
+  pull_request:
+    branches: [main, "release/**"]
+
+jobs:
+  backend-frontend-ci:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # ------------------------
+      # 🐍 Backend - Flask setup
+      # ------------------------
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: "3.12"
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: |
+          python -m pip install --upgrade pip
+          pip install -r requirements.txt
+
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: |
+          mkdir db
+          pip install -r requirements.txt
+
+      - name: Run Flask unit tests
+        working-directory: ./backend
+        run: |
+          pytest tests/  # Adjust to your test path
+
+      # -------------------------
+      # 🌐 Frontend - Vue setup
+      # -------------------------
+      - name: Set up Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: "23" # Or the version you use
+
+      - name: Install frontend dependencies
+        working-directory: ./frontend
+        run: |
+          npm install
+
+      - name: Run frontend tests
+        working-directory: ./frontend
+        run: |
+          npm run test:unit  # Optional: change to your test command or remove
+
+      - name: Build frontend
+        working-directory: ./frontend
+        run: |
+          npm run build
