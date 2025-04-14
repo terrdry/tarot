@@ -68,20 +68,6 @@ def get_table_names(app):
     return table_names
 
 
-def test_database(client):
-    """test_database
-    Ensure that the database exists
-    Args:
-        client (object): pyTest fixture
-    """
-    x = os.getcwd()
-    tester = Path(os.path.join(os.getcwd(), FILE_NAME)).is_file()
-    print(Path(os.path.join(os.getcwd(), FILE_NAME)).is_file())
-    print(Path(os.path.join(os.getcwd(), FILE_NAME)))
-    print(FILE_NAME)
-    assert tester
-
-
 def test_index(client):
     """test_index
     check and see if the index is accessible

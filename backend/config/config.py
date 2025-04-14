@@ -12,7 +12,7 @@ class testConfig:
     """ Configuration for test
     """
     DB_NAME = "tarot-test.db"
-    SQLALCHEMY_DATABASE_URI = os.path.join(BASE_DIR, DB_NAME)
+    SQLALCHEMY_DATABASE_URI = 'sqlite:///tarot-test.db'
     SQLALCHEMY_TRACK_MODIFICATIONS = False
     DEBUG = False
 
