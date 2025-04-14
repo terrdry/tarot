@@ -77,7 +77,7 @@ def test_database(client):
     x = os.getcwd()
     tester = Path(os.path.join(os.getcwd(), FILE_NAME)).is_file()
     print(Path(os.path.join(os.getcwd(), FILE_NAME)).is_file())
-    print(FILE_NAME)
+    print(Path(os.path.join(os.getcwd(), FILE_NAME)))
     print(FILE_NAME)
     assert tester
 
