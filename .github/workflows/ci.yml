@@ -30,7 +30,7 @@ jobs:
 
       - name: Create DB directory
         working-directory: ./backend # Adjust if it's a different path
-        run: mkdir -p /db
+        run: mkdir -p db
 
       - name: Run Flask unit tests
         working-directory: ./backend
