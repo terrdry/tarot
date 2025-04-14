@@ -28,6 +28,12 @@ jobs:
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
+      - name: Install backend dependencies
+        working-directory: ./backend
+        run: |
+          mkdir db
+          pip install -r requirements.txt
+
       - name: Run Flask unit tests
         working-directory: ./backend
         run: |
