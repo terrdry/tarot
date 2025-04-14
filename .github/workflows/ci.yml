@@ -23,17 +23,15 @@ jobs:
           python-version: "3.12"
 
       - name: Install backend dependencies
-        working-directory: ./backend # Adjust if it's a different path
         run: |
           python -m pip install --upgrade pip
           pip install -r requirements.txt
 
       - name: Create DB directory
-        working-directory: ./backend # Adjust if it's a different path
         run: mkdir -p db
 
       - name: Run Flask unit tests
-        working-directory: ./backend
+        # working-directory: ./backend
         run: |
           pytest tests/  # Adjust to your test path
 
