@@ -29,7 +29,8 @@ jobs:
           pip install -r requirements.txt
 
       - name: Create DB directory
-        run: mkdir -p backend/db
+        working-directory: ./backend # Adjust if it's a different path
+        run: mkdir -p /db
 
       - name: Run Flask unit tests
         working-directory: ./backend
