@@ -55,7 +55,7 @@ jobs:
       - name: Run frontend tests
         working-directory: ./frontend
         run: |
-          npm run test  # Optional: change to your test command or remove
+          npm run test:unit  # Optional: change to your test command or remove
 
       - name: Build frontend
         working-directory: ./frontend
