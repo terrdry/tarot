@@ -75,9 +75,10 @@ def test_database(client):
         client (object): pyTest fixture
     """
     x = os.getcwd()
-    print(x)
-    print(FILE_NAME)
     tester = Path(os.path.join(os.getcwd(), FILE_NAME)).is_file()
+    print(Path(os.path.join(os.getcwd(), FILE_NAME)).is_file())
+    print(FILE_NAME)
+    print(FILE_NAME)
     assert tester
 
 
