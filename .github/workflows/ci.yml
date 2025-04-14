@@ -2,7 +2,7 @@ name: Fullstack CI Pipeline
 
 on:
   push:
-    branches: [main, "release/**", "terrydry/issue13"]
+    branches: [main, "release/**"]
   pull_request:
     branches: [main, "release/**"]
 
