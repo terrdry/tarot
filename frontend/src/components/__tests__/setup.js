@@ -1,4 +1,5 @@
-import { config } from 'vitest'
+// import { beforeEach } from 'vitest'
+// import { config } from 'vitest'
 import { createVuetify } from 'vuetify'
 import * as components from 'vuetify/components'
 import * as directives from 'vuetify/directives'
@@ -28,6 +29,7 @@ const router = createRouter({
     history: createWebHistory(),
     // Add your routes here. Example:
     // { path: '/example', component: ExampleComponent }
+    routes: [],
 
 })
 console.log('Current working directory:', process.cwd());
@@ -39,4 +41,10 @@ console.log('Resolved setupFiles path:', path.resolve(
 // This ensures that all components tested have access to Vuetify's UI components and styles,
 // as well as the Vue Router instance for navigation-related functionality.
 // It simplifies testing by providing these plugins globally, avoiding the need to configure them in each test.
-config.global.plugins = [vuetify, router]
+// Inject globally before each test
+// beforeEach(() => {
+//     config.global.plugins = [vuetify, router]
+//   })
+
+// config.plugins = [vuetify, router];
+export default [vuetify, router]
