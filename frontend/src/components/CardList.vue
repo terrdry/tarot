@@ -1,9 +1,11 @@
+<!-- eslint-disable vue/valid-v-slot -->
+<!-- TODO will add validation of all fields -->
 
 <template>
   <v-sheet border rounded>
     <v-data-table
       :headers="headers"
-      :hide-default-footer="cards.length < 11"
+      :hide-default-footer="cards.length < 5"
       :items="cards"
     >
       <template v-slot:top>
@@ -52,7 +54,16 @@
         ></v-checkbox-btn>
       </template>
 
-
+      <template v-slot:item.img="{ value }">
+        <v-img
+          :aspect-ration='1'
+          class="bg-white"
+          src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+          true-icon="mdi-checkbox-marked"
+          :model-value="value"
+          readonly
+        ></v-img>
+      </template>
 
       <template v-slot:item.actions="{ item }">
         <div class="d-flex ga-2 justify-end">
@@ -101,9 +112,12 @@
           </v-col>
 
           <v-col cols="12" md="6">
-            <v-select
+            <v-img
+              :aspect-ration='1'
+              class="bg-white"
+              src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
               v-model="record.img"
-            ></v-select>
+            ></v-img>
           </v-col>
 
 
@@ -165,6 +179,7 @@
       name: found.name,
       major: found.major,
       img: found.img,
+      actions: undefined
     }
 
     dialog.value = true
@@ -197,7 +212,11 @@
 const fetchItems = async () => {
   try {
     const response = await TarotDataService.getAll()
-    cards.value = response.data
+    cards.value = response.data.map(card => ({
+      ...card,
+      actions: undefined,
+    })
+  )
     console.log(cards.value)
   } catch (error) {
     console.error('Error fetching items:', error)
