@@ -1,17 +1,33 @@
-// import { beforeEach } from 'vitest'
-// import { config } from 'vitest'
+/**
+ * Sets up global configurations for Vue Test Utils and provides necessary
+ * plugins and mocks for testing Vue components with Vuetify and Vue Router.
+ *
+ * Features:
+ * - Configures a Vuetify instance with components, directives, and Material Design Icons (MDI).
+ * - Creates a dummy Vue Router instance with a basic route for testing purposes.
+ * - Applies the Vuetify and Router plugins globally before all tests.
+ * - Mocks the `ResizeObserver` class to address compatibility issues with JSDOM.
+ *
+ * Dependencies:
+ * - `@vue/test-utils` for configuring global plugins.
+ * - `vuetify` for UI components and styling.
+ * - `vue-router` for routing functionality.
+ * - `vitest` for test lifecycle hooks.
+ *
+ * Notes:
+ * - The `ResizeObserver` mock is a workaround for compatibility issues in JSDOM.
+ * - The `beforeAll` lifecycle hook ensures the plugins are applied before any tests run.
+ */
+import { beforeAll } from 'vitest'
 import { createVuetify } from 'vuetify'
-import * as components from 'vuetify/components'
-import * as directives from 'vuetify/directives'
 import { createRouter, createWebHistory } from 'vue-router'
+import { config } from '@vue/test-utils'
 import 'vuetify/styles'
+import * as components from 'vuetify/components';
+import * as directives from 'vuetify/directives';
 import { aliases, mdi } from 'vuetify/iconsets/mdi'
 
-import path from 'path'
-import { fileURLToPath } from 'url'
-import process from 'process'
-
-
+// Create Vuetify instance
 const vuetify = createVuetify({
     components,
     directives,
@@ -24,27 +40,23 @@ const vuetify = createVuetify({
     },
 })
 
-// If you have real routes, import and use them
+// create a dummy router
 const router = createRouter({
     history: createWebHistory(),
-    // Add your routes here. Example:
-    // { path: '/example', component: ExampleComponent }
-    routes: [],
-
+    routes: [
+        { path: '/', component: {template: '<div />'} },
+    ],
 })
-console.log('Current working directory:', process.cwd());
-console.log('Resolved setupFiles path:', path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  'src/components/__tests__/setup.js'
-));
-// Inject Vuetify and Router into Vue Test Utils global config
-// This ensures that all components tested have access to Vuetify's UI components and styles,
-// as well as the Vue Router instance for navigation-related functionality.
-// It simplifies testing by providing these plugins globally, avoiding the need to configure them in each test.
-// Inject globally before each test
-// beforeEach(() => {
-//     config.global.plugins = [vuetify, router]
-//   })
 
-// config.plugins = [vuetify, router];
-export default [vuetify, router]
+beforeAll(() => {
+    config.global.plugins = [ vuetify, router ]
+});
+
+// Mock ResizeObserverclass
+class ResizeObserver {
+    observe() {}
+    unobserve() {}
+    disconnect() {}
+  }
+  // This is a workaround for the ResizeObserver issue in JSDOM
+  globalThis.ResizeObserver = ResizeObserver;

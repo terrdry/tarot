@@ -2,19 +2,10 @@ import { fileURLToPath } from 'url'
 import { defineConfig } from 'vitest/config'
 import vue from '@vitejs/plugin-vue'
 import path from 'path'
-// import vueDevTools from 'vite-plugin-vue-devtools'
-// import cssInjectedByJsPlugin from 'vite-plugin-css-injected-by-js'
-import { patchCssModules } from 'vite-css-modules'
-import process from 'node:process'
-
 
 export default defineConfig({
   plugins: [
     vue(),
-    // vueDevTools(),
-    // cssInjectedByJsPlugin(),
-    patchCssModules(),
-    // ignore( ['**/*.css']),
   ],
   resolve: {
     alias: {
@@ -23,11 +14,12 @@ export default defineConfig({
     },
   },
   test: {
+    setupFiles: path.resolve(
+      path.dirname(fileURLToPath(import.meta.url)),
+      'src/components/__tests__/setup.js'
+    ),
     globals: true,
     environment: 'jsdom',
-    transformMode: {
-      web: [/\.css$/],
-    },
     server: {
       deps: {
         inline: ['vuetify'],
@@ -39,20 +31,5 @@ export default defineConfig({
     coverage: {
       exclude: ['**/node_modules/**', '**/dist/**'],
     },
-    css: true,
-    setupFiles: path.resolve(
-      path.dirname(fileURLToPath(import.meta.url)),
-      'src/components/__tests__/setup.js'
-    ),
-  },
-  build: {
-    target: 'es2022',
-  },
-})
-
-// console.log('Test include patterns:', default)
-console.log('Current working directory:', process.cwd());
-console.log('Resolved setupFiles path:', path.resolve(
-  path.dirname(fileURLToPath(import.meta.url)),
-  'src/components/__tests__/setup.js'
-));
+  }
+});

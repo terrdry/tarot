@@ -3,20 +3,11 @@
 
 <template>
   <v-sheet border rounded>
-    <v-data-table
-      :headers="headers"
-      :hide-default-footer="cards.length < 5"
-      :items="cards"
-    >
+    <v-data-table :headers="headers" :hide-default-footer="cards.length < 5" :items="cards">
       <template v-slot:top>
         <v-toolbar flat>
           <v-toolbar-title>
-            <v-icon
-              color="medium-emphasis"
-              icon="mdi-book-multiple"
-              size="x-small"
-              start
-            ></v-icon>
+            <v-icon color="medium-emphasis" icon="mdi-book-multiple" size="x-small" start></v-icon>
 
             Tarot cards
           </v-toolbar-title>
@@ -33,12 +24,7 @@
       </template>
 
       <template v-slot:item.name="{ value }">
-        <v-chip
-          :text="value"
-          border="thin opacity-25"
-          prepend-icon="mdi-book"
-          label
-        >
+        <v-chip :text="value" border="thin opacity-25" prepend-icon="mdi-book" label>
           <template v-slot:prepend>
             <v-icon color="medium-emphasis"></v-icon>
           </template>
@@ -56,7 +42,7 @@
 
       <template v-slot:item.img="{ value }">
         <v-img
-          :aspect-ration='1'
+          :aspect-ration="1"
           class="bg-white"
           src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
           true-icon="mdi-checkbox-marked"
@@ -113,14 +99,12 @@
 
           <v-col cols="12" md="6">
             <v-img
-              :aspect-ration='1'
+              :aspect-ration="1"
               class="bg-white"
               src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
               v-model="record.img"
             ></v-img>
           </v-col>
-
-
         </v-row>
       </template>
 
@@ -138,90 +122,132 @@
 </template>
 
 <script setup>
-  import { onMounted, ref, shallowRef } from 'vue'
-  import TarotDataService from '../services/api/TarotDataService'
+import { onMounted, ref, shallowRef } from 'vue'
+import TarotDataService from '../services/api/TarotDataService'
 
-  const DEFAULT_RECORD = {
-    name: '',
-    major: false,
-    img: '',
-  }
-
-  const cards = ref([])
-  const record = ref(DEFAULT_RECORD)
-  const dialog = shallowRef(false)
-  const isEditing = shallowRef(false)
-
-  const headers = [
-    { title: 'Name', key: 'name', align: 'start' },
-    { title: 'Major Arcana', key: 'major' },
-    { title: 'Image', key: 'img' },
-    { title: 'Actions', key: 'actions', align: 'end', sortable: false },
-  ]
-
-  onMounted(() => {
-    reset()
-  })
-
-  function add() {
-    isEditing.value = false
-    record.value = DEFAULT_RECORD
-    dialog.value = true
-  }
-
-  function edit(id) {
-    isEditing.value = true
-
-    const found = cards.value.find(card => card.id === id)
-
-    record.value = {
-      id: found.id,
-      name: found.name,
-      major: found.major,
-      img: found.img,
-      actions: undefined
-    }
-
-    dialog.value = true
-  }
-
-  function remove(id) {
-    const index = cards.value.findIndex(card => card.id === id)
-    cards.value.splice(index, 1)
-  }
-
-  function save() {
-    if (isEditing.value) {
-      const index = cards.value.findIndex(card => card.id === record.value.id)
-      cards.value[index] = record.value
-    } else {
-      record.value.id = cards.value.length + 1
-      // ## TODO need to do an add
-
-    }
-
-    dialog.value = false
-  }
-
-  function reset() {
-    cards.value = [ DEFAULT_RECORD]
-    fetchItems()
-    dialog.value = false
-    isEditing.value = false
+const DEFAULT_RECORD = {
+  name: '',
+  major: false,
+  img: '',
 }
+
+const cards = ref([])
+const record = ref(DEFAULT_RECORD)
+const dialog = shallowRef(false)
+const isEditing = shallowRef(false)
+
+const headers = [
+  { title: 'Name', key: 'name', align: 'start' },
+  { title: 'Major Arcana', key: 'major' },
+  { title: 'Image', key: 'img' },
+  { title: 'Actions', key: 'actions', align: 'end', sortable: false },
+]
+
+/**
+ * Lifecycle hook that is called when the component is mounted.
+ * This hook triggers the `reset` function to initialize or reset
+ * the component's state when it is first rendered.
+ */
+onMounted(() => {
+  reset()
+})
+
+/**
+ * Opens a dialog for adding a new record.
+ *
+ * This function performs the following actions:
+ * - Sets the `isEditing` state to `false` to indicate that the dialog is not in editing mode.
+ * - Resets the `record` to the default record value (`DEFAULT_RECORD`).
+ * - Sets the `dialog` state to `true` to display the dialog.
+ */
+function add() {
+  isEditing.value = false
+  record.value = DEFAULT_RECORD
+  dialog.value = true
+}
+
+/**
+ * Edits a card by its ID.
+ * - Sets the `isEditing` flag to true.
+ * - Finds the card with the given ID and populates the `record` object with its details.
+ * - Opens the dialog for editing.
+ *
+ * @param {number} id - The ID of the card to edit.
+ */
+function edit(id) {
+  isEditing.value = true
+  const found = cards.value.find((card) => card.id === id)
+
+  record.value = {
+    id: found.id,
+    name: found.name,
+    major: found.major,
+    img: found.img,
+    actions: undefined,
+  }
+  dialog.value = true
+}
+
+/**
+ * Removes a card by its ID.
+ * - Finds the index of the card with the given ID and removes it from the `cards` array.
+ *
+ * @param {number} id - The ID of the card to remove.
+ */
+function remove(id) {
+  const index = cards.value.findIndex((card) => card.id === id)
+  cards.value.splice(index, 1)
+}
+
+/**
+ * Saves the current record.
+ * - If editing, updates the existing card in the `cards` array.
+ * - If adding, assigns a new ID to the record and prepares for adding (TODO: implement add logic).
+ * - Closes the dialog after saving.
+ */
+function save() {
+  if (isEditing.value) {
+    const index = cards.value.findIndex((card) => card.id === record.value.id)
+    cards.value[index] = record.value
+  } else {
+    record.value.id = cards.value.length + 1
+    // ## TODO need to do an add
+  }
+
+  dialog.value = false
+}
+
+/**
+ * Resets the card list to its default state.
+ * - Resets the `cards` array to contain only the default record.
+ * - Fetches items to repopulate the list.
+ * - Closes the dialog and resets the `isEditing` flag.
+ */
+function reset() {
+  cards.value = [DEFAULT_RECORD]
+  fetchItems()
+  dialog.value = false
+  isEditing.value = false
+}
+
+/**
+ * Fetches a list of tarot cards from the TarotDataService and updates the `cards` reactive variable.
+ * Each card object is mapped to exclude the `actions` property.
+ *
+ * @async
+ * @function fetchItems
+ * @throws Will log an error to the console if the request to fetch items fails.
+ */
 const fetchItems = async () => {
   try {
     const response = await TarotDataService.getAll()
-    cards.value = response.data.map(card => ({
+    cards.value = response.data.map((card) => ({
       ...card,
       actions: undefined,
-    })
-  )
-    console.log(cards.value)
+    }))
   } catch (error) {
     console.error('Error fetching items:', error)
   }
 }
 </script>
-<style scoped>
-</style>
+<style scoped></style>
