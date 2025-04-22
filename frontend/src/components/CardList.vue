@@ -1,61 +1,253 @@
+<!-- eslint-disable vue/valid-v-slot -->
+<!-- TODO will add validation of all fields -->
+
+<template>
+  <v-sheet border rounded>
+    <v-data-table :headers="headers" :hide-default-footer="cards.length < 5" :items="cards">
+      <template v-slot:top>
+        <v-toolbar flat>
+          <v-toolbar-title>
+            <v-icon color="medium-emphasis" icon="mdi-book-multiple" size="x-small" start></v-icon>
+
+            Tarot cards
+          </v-toolbar-title>
+
+          <v-btn
+            class="me-2"
+            prepend-icon="mdi-plus"
+            rounded="lg"
+            text="Add a card"
+            border
+            @click="add"
+          ></v-btn>
+        </v-toolbar>
+      </template>
+
+      <template v-slot:item.name="{ value }">
+        <v-chip :text="value" border="thin opacity-25" prepend-icon="mdi-book" label>
+          <template v-slot:prepend>
+            <v-icon color="medium-emphasis"></v-icon>
+          </template>
+        </v-chip>
+      </template>
+
+      <template v-slot:item.major="{ value }">
+        <v-checkbox-btn
+          false-icon="mdi-checkbox-blank-outline"
+          true-icon="mdi-checkbox-marked"
+          :model-value="value"
+          readonly
+        ></v-checkbox-btn>
+      </template>
+
+      <template v-slot:item.img="{ value }">
+        <v-img
+          :aspect-ration="1"
+          class="bg-white"
+          src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+          true-icon="mdi-checkbox-marked"
+          :model-value="value"
+          readonly
+        ></v-img>
+      </template>
+
+      <template v-slot:item.actions="{ item }">
+        <div class="d-flex ga-2 justify-end">
+          <v-icon
+            color="medium-emphasis"
+            icon="mdi-pencil"
+            size="small"
+            @click="edit(item.id)"
+          ></v-icon>
+
+          <v-icon
+            color="medium-emphasis"
+            icon="mdi-delete"
+            size="small"
+            @click="remove(item.id)"
+          ></v-icon>
+        </div>
+      </template>
+
+      <template v-slot:no-data>
+        <v-btn
+          prepend-icon="mdi-backup-restore"
+          rounded="lg"
+          text="Reset data"
+          variant="text"
+          border
+          @click="reset"
+        ></v-btn>
+      </template>
+    </v-data-table>
+  </v-sheet>
+
+  <v-dialog v-model="dialog" max-width="500">
+    <v-card
+      :subtitle="`${isEditing ? 'Update' : 'Create'} your favorite card`"
+      :title="`${isEditing ? 'Edit' : 'Add'} a card`"
+    >
+      <template v-slot:text>
+        <v-row>
+          <v-col cols="12">
+            <v-text-field v-model="record.name" label="Card Name"></v-text-field>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <v-checkbox-btn v-model="record.major" label="major"></v-checkbox-btn>
+          </v-col>
+
+          <v-col cols="12" md="6">
+            <v-img
+              :aspect-ration="1"
+              class="bg-white"
+              src="https://cdn.vuetifyjs.com/images/parallax/material.jpg"
+              v-model="record.img"
+            ></v-img>
+          </v-col>
+        </v-row>
+      </template>
+
+      <v-divider></v-divider>
+
+      <v-card-actions class="bg-surface-light">
+        <v-btn text="Cancel" variant="plain" @click="dialog = false"></v-btn>
+
+        <v-spacer></v-spacer>
+
+        <v-btn text="Save" @click="save"></v-btn>
+      </v-card-actions>
+    </v-card>
+  </v-dialog>
+</template>
+
 <script setup>
-import { BButton } from 'bootstrap-vue-3'
+import { onMounted, ref, shallowRef } from 'vue'
 import TarotDataService from '../services/api/TarotDataService'
-import { ref, onMounted } from 'vue'
 
-// import routes from "../router"
-import { useRouter } from 'vue-router'
+const DEFAULT_RECORD = {
+  name: '',
+  major: false,
+  img: '',
+}
 
-var items = ref([])
-var fields = ['id', 'name', 'link']
-// const router = useRouter()
+const cards = ref([])
+const record = ref(DEFAULT_RECORD)
+const dialog = shallowRef(false)
+const isEditing = shallowRef(false)
 
+const headers = [
+  { title: 'Name', key: 'name', align: 'start' },
+  { title: 'Major Arcana', key: 'major' },
+  { title: 'Image', key: 'img' },
+  { title: 'Actions', key: 'actions', align: 'end', sortable: false },
+]
+
+/**
+ * Lifecycle hook that is called when the component is mounted.
+ * This hook triggers the `reset` function to initialize or reset
+ * the component's state when it is first rendered.
+ */
+onMounted(() => {
+  reset()
+})
+
+/**
+ * Opens a dialog for adding a new record.
+ *
+ * This function performs the following actions:
+ * - Sets the `isEditing` state to `false` to indicate that the dialog is not in editing mode.
+ * - Resets the `record` to the default record value (`DEFAULT_RECORD`).
+ * - Sets the `dialog` state to `true` to display the dialog.
+ */
+function add() {
+  isEditing.value = false
+  record.value = DEFAULT_RECORD
+  dialog.value = true
+}
+
+/**
+ * Edits a card by its ID.
+ * - Sets the `isEditing` flag to true.
+ * - Finds the card with the given ID and populates the `record` object with its details.
+ * - Opens the dialog for editing.
+ *
+ * @param {number} id - The ID of the card to edit.
+ */
+function edit(id) {
+  isEditing.value = true
+  const found = cards.value.find((card) => card.id === id)
+
+  record.value = {
+    id: found.id,
+    name: found.name,
+    major: found.major,
+    img: found.img,
+    actions: undefined,
+  }
+  dialog.value = true
+}
+
+/**
+ * Removes a card by its ID.
+ * - Finds the index of the card with the given ID and removes it from the `cards` array.
+ *
+ * @param {number} id - The ID of the card to remove.
+ */
+function remove(id) {
+  const index = cards.value.findIndex((card) => card.id === id)
+  cards.value.splice(index, 1)
+}
+
+/**
+ * Saves the current record.
+ * - If editing, updates the existing card in the `cards` array.
+ * - If adding, assigns a new ID to the record and prepares for adding (TODO: implement add logic).
+ * - Closes the dialog after saving.
+ */
+function save() {
+  if (isEditing.value) {
+    const index = cards.value.findIndex((card) => card.id === record.value.id)
+    cards.value[index] = record.value
+  } else {
+    record.value.id = cards.value.length + 1
+    // ## TODO need to do an add
+  }
+
+  dialog.value = false
+}
+
+/**
+ * Resets the card list to its default state.
+ * - Resets the `cards` array to contain only the default record.
+ * - Fetches items to repopulate the list.
+ * - Closes the dialog and resets the `isEditing` flag.
+ */
+function reset() {
+  cards.value = [DEFAULT_RECORD]
+  fetchItems()
+  dialog.value = false
+  isEditing.value = false
+}
+
+/**
+ * Fetches a list of tarot cards from the TarotDataService and updates the `cards` reactive variable.
+ * Each card object is mapped to exclude the `actions` property.
+ *
+ * @async
+ * @function fetchItems
+ * @throws Will log an error to the console if the request to fetch items fails.
+ */
 const fetchItems = async () => {
   try {
     const response = await TarotDataService.getAll()
-    items.value = response.data
-    console.log(items.value)
+    cards.value = response.data.map((card) => ({
+      ...card,
+      actions: undefined,
+    }))
   } catch (error) {
     console.error('Error fetching items:', error)
   }
 }
-
-const deleteTarot = async (id) => {
-  try {
-    const response = await TarotDataService.delete(id)
-    console.log(response.data)
-    // router.go()
-  } catch (e) {
-    console.log(e)
-  }
-}
-onMounted(fetchItems) // Fetch items when component mounts
 </script>
-
-
-<template>
-  <h2>Tarot Cards</h2>
-  <p><strong>Current route path:</strong> {{ $route.fullPath }}</p>
-
-  <div>
-    <b-table striped hover :items="items" :fields="fields">
-      <template #cell(link)="tarot_card">
-        <b-button-group>
-          <b-button
-            pill
-            :to="{ name: 'cardForm', params: { id: tarot_card.item.id } }"
-            variant="outline-success"
-          >
-            EDIT
-          </b-button>
-          <b-button pill variant="outline-danger" @click="deleteTarot(tarot_card.item.id)">
-            DELETE
-          </b-button>
-        </b-button-group>
-      </template>
-    </b-table>
-  </div>
-  <b-button pill variant="outline-primary" :to="{ name: 'cardForm', params: { id: 0 } }">
-    ADD
-  </b-button>
-</template>
+<style scoped></style>
