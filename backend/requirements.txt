@@ -12,3 +12,15 @@ pexpect
 pre-commit
 pylint
 detect-secrets
+ansible
+ansible-lint
+ansible-builder
+ansible-core
+ansible-creator
+ansible-dev-environment
+ansible-dev-tools
+ansible-navigator
+ansible-sign
+molecule
+pytest-ansible
+tox-ansible

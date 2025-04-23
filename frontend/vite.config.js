@@ -13,9 +13,10 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
-    ],
+  ],
   server: {
-    port: 4000
+    port: 4000,
+    allowedHosts: [".ngrok-free.app"],
   },
   resolve: {
     alias: {
