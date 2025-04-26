@@ -20,12 +20,14 @@ export default defineConfig({
     ),
     globals: true,
     environment: 'jsdom',
-    server: {
-      deps: {
-        inline: ['vuetify'],
-      },
+    // server: {
+    //   deps: {
+    //     inline: ['vuetify'],
+    //   },
+    // },
+    deps: {
+      inline: ['vuetify'],
     },
-
     include: ['**/components/__tests__/*.spec.js'],
     exclude: ['node_modules', 'dist'],
     coverage: {
