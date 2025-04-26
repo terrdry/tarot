@@ -226,16 +226,16 @@ function edit(id) {
  *
  * @param {number} id - The ID of the card to remove.
  */
-function remove(id) {
-  const answer = openAskDialog()
+async function remove(id) {
+  const answer = await openAskDialog()
   if (!answer) {
     return
-  }
-  else {
+  } else {
     const index = cards.value.findIndex((card) => card.id === id)
-    cards.value.splice(index, 1)
+    if (index !== -1) {
+      cards.value.splice(index, 1)
+    }
   }
-
 }
 
 /**
