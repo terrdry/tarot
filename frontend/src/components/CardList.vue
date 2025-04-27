@@ -5,10 +5,8 @@
         <v-toolbar flat>
           <v-toolbar-title>
             <v-icon color="medium-emphasis" icon="mdi-book-multiple" size="x-small" start></v-icon>
-
             Tarot cards
           </v-toolbar-title>
-
           <v-btn
             class="me-2"
             prepend-icon="mdi-plus"
@@ -19,7 +17,6 @@
           ></v-btn>
         </v-toolbar>
       </template>
-
       <template v-slot:[`item.name`]="{ value }">
         <v-chip :text="value" border="thin opacity-25" prepend-icon="mdi-book" label>
           <template v-slot:prepend>
@@ -27,7 +24,6 @@
           </template>
         </v-chip>
       </template>
-
       <template v-slot:[`item.major`]="{ value }">
         <v-checkbox-btn
           name="major"
@@ -37,11 +33,9 @@
           readonly
         ></v-checkbox-btn>
       </template>
-
       <template v-slot:[`item.img`]="{ item }">
         <v-img :src="getImageSource(item.img)" :aspect-ratio="1" class="bg-white" readonly></v-img>
       </template>
-
       <template v-slot:[`item.actions`]="{ item }">
         <div class="d-flex ga-2 justify-end">
           <v-icon
@@ -59,7 +53,6 @@
           ></v-icon>
         </div>
       </template>
-
       <template v-slot:no-data>
         <v-btn
           prepend-icon="mdi-backup-restore"
@@ -94,17 +87,11 @@
           <v-col cols="12">
             <v-text-field v-model="record.name" label="Card Name"></v-text-field>
           </v-col>
-
           <v-col cols="12" md="6">
             <v-checkbox-btn v-model="record.major" label="major"></v-checkbox-btn>
           </v-col>
-
           <v-col cols="12" md="6">
-            <v-img
-              class="bg-white"
-              :src="getImageSource(record.img)"
-              v-model="record.img"
-            ></v-img>
+            <v-img class="bg-white" :src="getImageSource(record.img)" v-model="record.img"></v-img>
           </v-col>
         </v-row>
         <v-divider></v-divider>
@@ -120,9 +107,7 @@
       <!-- Adds a light background to the card actions section for better visual separation -->
       <v-card-actions class="bg-surface-dark">
         <v-btn text="Cancel" variant="plain" @click="dialog = false"></v-btn>
-
         <v-spacer></v-spacer>
-
         <v-btn text="Save" @click="save"></v-btn>
       </v-card-actions>
     </v-card>
@@ -136,6 +121,13 @@ import AskDialog from '@/components/askDialog.vue'
 
 const DEFAULT_IMAGE = 'https://cdn.vuetifyjs.com/images/parallax/material.jpg'
 
+/**
+ * Returns the appropriate image source URL.
+ *
+ * @param {string} imgUrl - The URL of the image to be used.
+ * @returns {string} - The provided image URL if it is a valid string,
+ *                     otherwise returns the default image URL (DEFAULT_IMAGE).
+ */
 function getImageSource(imgUrl) {
   if (typeof imgUrl !== 'string') {
     return DEFAULT_IMAGE
@@ -149,8 +141,8 @@ const DEFAULT_RECORD = {
   major: false,
   img: '',
 }
-// Reactive variable to store the list of tarot cards.
-// This array is dynamically updated as cards are added, edited, or removed.
+
+// Reactive variables
 const cards = ref([])
 const record = ref(DEFAULT_RECORD)
 const dialog = shallowRef(false)
@@ -158,7 +150,6 @@ const isEditing = shallowRef(false)
 const dialogVisible = ref(false)
 const errorMessage = ref('')
 const askDialogRef = ref(null) // Define the ref for AskDialog
-const askDialogHandlers = ref(null) // Define the ref for dialog handlers
 
 const headers = [
   { title: 'Name', key: 'name', align: 'start' },
@@ -195,21 +186,28 @@ function add() {
 
 /**
  * Edits a card by its ID.
- * - Sets the `isEditing` flag to true.
- * - Finds the card with the given ID and populates the `record` object with its details.
- * - Opens the dialog for editing.
  *
- * @param {number} id - The ID of the card to edit.
+ * This function sets the editing state to true, searches for the card
+ * with the specified ID in the `cards` list, and populates the `record`
+ * object with the card's details if found. If the card is not found,
+ * an error message is set. Finally, it opens the dialog for editing.
+ *
+ * @param {number|string} id - The ID of the card to edit.
+ *
+ * Reactive Dependencies:
+ * - `isEditing` (boolean): Indicates whether the editing mode is active.
+ * - `cards` (array): The list of card objects to search through.
+ * - `errorMessage` (string): Holds the error message if the card is not found.
+ * - `record` (object): The reactive object to store the card's details for editing.
+ * - `dialog` (boolean): Controls the visibility of the editing dialog.
  */
 function edit(id) {
   isEditing.value = true
   const found = cards.value.find((card) => card.id === id)
-
   if (!found) {
     errorMessage.value = 'Card not found.'
     return
   }
-
   record.value = {
     id: found.id,
     name: found.name,
@@ -265,6 +263,7 @@ async function save() {
     errorMessage.value = 'An error occurred while saving.'
   }
 }
+
 /**
  * Resets the card list to its default state.
  * - Resets the `cards` array to contain only the default record.
@@ -301,15 +300,15 @@ const fetchItems = async () => {
 }
 
 /**
- * Opens a confirmation dialog and returns a promise that resolves based on user action.
+ * Opens a confirmation dialog with a specified title and message.
+ *
+ * This function sets the `dialogVisible` state to `true` and then calls the `open` method
+ * on the `askDialogRef` reference to display a dialog box. The dialog box includes a title
+ * and a message prompting the user to confirm their action.
+ *
+ * @returns {Promise} A promise that resolves when the dialog interaction is completed.
  */
 async function openAskDialog() {
-  // Check if dialog ref exists before proceeding
-  // if (!dialogVisible.value) {
-  //   console.warn('AskDialog reference not found');
-  //   return false;
-  // }
-  // Show the dialog and return the promise from open()
   dialogVisible.value = true
   return askDialogRef.value.open({
     title: 'Confirm Action',
@@ -317,4 +316,3 @@ async function openAskDialog() {
   })
 }
 </script>
-<style scoped></style>
