@@ -198,9 +198,7 @@ const cards = ref([])
 const record = ref(DEFAULT_RECORD)
 const dialog = shallowRef(false)
 const isEditing = shallowRef(false)
-// const dialogVisible = ref(false)
 const errorMessage = ref('')
-// const askDialogRef = ref(null) // Define the ref for AskDialog
 
 const images = shallowRef(null)
 
@@ -440,23 +438,4 @@ const fetchImages = () => {
   }))
   return result
 }
-
-// const askDialogRef = ref(null) // Define the ref for AskDialog
-
-/**
- * Opens a confirmation dialog with a specified title and message.
- *
- * This function sets the `dialogVisible` state to `true` and then calls the `open` method
- * on the `askDialogRef` reference to display a dialog box. The.dialog box includev a title
- * and a message prompting the user to alnfirm their action.
- *
- * @returns {Promise} A promise that resolves when the dialog interaction is completed.
- */
-// async function openAskDialog() {
-//   dialogVisible.value = true
-//   return askDialogRef.value.open({
-//     title: 'Confirm Action',
-//     message: 'Are you sure you want to proceed?',
-//   })
-// }
 </script>
