@@ -7,14 +7,7 @@
             <v-icon color="medium-emphasis" icon="mdi-book-multiple" size="x-small" start></v-icon>
             Tarot cards
           </v-toolbar-title>
-          <v-btn
-            class="me-2"
-            prepend-icon="mdi-plus"
-            rounded="lg"
-            text="Add a card"
-            border
-            @click="add"
-          ></v-btn>
+          <v-btn class="me-2" prepend-icon="mdi-plus" rounded="lg" text="Add a card" border @click="add"></v-btn>
         </v-toolbar>
       </template>
       <template v-slot:[`item.name`]="{ value }">
@@ -25,61 +18,28 @@
         </v-chip>
       </template>
       <template v-slot:[`item.major`]="{ value }">
-        <v-checkbox-btn
-          name="major"
-          false-icon="mdi-checkbox-blank-outline"
-          true-icon="mdi-checkbox-marked"
-          :model-value="value"
-          readonly
-        ></v-checkbox-btn>
+        <v-checkbox-btn name="major" false-icon="mdi-checkbox-blank-outline" true-icon="mdi-checkbox-marked"
+          :model-value="value" readonly></v-checkbox-btn>
       </template>
       <template v-slot:[`item.img`]="{ item }">
-        <v-img
-          :src="getImageSource(item.img)"
-          width="100"
-          max-width="50"
-          height="200"
-          max-height="100"
-          class="bg-white"
-          rounded
-          readonly
-        ></v-img>
+        <v-img aspect-ratio="1" :src="getImageSource(item.img)" width="50" height="100" class="bg-white" rounded
+          readonly></v-img>
       </template>
       <template v-slot:[`item.actions`]="{ item }">
         <div class="d-flex ga-2 justify-end">
-          <v-icon
-            color="medium-emphasis"
-            icon="mdi-pencil"
-            size="small"
-            @click="edit(item.id)"
-          ></v-icon>
+          <v-icon color="medium-emphasis" icon="mdi-pencil" size="small" @click="edit(item.id)"></v-icon>
 
-          <v-icon
-            color="medium-emphasis"
-            icon="mdi-delete"
-            size="small"
-            @click="remove(item.id)"
-          ></v-icon>
+          <v-icon color="medium-emphasis" icon="mdi-delete" size="small" @click="remove(item.id)"></v-icon>
         </div>
       </template>
       <template v-slot:no-data>
-        <v-btn
-          prepend-icon="mdi-backup-restore"
-          rounded="lg"
-          text="Reset data"
-          variant="text"
-          border
-          @click="reset"
-        ></v-btn>
+        <v-btn prepend-icon="mdi-backup-restore" rounded="lg" text="Reset data" variant="text" border
+          @click="reset"></v-btn>
       </template>
     </v-data-table>
     <template>
-      <AskDialog
-        ref="askDialogRef"
-        title="Add Card"
-        message="Are you sure you want to add a new card"
-        :visible="dialogVisible"
-      ></AskDialog>
+      <AskDialog ref="askDialogRef" title="Add Card" message="Are you sure you want to add a new card"
+        :visible="dialogVisible"></AskDialog>
     </template>
     <v-alert v-if="errorMessage.trim()" type="error" dismissible>
       {{ errorMessage }}
@@ -87,14 +47,18 @@
   </v-sheet>
 
   <v-dialog v-model="dialog" max-width="500">
-    <v-card
-      :subtitle="`${isEditing ? 'Update' : 'Create'} your favorite card`"
-      :title="`${isEditing ? 'Edit' : 'Add'} a card`"
-    >
+    <v-card :subtitle="`${isEditing ? 'Update' : 'Create'} your favorite card`"
+      :title="`${isEditing ? 'Edit' : 'Add'} a card`">
       <template v-slot:text>
         <v-row>
           <v-col cols="12">
-            <v-text-field v-model="record.name" label="Card Name"></v-text-field>
+            <v-text-field
+              v-model="record.name"
+              label="Card Name"
+              :rules="cardValidationRules.name"
+              :error-messages="nameErrors"
+              @input="validateName">
+            </v-text-field>
           </v-col>
           <v-col cols="8" md="4">
             <v-img
@@ -103,7 +67,9 @@
               v-model="record.img"
               width="150"
               length="150"
-            >
+              :error="imageErrors.length > 0"
+              :error-messages="imageErrors"
+              @error="handleImageError">
             </v-img>
           </v-col>
           <v-col cols="4" md="2">
@@ -114,26 +80,12 @@
         <v-divider></v-divider>
         <v-row>
           <v-col cols="12">
-            <v-slide-group
-              v-model="images"
-              class="pa-4"
-              next-icon="mdi-plus"
-              prev-icon="mdi-minus"
-              selected-class="bg-primary"
-              show-arrows
-            >
-              <v-slide-group-item
-                v-for="(image, index) in images"
-                :key="index"
-                v-slot="isSelected, toggle, selectedClass"
-              >
-                <v-card
-                  :class="['ma-4', selectedClass]"
-                  color="grey-lighten-1"
-                  height="200"
-                  width="100"
-                  @click="record.img = image.value"
-                >
+            <v-slide-group v-model="images" class="pa-4" next-icon="mdi-plus" prev-icon="mdi-minus"
+              selected-class="bg-primary" show-arrows>
+              <v-slide-group-item v-for="(image, index) in images" :key="index"
+                v-slot="isSelected, toggle, selectedClass">
+                <v-card :class="['ma-4', selectedClass]" color="grey-lighten-1" height="200" width="100"
+                  @click="record.img = image.value">
                   <div class="d-flex fill-height align-center justify-center">
                     <v-scale-transition>
                       <v-img :src="getImageSource(image.value)" color="blue" size="48"> </v-img>
@@ -155,13 +107,33 @@
         <!-- <v-btn text="Save" @click="save"></v-btn> temporary for testing the click-->
       </v-card-actions>
     </v-card>
+    <template v-slot:error>
+    <v-alert type="error" dense>
+      <div v-for="error in nameErrors" :key="error" class="error-message">
+        {{ error }}
+      </div>
+    </v-alert>
+  </template>
   </v-dialog>
+
 </template>
 
 <script setup>
 import { onMounted, ref, shallowRef } from 'vue'
 import TarotDataService from '../services/api/TarotDataService'
 import AskDialog from '@/components/askDialog.vue'
+import cardValidationRules from '@/types/cardRules'
+const nameErrors = ref([])
+const imageErrors = ref([])
+
+
+// Ensure cardValidationRules.name is an array during initialization
+if (!Array.isArray(cardValidationRules.name)) {
+  console.error('cardValidationRules.name is not an array. Validation may not work as expected.')
+  cardValidationRules.name = []
+}
+//const imageErrors = ref<([])
+
 
 const DEFAULT_IMAGE = 'src/assets/cards/cover.png'
 
@@ -184,15 +156,16 @@ const DEFAULT_RECORD = {
   id: null,
   name: '',
   major: false,
-  img: '',
+  img: "",
 }
 
 // Reactive variables
 const cards = ref([])
 const record = ref(DEFAULT_RECORD)
 const dialog = shallowRef(false)
+const dialogVisible = shallowRef(false)
 const isEditing = shallowRef(false)
-const openAskDialog = ref(false)
+// const openAskDialog = ref(false)
 
 const errorMessage = ref('')
 const askDialogRef = ref(null) // Define the ref for AskDialog
@@ -265,7 +238,15 @@ function edit(id) {
   }
   dialog.value = true
 }
-
+// const deleteTarot = async (id) => {
+//   try {
+//     const response = await TarotDataService.delete(id)
+//     console.log(response.data)
+//     // router.go()
+//   } catch (e) {
+//     console.log(e)
+//   }
+// }
 /**
  * Removes a card by its ID.
  * - Finds the index of the card with the given ID and removes it from the `cards` array.
@@ -279,12 +260,29 @@ async function remove(id) {
     return
   } else {
     const index = cards.value.findIndex((card) => card.id === id)
+    const response = await TarotDataService.delete(id)
+    console.log(response.data)
+    if (response.status === 200) {
+      console.log('Card deleted successfully')
+    } else {
+      console.error('Failed to delete card')
+    }
     if (index !== -1) {
       cards.value.splice(index, 1)
     }
   }
 }
 
+
+// const addCard = () => {
+//   try {
+//     console.log('here')
+//     const record_to_add = { name: 'The Magician', isMajor: 'True', img: 'TODO.TXT' }
+//     items.value = tarotDataService.post(record_to_add)
+//   } catch (error) {
+//     console.log(error)
+//   }
+// }
 /**
  * Saves the current record to the cards list.
  * - If `isEditing` is true, it updates the existing card.
@@ -293,25 +291,39 @@ async function remove(id) {
  */
 async function save() {
   try {
-    if (isEditing.value) {
-      const index = cards.value.findIndex((card) => card.id === record.value.id)
-      const answer = await openAskDialog()
-      if (answer) {
-        cards.value[index] = { ...record.value }
-      }
-    } else {
-      record.value.id = cards.value.length + 1
-      const answer = await openAskDialog()
-      if (answer) {
-        cards.value.push({ ...record.value })
-      }
+    if (!validateForm()) {
+      errorMessage.value = 'Please fix the validation errors before saving.'
+      return
     }
-    dialog.value = false
+
+    // ...existing save logic...
   } catch (error) {
     console.error('Error in save:', error)
     errorMessage.value = 'An error occurred while saving.'
   }
 }
+  // try {
+  //   if (isEditing.value) {
+  //     const index = cards.value.findIndex((card) => card.id === record.value.id)
+  //     const answer = true
+  //     if (answer) {
+  //       const response = await TarotDataService.update(parseInt(cards.value[index].id), record.value)
+  //       console.log('Card updated successfully:', response.data)
+  //     }
+  //   } else {
+  //     record.value.id = cards.value.length + 1
+  //     const answer = true
+  //     if (answer) {
+  //       const response = await TarotDataService.create(record.value)
+  //       console.log('Card created successfully:', response.data)
+  //     }
+  //   }
+  //   dialog.value = false
+  // } catch (error) {
+  //   console.error('Error in save:', error)
+  //   errorMessage.value = 'An error occurred while saving.'
+  // }
+// }
 
 /**
  * Resets the card list to its default state.
@@ -347,7 +359,72 @@ const fetchItems = async () => {
     errorMessage.value = 'Failed to fetch tarot cards. Please try again later.'
   }
 }
+/**
+ * Opens a confirmation dialog with a specified title and message.
+ *
+ * This function sets the `dialogVisible` state to `true` and then calls the `open` method
+ * on the `askDialogRef` reference to display a dialog box. The dialog box includes a title
+ * and a message prompting the user to confirm their action.
+ *
+ * @returns {Promise} A promise that resolves when the dialog interaction is completed.
+ */
+async function openAskDialog() {
+  dialogVisible.value = true
+  return await askDialogRef.value.open({
+    title: 'Confirm Action',
+    message: 'Are you sure you want to proceed?',
+  })
+}
+/**
+ * Validates the name field of the card.
+ */
+function validateName(value) {
+  if (Array.isArray(cardValidationRules.name)) {
+    const errors = []
+    for (const rule of cardValidationRules.name) {
+      const result = rule(value)
+      if (result !== true) {
+        errors.push(result)
+      }
+    }
+    nameErrors.value = errors
+  } else {
+    nameErrors.value = ['Validation rules are not properly defined.']
+  }
+}
+function validateImage(value) {
+  try {
+    if (Array.isArray(cardValidationRules.img)) {
+      imageErrors.value = cardValidationRules.img
+        .map((rule) => rule(value))
+        .filter((result) => result !== true);
+      }
+  } catch (error) {
+    console.error('Image validation error:', error);
+    imageErrors.value = ['An error occurred while validating the image.'];
+  }
+}
 
+function handleImageError() {
+  imageErrors.value = ['Failed to load image']
+}
+
+function validateForm() {
+  validateName(record.value.name)
+  validateImage(record.value.img)
+  console.log('Name Errors:', nameErrors.value)
+  console.log('Image Errors:', imageErrors.value)
+
+  return nameErrors.value.length === 0 && imageErrors.value.length === 0
+}
+/* Fetches a list of tarot images and returns them as an array of objects.
+ *
+ * This function creates an object mapping of tarot image filenames to their respective paths.
+ * It then converts this object into an array of objects, each containing a `key` and `value`
+ * property representing the filename and its path, respectively.
+ *
+ * @returns {Array} An array of objects representing tarot images and their paths.
+ */
 const fetchImages = () => {
   const tarotImages = {
     'wands-2.png': 'src/assets//cards/wands-2.png',

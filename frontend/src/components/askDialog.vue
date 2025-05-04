@@ -36,14 +36,18 @@ function handleConfirm() {
   if (resolveFn.value) {
     resolveFn.value(true)
   } else {
-    console.error('resolveFn is not defined. The promise could not be resolved.')
+    console.error(`resolveFn is not defined. The promise could not be resolved. Dialog Title: "${dialogTitle.value}", Dialog Message: "${dialogMessage.value}".`)
   }
   resolveFn.value = null
 }
 
 function handleCancel() {
   dialogVisible.value = false
-  resolveFn.value?.(false)
+  if (resolveFn.value) {
+    resolveFn.value(false)
+  } else {
+    console.warn('resolveFn is not defined. The promise could not be resolved.')
+  }
   resolveFn.value = null
 }
 // Expose the `open` method to the parent component, allowing it to trigger this dialog.

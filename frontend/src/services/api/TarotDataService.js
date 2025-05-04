@@ -20,7 +20,7 @@ class TarotDataService {
     }
 
     delete(id) {
-        return http.i('/cards/delete/'+id);
+        return http.post('/cards/delete/'+id);
     }
 
     //     deleteAll() {
