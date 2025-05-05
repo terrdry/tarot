@@ -38,7 +38,7 @@ def add_card(payload):
         db = get_db()
         card = Card(name=payload["name"],
                     major=payload["major"],
-                    img="TODO.JPG")
+                    img=payload["img"])
         db.session.add(card)
         db.session.commit()
         return card.id
@@ -68,7 +68,7 @@ def read_card(id):
         if card:
             payload = {'name': card.name,
                        'major': card.major,
-                       "img": "TODO.JGP"}
+                       'img': card.img }
             return jsonify(payload)
         else:
             logger.warning("Record not found")
@@ -99,7 +99,7 @@ def update_card(id, payload):
         if card:
             card.name = payload.get("name")
             card.major = payload.get("major")
-            card.img = "TODO.txt"
+            card.img = payload.get("img")
             db.session.commit()
             return jsonify(card.id)
         else:

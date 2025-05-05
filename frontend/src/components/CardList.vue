@@ -57,7 +57,7 @@
               label="Card Name"
               :rules="cardValidationRules.name"
               :error-messages="nameErrors"
-              @input="validateName">
+              @update:model-value="validateName">
             </v-text-field>
           </v-col>
           <v-col cols="8" md="4">
@@ -67,9 +67,13 @@
               v-model="record.img"
               width="150"
               length="150"
-              :error="imageErrors.length > 0"
               :error-messages="imageErrors"
-              @error="handleImageError">
+              @error="handleImageError" >
+              <template v-slot:error >
+                <div class="text-error">
+                  {{  imageErrors }}
+                </div>
+              </template>
             </v-img>
           </v-col>
           <v-col cols="4" md="2">
@@ -104,7 +108,6 @@
         <v-btn text="Cancel" variant="plain" @click="dialog = false"></v-btn>
         <v-spacer></v-spacer>
         <v-btn text="Save" @click="save"></v-btn>
-        <!-- <v-btn text="Save" @click="save"></v-btn> temporary for testing the click-->
       </v-card-actions>
     </v-card>
     <template v-slot:error>
@@ -126,16 +129,13 @@ import cardValidationRules from '@/types/cardRules'
 const nameErrors = ref([])
 const imageErrors = ref([])
 
+const DEFAULT_IMAGE = 'src/assets/cards/cover.png'
 
 // Ensure cardValidationRules.name is an array during initialization
 if (!Array.isArray(cardValidationRules.name)) {
   console.error('cardValidationRules.name is not an array. Validation may not work as expected.')
   cardValidationRules.name = []
 }
-//const imageErrors = ref<([])
-
-
-const DEFAULT_IMAGE = 'src/assets/cards/cover.png'
 
 /**
  * Returns the appropriate image source URL.
@@ -151,7 +151,15 @@ function getImageSource(imgUrl) {
   return imgUrl || DEFAULT_IMAGE
 }
 
-// Define the default record structure
+/**
+ * The default structure for a tarot card record.
+ *
+ * Properties:
+ * - `id` (null | number): The unique identifier for the card. Defaults to `null`.
+ * - `name` (string): The name of the card. Defaults to an empty string.
+ * - `major` (boolean): Indicates whether the card is a major arcana card. Defaults to `false`.
+ * - `img` (string): The URL or path to the card's image. Defaults to an empty string.
+ */
 const DEFAULT_RECORD = {
   id: null,
   name: '',
@@ -185,19 +193,15 @@ const headers = [
  */
 onMounted(() => {
   images.value = fetchImages()
-  console.log(images.value)
   reset()
 })
 
+
 /**
- * Opens a dialog for adding a new record.
- *
- * This function performs the following actions:
- * - Sets the `isEditing` state to `false` to indicate that the dialog is not in editing mode.
- * - Resets the `record` to the default record value (`DEFAULT_RECORD`).
- * - Sets the `dialog` state to `true` to display the dialog.
- *
- * @returns {Promise<void>} This function does not return a value.
+ * Opens the dialog for adding a new record.
+ * - Sets `isEditing` to `false` to indicate that the dialog is in "add" mode.
+ * - Resets the `record` to a default state using `DEFAULT_RECORD`.
+ * - Displays the dialog by setting `dialog` to `true`.
  */
 function add() {
   isEditing.value = false
@@ -210,17 +214,17 @@ function add() {
  * Edits a card by its ID.
  *
  * This function sets the editing state to true, searches for the card
- * with the specified ID in the `cards` list, and populates the `record`
- * object with the card's details if found. If the card is not found,
+ * with the specified ID in the `cards` array, and if found, populates
+ * the `record` object with the card's details. If the card is not found,
  * an error message is set. Finally, it opens the dialog for editing.
  *
  * @param {number|string} id - The ID of the card to edit.
  *
  * Reactive Dependencies:
  * - `isEditing` (boolean): Indicates whether the editing mode is active.
- * - `cards` (array): The list of card objects to search through.
+ * - `cards` (array): The list of card objects to search within.
  * - `errorMessage` (string): Holds the error message if the card is not found.
- * - `record` (object): The reactive object to store the card's details for editing.
+ * - `record` (object): The object to populate with the card's details for editing.
  * - `dialog` (boolean): Controls the visibility of the editing dialog.
  */
 function edit(id) {
@@ -238,15 +242,7 @@ function edit(id) {
   }
   dialog.value = true
 }
-// const deleteTarot = async (id) => {
-//   try {
-//     const response = await TarotDataService.delete(id)
-//     console.log(response.data)
-//     // router.go()
-//   } catch (e) {
-//     console.log(e)
-//   }
-// }
+
 /**
  * Removes a card by its ID.
  * - Finds the index of the card with the given ID and removes it from the `cards` array.
@@ -273,63 +269,97 @@ async function remove(id) {
   }
 }
 
-
-// const addCard = () => {
-//   try {
-//     console.log('here')
-//     const record_to_add = { name: 'The Magician', isMajor: 'True', img: 'TODO.TXT' }
-//     items.value = tarotDataService.post(record_to_add)
-//   } catch (error) {
-//     console.log(error)
-//   }
-// }
 /**
- * Saves the current record to the cards list.
- * - If `isEditing` is true, it updates the existing card.
- * - If `isEditing` is false, it adds a new card.
- * - Closes the dialog after saving.
+ * Asynchronous function to save a card record. This function handles both
+ * creating a new card and updating an existing card, depending on the
+ * `isEditing` state. It performs validation on the card's name and image
+ * before proceeding with the save operation. If validation errors are
+ * present, it displays an error message and halts the save process.
+ *
+ * Workflow:
+ * 1. Validates the `name` and `img` fields of the `record`.
+ * 2. If validation errors exist, sets an error message and exits.
+ * 3. If editing (`isEditing` is true):
+ *    - Finds the card by its `id` in the `cards` list.
+ *    - Opens a confirmation dialog (`openAskDialog`).
+ *    - If confirmed, sends an update request to `TarotDataService.update`.
+ *    - Logs success or failure and closes the dialog on success.
+ * 4. If creating a new card:
+ *    - Opens a confirmation dialog (`openAskDialog`).
+ *    - If confirmed, sends a create request to `TarotDataService.create`.
+ *    - Logs success or failure and closes the dialog on success.
+ * 5. Resets the form state after saving.
+ *
+ * Error Handling:
+ * - Catches any errors during the save process and logs them.
+ * - Sets a generic error message if an exception occurs.
+ *
+ * Dependencies:
+ * - `validateName`: Function to validate the card's name.
+ * - `validateImage`: Function to validate the card's image.
+ * - `openAskDialog`: Function to open a confirmation dialog.
+ * - `TarotDataService`: Service for interacting with the backend API.
+ * - `reset`: Function to reset the form state.
+ *
+ * Reactive Variables:
+ * - `record`: The card record being edited or created.
+ * - `nameErrors`: Array of validation errors for the name field.
+ * - `imageErrors`: Array of validation errors for the image field.
+ * - `errorMessage`: Error message to display to the user.
+ * - `isEditing`: Boolean indicating whether the user is editing an existing card.
+ * - `cards`: List of all card records.
+ * - `dialog`: Boolean controlling the visibility of the dialog.
  */
 async function save() {
   try {
-    if (!validateForm()) {
+    validateName(record.value.name)
+    validateImage(record.value.img)
+
+    if (nameErrors.value.length > 0 || imageErrors.value.length > 0) {
       errorMessage.value = 'Please fix the validation errors before saving.'
       return
     }
 
-    // ...existing save logic...
+    if (isEditing.value) {
+      const index = cards.value.findIndex((card) => card.id === record.value.id)
+      const answer = await openAskDialog()
+      if (answer) {
+        const response = await TarotDataService.update(parseInt(cards.value[index].id), record.value)
+        console.log('Card updated successfully:', response.data)
+        if (response.status === 200) {
+          dialog.value = false
+        }
+        else {
+          console.error('Failed to update card')
+        }
+      }
+      } else {
+        const answer = await openAskDialog()
+        if (answer) {
+          const response = await TarotDataService.create(record.value)
+          if (response.status === 200) {
+            dialog.value = false
+            console.log('Card created successfully:', response.data)
+          }
+          else {
+            console.error('Failed to create card')
+            dialog.value = false
+          }
+      }
+    }
+    reset()
   } catch (error) {
     console.error('Error in save:', error)
     errorMessage.value = 'An error occurred while saving.'
   }
 }
-  // try {
-  //   if (isEditing.value) {
-  //     const index = cards.value.findIndex((card) => card.id === record.value.id)
-  //     const answer = true
-  //     if (answer) {
-  //       const response = await TarotDataService.update(parseInt(cards.value[index].id), record.value)
-  //       console.log('Card updated successfully:', response.data)
-  //     }
-  //   } else {
-  //     record.value.id = cards.value.length + 1
-  //     const answer = true
-  //     if (answer) {
-  //       const response = await TarotDataService.create(record.value)
-  //       console.log('Card created successfully:', response.data)
-  //     }
-  //   }
-  //   dialog.value = false
-  // } catch (error) {
-  //   console.error('Error in save:', error)
-  //   errorMessage.value = 'An error occurred while saving.'
-  // }
-// }
 
 /**
- * Resets the card list to its default state.
- * - Resets the `cards` array to contain only the default record.
- * - Fetches items to repopulate the list.
- * - Closes the dialog and resets the `isEditing` flag.
+ * Resets the card list to its default state and performs the following actions:
+ * - Resets the `cards` array to contain a single default record.
+ * - Fetches updated items by calling `fetchItems()`.
+ * - Closes the dialog by setting `dialog` to `false`.
+ * - Disables editing mode by setting `isEditing` to `false`.
  */
 function reset() {
   cards.value = [JSON.parse(JSON.stringify(DEFAULT_RECORD))]
@@ -339,13 +369,14 @@ function reset() {
 }
 
 /**
- * Fetches a list of tarot cards from the TarotDataService and updates the `cards` reactive variable.
- * Each card object is mapped to exclude the `actions` property.
- *
+ * Fetches tarot card items from the TarotDataService and updates the `cards` reactive variable.
+ * Each card object is modified to exclude the `actions` property.
+ * If an error occurs during the fetch operation, logs the error to the console
+ * and updates the `errorMessage` reactive variable with a user-friendly message.
  *
  * @async
  * @function fetchItems
- * @throws Will log an error to the console if the request to fetch items fails.
+ * @returns {Promise<void>} Resolves when the fetch operation is complete.
  */
 const fetchItems = async () => {
   try {
@@ -359,6 +390,7 @@ const fetchItems = async () => {
     errorMessage.value = 'Failed to fetch tarot cards. Please try again later.'
   }
 }
+
 /**
  * Opens a confirmation dialog with a specified title and message.
  *
@@ -375,8 +407,27 @@ async function openAskDialog() {
     message: 'Are you sure you want to proceed?',
   })
 }
+
 /**
- * Validates the name field of the card.
+ * Validates the provided name value against a set of validation rules.
+ *
+ * The function checks if `cardValidationRules.name` is an array of validation
+ * rules. If it is, each rule is applied to the provided `value`. Any validation
+ * errors are collected and stored in the `nameErrors` reactive variable.
+ * If `cardValidationRules.name` is not an array, a default error message is
+ * added to `nameErrors`.
+ *
+ * @param {string} value - The name value to be validated.
+ *
+ * Reactive Dependencies:
+ * - `cardValidationRules.name`: An array of validation rules or undefined.
+ * - `nameErrors`: A reactive variable to store validation error messages.
+ *
+ * Validation Rules:
+ * Each rule in `cardValidationRules.name` should be a function that takes a
+ * string value as input and returns:
+ * - `true` if the value passes the rule.
+ * - A string error message if the value fails the rule.
  */
 function validateName(value) {
   if (Array.isArray(cardValidationRules.name)) {
@@ -389,34 +440,50 @@ function validateName(value) {
     }
     nameErrors.value = errors
   } else {
-    nameErrors.value = ['Validation rules are not properly defined.']
-  }
-}
-function validateImage(value) {
-  try {
-    if (Array.isArray(cardValidationRules.img)) {
-      imageErrors.value = cardValidationRules.img
-        .map((rule) => rule(value))
-        .filter((result) => result !== true);
-      }
-  } catch (error) {
-    console.error('Image validation error:', error);
-    imageErrors.value = ['An error occurred while validating the image.'];
+    nameErrors.value = ['Name Validation rules are not properly defined.']
   }
 }
 
+/**
+ * Validates the provided image value against a set of predefined validation rules.
+ *
+ * The function checks if `cardValidationRules.img` is an array of validation rules.
+ * If it is, each rule is applied to the provided `value`. Any validation errors
+ * are collected and stored in `imageErrors.value`. If all rules pass, no errors
+ * are added. If `cardValidationRules.img` is not an array, a default error message
+ * is added to indicate improper configuration of validation rules.
+ *
+ * @param {any} value - The image value to be validated.
+ *
+ * Side Effects:
+ * - Updates the `imageErrors.value` reactive property with an array of error messages
+ *   if validation fails, or an empty array if validation succeeds.
+ */
+function validateImage(value) {
+  if (Array.isArray(cardValidationRules.img)) {
+    const errors = []
+    for (const rule of cardValidationRules.img) {
+      const result = rule(value)
+      if (result !== true) {
+        errors.push(result)
+      }
+    }
+    imageErrors.value = errors
+  } else {
+    imageErrors.value = ['Image Validation rules are not properly defined.']
+  }
+}
+
+/**
+ * Handles the error event for the image component.
+ * - Sets the `imageErrors` reactive variable to indicate that the image failed to load.
+ *
+ * @returns {void}
+ */
 function handleImageError() {
   imageErrors.value = ['Failed to load image']
 }
 
-function validateForm() {
-  validateName(record.value.name)
-  validateImage(record.value.img)
-  console.log('Name Errors:', nameErrors.value)
-  console.log('Image Errors:', imageErrors.value)
-
-  return nameErrors.value.length === 0 && imageErrors.value.length === 0
-}
 /* Fetches a list of tarot images and returns them as an array of objects.
  *
  * This function creates an object mapping of tarot image filenames to their respective paths.
