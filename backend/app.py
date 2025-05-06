@@ -48,12 +48,11 @@ def create_app(name, config):
 app = create_app("tarot", devConfig)
 CORS(app, resources={
     r"/*": {
-        "origins": ALLOWED_ORIGINS
-        # "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        "origins": ALLOWED_ORIGINS,
+        "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
         # "allow_headers": ["Content-Type", "Authorization"]
     }
 })
-# TODO this should be tested to see what effect methods and allow_headers
 # CORS(app, resources={r"/*": {"origins": "*"}})
 # CORS(app)  # least restrictive
 
