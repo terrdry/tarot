@@ -18,7 +18,10 @@ from models import db
 from logging_config import setup_logging
 
 logger = logging.getLogger(os.path.basename(__file__))
-
+ALLOWED_ORIGINS = [
+    'http://127.0.0.1:5000',
+    'http://localhost:4000',
+]
 
 def create_app(name, config):
     """create_app Create the Flask Application
@@ -43,9 +46,16 @@ def create_app(name, config):
 
 
 app = create_app("tarot", devConfig)
-# CORS(app, resources={r"/*": {"origins": "http://localhost:4000"}})
+CORS(app, resources={
+    r"/*": {
+        "origins": ALLOWED_ORIGINS
+        # "methods": ["GET", "POST", "PUT", "DELETE", "OPTIONS"],
+        # "allow_headers": ["Content-Type", "Authorization"]
+    }
+})
+# TODO this should be tested to see what effect methods and allow_headers
 # CORS(app, resources={r"/*": {"origins": "*"}})
-CORS(app)  # least restrictive
+# CORS(app)  # least restrictive
 
 with app.app_context():
     db.create_all()
