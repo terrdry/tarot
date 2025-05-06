@@ -8,14 +8,18 @@ import vueDevTools from 'vite-plugin-vue-devtools'
 
 export default defineConfig({
   build: {
-    sourcemap: true
+    sourcemap: false
   },
   plugins: [
     vue(),
     vueDevTools(),
     ],
   server: {
-    port: 4000
+    port: 4000,
+    allowedHosts: [
+      'localhost',
+      '.ngrok-free.app'
+    ]
   },
   resolve: {
     alias: {

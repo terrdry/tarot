@@ -52,7 +52,7 @@ def test_add_card(client):
         client (object): pyTest fixture
     """
 
-    payload = {"name": "The Runt", "major": True}
+    payload = {"name": "The Runt", "major": True, "img": "TODO.JPG"}
 
     answer = map(lambda x: x.to_dict(), payload)
     response = client.post('/cards/add', json=payload)
@@ -68,7 +68,7 @@ def test_add_duplicate_card(client):
         client (object): pyTest fixture
     """
 
-    payload = {"name": "The Runt", "major": True}
+    payload = {"name": "The Runt", "major": True, "img": "TODO.JPG"}
     response = client.post('/cards/add', json=payload)
     with pytest.raises(IntegrityError):
         add_card(payload)
@@ -84,7 +84,7 @@ def test_add_multiple_cards(client):
         client (object): pyTest fixture
     """
     for elem in CARD_LIST:
-        payload = {"name": elem, "major": True}
+        payload = {"name": elem, "major": True, "img": "TODO.JPG"}
         response = client.post('/cards/add', json=payload)
     assert get_count(Card) == len(CARD_LIST)
 
@@ -102,7 +102,7 @@ def test_read_card(client):
         client (string): Name of the tarot card
     """
     for elem in CARD_LIST:
-        payload = {"name": elem, "major": True}
+        payload = {"name": elem, "major": True, "img": "TODO.JPG"}
         response = client.post('/cards/add', json=payload)
 
     response = client.get('/cards/read/1')
@@ -120,10 +120,10 @@ def test_update_card(client):
         client (string): Name of the tarot card
     """
     for elem in CARD_LIST:
-        payload = {"name": elem, "major": True}
+        payload = {"name": elem, "major": True, "img": "TODO.JPG"}
         response = client.post('/cards/add', json=payload)
 
-    payload = {"name": "nosferatu", "major": True}
+    payload = {"name": "nosferatu", "major": True, "img": "TODO.JPG"}
     response = client.post('/cards/update/1', json=payload)
     assert "nosferatu" in response.json["name"]
 
@@ -138,7 +138,7 @@ def test_delete_card(client):
     """
     major = True
     for elem in CARD_LIST:
-        payload = {"name": elem, "major": True}
+        payload = {"name": elem, "major": True, "img": "TODO.JPG"}
         response = client.post('/cards/add', json=payload)
 
     assert get_count(Card) == len(CARD_LIST)
