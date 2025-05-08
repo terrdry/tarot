@@ -1,0 +1,17 @@
+---
+- name: Ensure all hosts are configured
+  hosts: all
+  become: true
+  tasks:
+    - name: Ensure the repo at the latest version
+      ansible.builtin.apt:
+        update_cache: true
+    - name: Install NTP
+      ansible.builtin.apt:
+        name: ntp
+        state: present
+  handlers:
+    - name: Restart NTP
+      ansible.builtin.service:
+        name: ntp
+        state: restarted

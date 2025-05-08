@@ -1,5 +1,7 @@
 
-.venv/*
+.venv/
+.vagrant/
+output
 *.pyc
 backend/db
 README-*.md
