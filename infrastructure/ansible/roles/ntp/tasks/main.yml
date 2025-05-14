@@ -1,0 +1,15 @@
+- name: Install NTP packages
+  ansible.builtin.debug:
+    msg: "Hello {{ ntp_last_name }}}"
+
+- name: Update the repository
+  ansible.builtin.apt:
+    name: ntp
+    update_cache: true
+
+- name: Copy ntp.conf template
+  ansible.builtin.template:
+    src: ntp.conf.j2
+    dest: /etc/ntp.conf
+    mode: '0644'
+  notify: restart ntp
