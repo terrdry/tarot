@@ -1,0 +1,7 @@
+---
+- name: Configure NTP on all hosts
+  become: true
+  hosts: all
+
+  roles:
+    - ntp

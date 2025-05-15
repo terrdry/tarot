@@ -13,7 +13,7 @@ export default defineConfig({
   plugins: [
     vue(),
     vueDevTools(),
-    ],
+  ],
   server: {
     port: 4000,
     allowedHosts: [
