@@ -3,7 +3,7 @@
 galaxy_info:
   role_name: "ntp"
   author: "Terry Drymonacos"
-  description: "Install an npt client for times update"
+  description: "Install an ntp client for times update"
   company: "DryDock inc."
 
   # If the issue tracker for your role is not on github, uncomment the

@@ -112,8 +112,11 @@ Start the chrome web server by running the `Launch Chrome Vue - tarot`
         "webpack:///*": "${webRoot}/*"
     }
 }
+
+Now you should be able to track errors in real time with the stack levels
+
+> The name of the files that have been compiled for this debugging run will appear in the stack trace on the side. Use those files to set breakpoints in the debugger.
+
+
+
 ```
-
-### Anisble/Terraform
-
-[ Installing Virtual environment for Ansible and Terraform molecule testing ](./docs/vagrant.md)

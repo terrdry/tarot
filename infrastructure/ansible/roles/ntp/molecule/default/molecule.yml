@@ -1,8 +1,12 @@
----
+
 driver:
-  name: default
+  name: vagrant
+  provider:
+    name: vmware_desktop
+
 platforms:
   - name: instance
-    # you might want to add your own variables here based on what provisioning
-    # you are doing like:
-    # image: quay.io/centos/centos:stream8
+    box: tknerr/ubuntu2004-desktop
+    memory: 2048  # Memory allocated to the instance in MB
+    # Number of virtual CPUs allocated to the instance
+    cpus: 2

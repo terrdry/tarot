@@ -1,2 +1,0 @@
-[nomad]
-192.168.61.153 ansible_user=ansible
