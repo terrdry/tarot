@@ -6,9 +6,9 @@
   # no_log: "{{ molecule_no_log }}"
   tasks:
     # TODO: Developer must implement and populate 'server' variable
-    - name: Debug
+    - name: Debug server variable
       ansible.builtin.debug:
-        msg: "Hello"
+        msg: "The 'server' variable is currently set to: {{ server | default('not defined') }}"
       debugger: always
 
     - name: Create molecule instance(s)  # noqa fqcn[action]
