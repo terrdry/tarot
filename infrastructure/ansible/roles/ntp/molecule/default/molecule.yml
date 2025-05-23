@@ -5,8 +5,14 @@ driver:
     name: vmware_desktop
 
 platforms:
-  - name: instance
+  - name: nomad
     box: tknerr/ubuntu2004-desktop
     memory: 2048  # Memory allocated to the instance in MB
     # Number of virtual CPUs allocated to the instance
     cpus: 2
+    provider_options:
+      gui: false
+    interfaces:
+      - auto_config: true
+        network_name: public_network
+        type: dhcp

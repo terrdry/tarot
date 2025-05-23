@@ -6,13 +6,14 @@
   # no_log: "{{ molecule_no_log }}"
   tasks:
     # TODO: Developer must implement and populate 'server' variable
-    - name: Debug server variable
+
+    - name: Debug the page
       ansible.builtin.debug:
-        msg: "The 'server' variable is currently set to: {{ server | default('not defined') }}"
+        msg: "hello"
       debugger: always
 
     - name: Create molecule instance(s)  # noqa fqcn[action]
-      community.vagrant:
+      vagrant:
         instances: "{{ molecule_yml.platforms }}"
         default_box: "{{ molecule_yml.driver.default_box | default('generic/alpine316') }}"
         provider_name: "{{ molecule_yml.driver.provider.name | default(omit, true) }}"
@@ -20,6 +21,8 @@
         cachier: "{{ molecule_yml.driver.cachier | default(omit) }}"
         parallel: "{{ molecule_yml.driver.parallel | default(omit) }}"
         state: up
+      register: server
+
     - name: Create instance config
       when: server.changed | default(false) | bool  # noqa no-handler
       block:
