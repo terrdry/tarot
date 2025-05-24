@@ -8,6 +8,15 @@
     # Developer must implement.
 
     # Mandatory configuration for Molecule to function.
+    - name: Destroy molecule instance(s)
+      vagrant:
+        instances: "{{ molecule_yml.platforms }}"
+        default_box: "{{ molecule_yml.driver.default_box | default('generic/alpine316') }}"
+        provider_name: "{{ molecule_yml.driver.provider.name | default(omit, true) }}"
+        cachier: "{{ molecule_yml.driver.cachier | default(omit) }}"
+        force_stop: "{{ item.force_stop | default(true) }}"
+        state: destroy
+      register: server
 
     - name: Populate instance config
       ansible.builtin.set_fact:

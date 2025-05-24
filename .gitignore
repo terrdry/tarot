@@ -1,7 +1,5 @@
 
-.venv/
-.vagrant/
-output
+.venv/*
 *.pyc
 backend/db
 README-*.md
@@ -36,4 +34,4 @@ coverage
 *.sw?
 
 *.tsbuildinfo
-.vagrant/
+.vagrant
