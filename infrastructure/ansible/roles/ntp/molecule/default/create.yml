@@ -9,10 +9,10 @@
 
     - name: Debug the page
       ansible.builtin.debug:
-        msg: "hello"
+        msg: "{{ molecule_yml.driver.provider.name }}"
       debugger: always
 
-    - name: Create molecule instance(s)  # noqa fqcn[action]
+    - name: Create molecule instance(s) # noqa fqcn[action]
       vagrant:
         instances: "{{ molecule_yml.platforms }}"
         default_box: "{{ molecule_yml.driver.default_box | default('generic/alpine316') }}"
@@ -24,23 +24,24 @@
       register: server
 
     - name: Create instance config
-      when: server.changed | default(false) | bool  # noqa no-handler
+      when: server.changed | default(false) | bool # noqa no-handler
       block:
-        - name: Populate instance config dict  # noqa jinja
+        - name: Populate instance config dict # noqa jinja
           ansible.builtin.set_fact:
-            instance_conf_dict: {}
-              # 'instance': "{{ item.Host }}",
-              # 'address': "{{ item.HostName }}",
-              # 'user': "{{ item.User }}",
-              # 'port': "{{ item.Port }}",
-              # 'identity_file': "{{ item.IdentityFile }}", }
+            instance_conf_dict:
+              {
+                "instance": "{{ item.Host }}",
+                "address": "{{ item.HostName }}",
+                "user": "{{ item.User }}",
+                "port": "{{ item.Port }}",
+                "identity_file": "{{ item.IdentityFile }}",
+              }
           with_items: "{{ server.results }}"
           register: instance_config_dict
 
         - name: Convert instance config dict to a list
           ansible.builtin.set_fact:
             instance_conf: "{{ instance_config_dict.results | map(attribute='ansible_facts.instance_conf_dict') | list }}"
-
 
         - name: Dump instance config
           ansible.builtin.copy:
