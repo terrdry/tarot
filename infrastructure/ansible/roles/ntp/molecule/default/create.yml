@@ -7,11 +7,6 @@
   tasks:
     # TODO: Developer must implement and populate 'server' variable
 
-    - name: Debug the page
-      ansible.builtin.debug:
-        msg: "{{ molecule_yml.driver.provider.name }}"
-      debugger: always
-
     - name: Create molecule instance(s) # noqa fqcn[action]
       vagrant:
         instances: "{{ molecule_yml.platforms }}"

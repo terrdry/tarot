@@ -1,7 +1,7 @@
 ---
 
 galaxy_info:
-  role_name: "ntp"
+  role_name: "terrdry.ntp"
   author: "Terry Drymonacos"
   description: "Install an ntp client for times update"
   company: "DryDock inc."
