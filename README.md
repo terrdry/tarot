@@ -117,3 +117,5 @@ Now you should be able to track errors in real time with the stack levels
 
 > The name of the files that have been compiled for this debugging run will appear in the stack trace on the side. Use those files to set breakpoints in the debugger.
 ```
+
+[Molecule](./docs/Vagrant-Molecule%20Integration.md)
