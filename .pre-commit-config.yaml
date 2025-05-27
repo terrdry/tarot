@@ -1,3 +1,8 @@
+
+
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
     repos:
       - repo: https://github.com/pre-commit/pre-commit-hooks
         rev: v5.0.0
@@ -12,10 +17,137 @@
           - id: detect-secrets
 #TODO for later
 
-      # - repo: local
-      #   hooks:
-      #     - id: pytest
-      #       name: pytests
-      #       entry: pytest backend/tests
-      #       language: system
-      #       types: [python]
+      - repo: local
+        hooks:
+          - id: pytest
+            name: pytests
+            entry: pytest backend/tests
+            language: system
+            types: [python]
+      - repo: https://github.com/Lucas-C/pre-commit-hooks
+        rev: v1.5.5
+        hooks:
+        - id: insert-license
+          name: Add license for all SQL files
+          files: \.sql$
+          exclude: |
+            (?x)
+            ^\.github/|
+            ^.*/.*_vendor/
+          args:
+            - --comment-style
+            - "/*||*/"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all RST files
+          exclude: ^\.github/.*$|^.*/.*_vendor/|newsfragments/.*\.rst$
+          args:
+            - --comment-style
+            - "||"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+          files: \.rst$
+        - id: insert-license
+          name: Add license for CSS/JS/JSX/PUML/TS/TSX
+          files: \.(css|jsx?|puml|tsx?)$
+          exclude: ^\.github/.*$|^.*/.*_vendor/|^airflow/www/static/js/types/api-generated.ts$|ui/openapi-gen/
+          args:
+            - --comment-style
+            - "/*!| *| */"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all JINJA template files
+          files: ^airflow/www/templates/.*\.html$
+          exclude: ^\.github/.*$|^.*/.*_vendor/
+          args:
+            - --comment-style
+            - "{#||#}"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all Shell files
+          exclude: ^\.github/.*$|^.*/.*_vendor/|^dev/breeze/autocomplete/.*$
+          files: \.bash$|\.sh$
+          args:
+            - --comment-style
+            - "|#|"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all toml files
+          exclude: ^\.github/.*$|^.*/.*_vendor/|^dev/breeze/autocomplete/.*$
+          files: \.toml$
+          args:
+            - --comment-style
+            - "|#|"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all Python files
+          exclude: ^\.github/.*$|^.*/.*_vendor/
+          files: \.py$|\.pyi$
+          args:
+            - --comment-style
+            - "|#|"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all XML files
+          exclude: ^\.github/.*$|^.*/.*_vendor/
+          files: \.xml$
+          args:
+            - --comment-style
+            - "<!--||-->"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all Helm template files
+          files: ^chart/templates/.*
+          args:
+            - --comment-style
+            - "{{/*||*/}}"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all YAML files except Helm templates
+          exclude: ^\.github/.*$|^.*/.*_vendor/|^chart/templates/.*|.*/reproducible_build.yaml$|^airflow/api_fastapi/openapi/v1-generated.yaml$|^.*/pnpm-lock.yaml$
+          types: [yaml]
+          files: \.ya?ml$
+          args:
+            - --comment-style
+            - "|#|"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all Markdown files
+          files: \.md$
+          exclude: PROVIDER_CHANGES.*\.md$|^.*/.*_vendor/
+          args:
+            - --comment-style
+            - "<!--|| -->"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+        - id: insert-license
+          name: Add license for all other files
+          exclude: ^\.github/.*$|^.*/.*_vendor/
+          args:
+            - --comment-style
+            - "|#|"
+            - --license-filepath
+            - ./LICENSE.txt
+            - --fuzzy-match-generates-todo
+          files: >
+            \.cfg$|\.conf$|\.ini$|\.ldif$|\.properties$|\.readthedocs$|\.service$|\.tf$|Dockerfile.*$
