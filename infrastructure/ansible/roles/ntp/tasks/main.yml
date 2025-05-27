@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
 - name: Install NTP packages
   ansible.builtin.debug:
     msg: "Hello {{ ntp_last_name }}}"
@@ -6,7 +9,7 @@
   ansible.builtin.apt:
     name: ntp
     update_cache: true
-
+# some information
 - name: Copy ntp.conf template
   ansible.builtin.template:
     src: ntp.conf.j2
