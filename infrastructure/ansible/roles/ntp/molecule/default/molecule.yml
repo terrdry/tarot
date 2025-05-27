@@ -1,4 +1,7 @@
 
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
 driver:
   name: vagrant
   provider:
@@ -16,6 +19,6 @@ provisioner:
     defaults:
       # library: ${workspaceFolder}:".venv/lib/python3.13/site_packages"
       #library: "{{ lookup('env', 'LIBRARY_PATH') }}"
-      library: //Users/terrydrymonacos//develop/tarot/.venv/lib/python3.13/site-packages
+      library: "{{ lookup('env', 'LIBRARY_PATH') }}"
       # Dynamically sets the library path from the environment variable `LIBRARY_PATH`
       # library: "{{ lookup('env', 'LIBRARY_PATH') }}"
