@@ -1,3 +1,6 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
 ---
 - name: Create
   hosts: localhost
@@ -6,7 +9,6 @@
   # no_log: "{{ molecule_no_log }}"
   tasks:
     # TODO: Developer must implement and populate 'server' variable
-
     - name: Create molecule instance(s) # noqa fqcn[action]
       vagrant:
         instances: "{{ molecule_yml.platforms }}"
@@ -46,4 +48,3 @@
               {{ instance_conf | to_json | from_json | to_yaml }}
             dest: "{{ molecule_instance_config }}"
             mode: "0600"
-          # debugger: always

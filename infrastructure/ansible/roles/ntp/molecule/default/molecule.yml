@@ -17,8 +17,6 @@ provisioner:
   name: ansible
   config_options:
     defaults:
-      # library: ${workspaceFolder}:".venv/lib/python3.13/site_packages"
-      #library: "{{ lookup('env', 'LIBRARY_PATH') }}"
-      library: "{{ lookup('env', 'LIBRARY_PATH') }}"
-      # Dynamically sets the library path from the environment variable `LIBRARY_PATH`
-      # library: "{{ lookup('env', 'LIBRARY_PATH') }}"
+      library: "/Users/terrydrymonacos/develop/tarot/.venv/lib/python3.13/site-packages"
+      # TODO: Investigate why lookup is not being executed
+      # library: "{{ lookup('ansible.builtin.env', 'LIBRARY_PATH') }}"
