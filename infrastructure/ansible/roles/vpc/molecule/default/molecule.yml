@@ -1,0 +1,22 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
+---
+driver:
+  name: vagrant
+  provider:
+    name: vmware_desktop
+
+platforms:
+  - name: nomad
+    box: tknerr/ubuntu2004-desktop
+    memory: 2048  # Memory allocated to the instance in MB
+    # Number of virtual CPUs allocated to the instance
+    cpus: 2
+provisioner:
+  name: ansible
+  config_options:
+    defaults:
+      library: "/Users/terrydrymonacos/develop/tarot/.venv/lib/python3.13/site-packages"
+      # TODO: Investigate why lookup is not being executed
+      # library: "{{ lookup('ansible.builtin.env', 'LIBRARY_PATH') }}"
