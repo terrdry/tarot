@@ -1,7 +1,12 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
 ---
-- name: Configure NTP on all hosts
-  become: true
-  hosts: all
+- name: Configure VPC on all hosts
+  # become: true
+  # hosts: all
+  hosts: localhost
+  connection: local
 
   roles:
-    - ntp
+    - vpc
