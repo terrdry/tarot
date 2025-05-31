@@ -3,8 +3,10 @@
 
 ---
 - name: Configure VPC on all hosts
-  become: true
-  hosts: all
+  # become: true
+  # hosts: all
+  hosts: localhost
+  connection: local
 
   roles:
     - vpc

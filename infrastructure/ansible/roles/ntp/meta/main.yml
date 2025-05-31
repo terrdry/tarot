@@ -1,7 +1,10 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
 ---
 
 galaxy_info:
-  role_name: "terrdry.ntp"
+  role_name: "terrdry_ntp"
   author: "Terry Drymonacos"
   description: "Install an ntp client for times update"
   company: "DryDock inc."
@@ -17,7 +20,7 @@ galaxy_info:
   # - GPL-3.0-only
   # - Apache-2.0
   # - CC-BY-4.0
-  license: "Apache-2.0"
+  license: "MIT"
   # platforms:
   #   - name: Ubuntu
   #     versions:

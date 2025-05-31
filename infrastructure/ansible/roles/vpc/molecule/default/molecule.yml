@@ -2,21 +2,45 @@
 # Copyright (c) 2025 Terry Drymonacos
 
 ---
-driver:
-  name: vagrant
-  provider:
-    name: vmware_desktop
+# Molecule configuration file for the 'vpc' Ansible role.
+#
+# This file defines the testing scenario for the role using Molecule.
+#
+# Sections:
+# - dependency: Specifies the use of Ansible Galaxy for role dependencies.
+# - platforms: Defines the test platform as 'localhost' and assigns it to the 'all' group.
+# - provisioner: Configures Ansible as the provisioner, sets the custom library path,
+#   defines the inventory with 'localhost' using local connection, and specifies linting commands.
+# - scenario: Names the scenario as 'default'.
+#
+# This configuration is intended for local testing of the role with custom library paths and linting enabled.
+dependency:
+  name: galaxy
+# driver:
+#   name: default
+#   options:
+#     managed: false
 
 platforms:
-  - name: nomad
-    box: tknerr/ubuntu2004-desktop
-    memory: 2048  # Memory allocated to the instance in MB
-    # Number of virtual CPUs allocated to the instance
-    cpus: 2
+  - name: localhost
+    groups:
+      - all
+
 provisioner:
   name: ansible
   config_options:
     defaults:
       library: "/Users/terrydrymonacos/develop/tarot/.venv/lib/python3.13/site-packages"
-      # TODO: Investigate why lookup is not being executed
-      # library: "{{ lookup('ansible.builtin.env', 'LIBRARY_PATH') }}"
+  inventory:
+    hosts:
+      all:
+        hosts:
+          localhost:
+            ansible_connection: local
+  lint: |
+    set -e
+    yamllint .
+    ansible-lint
+
+scenario:
+  name: default
