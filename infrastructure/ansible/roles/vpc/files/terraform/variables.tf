@@ -1,27 +1,6 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
 
-# -----------------------------------------------------------------------------
-# Terraform Input Variables
-#
-# - manage_default_vpc: Controls whether the default VPC is managed by this configuration.
-#   Type: bool, Default: false
-#
-# - default_vpc_name: Name to assign to the default VPC.
-#   Type: string, Default: "default"
-#
-# - default_vpc_enable_dns_hostnames: Enables DNS hostnames for the default VPC.
-#   Type: bool, Default: true
-#
-# - tags: Map of tags to apply to resources.
-#   Type: map(string), Default: {}
-#
-# - secret_key: AWS Secret Key for authentication.
-#   Type: string, Required
-#
-# - access_key: AWS Access Key for authentication.
-#   Type: string, Required
-# -----------------------------------------------------------------------------
 # Specifies whether the default VPC should be managed by this Terraform configuration.
 # Set to true to allow management (such as modification or deletion) of the default VPC.
 # Default is false, meaning the default VPC will not be managed.
@@ -62,6 +41,7 @@ variable "tags" {
 variable "secret_key" {
   type        = string
   description = "AWS Secret Key"
+  sensitive   = true
 }
 
 # AWS Access Key used for authentication.

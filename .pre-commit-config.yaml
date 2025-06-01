@@ -1,5 +1,6 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
+
 ---
 repos:
   - repo: https://github.com/pre-commit/pre-commit-hooks
@@ -9,10 +10,10 @@ repos:
       - id: end-of-file-fixer
       - id: check-yaml
   - repo: https://github.com/Yelp/detect-secrets
-    rev: v1.5.0 # Check for the latest version
+    rev: v1.5.0 # Check for the latest version to ensure the hook detects secrets effectively and includes the latest security updates.
     hooks:
       - id: detect-secrets
-  - repo: local
+  - repo: local # Local repositories do not require a 'rev' field
     hooks:
       - id: pytest
         name: pytests
@@ -23,7 +24,7 @@ repos:
     rev: v1.5.5
     hooks:
       - id: insert-license
-        name: Add license for all SQL files
+        name: Insert license header for SQL files
         files: \.sql$
         exclude: |
           (?x)
@@ -37,6 +38,7 @@ repos:
           - --fuzzy-match-generates-todo
       - id: insert-license
         name: Add license for all RST files
+        # Exclude RST files in the .github directory, vendor directories, and newsfragments folder
         exclude: ^\.github/.*$|^.*/.*_vendor/|newsfragments/.*\.rst$
         args:
           - --comment-style
@@ -48,7 +50,11 @@ repos:
       - id: insert-license
         name: Add license for CSS/JS/JSX/PUML/TS/TSX
         files: \.(css|jsx?|puml|tsx?)$
-        exclude: ^\.github/.*$|^.*/.*_vendor/|^airflow/www/static/js/types/api-generated.ts$|ui/openapi-gen/
+        exclude: |
+          ^\.github/.*$| # Exclude files in the .github directory
+          ^.*/.*_vendor/| # Exclude files in vendor directories
+          ^airflow/www/static/js/types/api-generated.ts$| # Exclude auto-generated TypeScript files
+          ui/openapi-gen/ # Exclude files in the OpenAPI generation directory
         args:
           - --comment-style
           - "/*!| *| */"
@@ -116,22 +122,29 @@ repos:
           - --fuzzy-match-generates-todo
       - id: insert-license
         name: Add license for all YAML files except Helm templates
-        exclude: >
-          ^\.github/.*$|^.*/.*_vendor/|^chart/templates/.*|
-          .*/reproducible_build.yaml$|^airflow/api_fastapi/openapi/v1-generated.yaml$|
-          ^.*/pnpm-lock.yaml$|.*infrastructure/ansible/inventories/dev/secrets.yml$
         types: [yaml]
         files: \.ya?ml$
-        args:
-          - --comment-style
-          - "|#|"
-          - --license-filepath
-          - ./LICENSE.txt
-          - --fuzzy-match-generates-todo
+        exclude: >
+          # Exclude files in the .github directory
+          ^\.github/.*$|
+          # Exclude files in vendor directories
+          ^.*/.*_vendor/|
+          # Exclude Helm template files
+          ^chart/templates/.*|
+          # Exclude reproducible build YAML file
+          .*/reproducible_build.yaml$|
+          # Exclude generated OpenAPI YAML file
+          ^airflow/api_fastapi/openapi/v1-generated.yaml$|
+          # Exclude pnpm-lock YAML file
+          ^.*/pnpm-lock.yaml$|
+          .*/secret
+
       - id: insert-license
         name: Add license for all Terraform files
         files: \.tf$
-        exclude: .*\.terraform$|^.*/.*_vendor/
+        exclude: >
+          .*\.terraform$|
+          ^.*/.*_vendor/
         args:
           - --comment-style
           - "|#|"
@@ -157,5 +170,13 @@ repos:
           - --license-filepath
           - ./LICENSE.txt
           - --fuzzy-match-generates-todo
+        # Include configuration files commonly used in applications
         files: >
-          \.cfg$|\.conf$|\.ini$|\.ldif$|\.properties$|\.readthedocs$|\.service$|\.tf$|Dockerfile.*$
+          \.cfg$| # Configuration files
+          \.conf$| # Configuration files
+          \.ini$| # INI format files
+          \.ldif$| # LDAP Data Interchange Format files
+          \.properties$| # Java properties files
+          \.readthedocs$| # ReadTheDocs configuration files
+          \.service$| # Systemd service files
+          Dockerfile.*$ # Docker configuration files
