@@ -1,9 +1,9 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
----
 
-- name: Test NTP role
+---
+- name: Test VPC role
   hosts: localhost
   remote_user: root
   roles:
-    - ntp
+    - vpc
