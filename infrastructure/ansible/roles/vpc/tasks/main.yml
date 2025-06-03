@@ -9,7 +9,8 @@
 - name: Create Terraform var file from template
   ansible.builtin.template:
     src: terraform_vars.json.j2
-    dest: "{{ role_path }}/files/terraform/terraform_vars.json"
+    dest: "{{ role_path }}/files/terraform/terraform.tfvars"
+    mode: '0644'
 
 # - name: Run Terraform Init
 #   ansible.builtin.command: terraform init

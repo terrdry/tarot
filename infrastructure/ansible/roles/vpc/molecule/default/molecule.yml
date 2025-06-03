@@ -16,10 +16,10 @@
 # This configuration is intended for local testing of the role with custom library paths and linting enabled.
 dependency:
   name: galaxy
-# driver:
-#   name: default
-#   options:
-#     managed: false
+driver:
+  name: default
+  options:
+    managed: false
 
 platforms:
   - name: localhost

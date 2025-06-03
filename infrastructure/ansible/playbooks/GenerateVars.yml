@@ -1,0 +1,13 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
+---
+- name: Generate Terraform variables file
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Create terraform.tfvars from secrets.yml
+      ansible.builtin.template:
+        src: /Users/terrydrymonacos/develop/tarot/infrastructure/ansible/roles/vpc/templates/terraform_vars.json.j2
+        dest: /Users/terrydrymonacos/develop/tarot/infrastructure/ansible/roles/vpc/files/terraform/terraform.tfvars
+        mode: "0644"

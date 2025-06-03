@@ -3,10 +3,17 @@
 
 ---
 - name: Configure VPC on all hosts
-  # become: true
-  # hosts: all
   hosts: localhost
-  connection: local
-
-  roles:
-    - vpc
+  # Fact gathering is disabled because this playbook does not require host-specific facts.
+  gather_facts: false
+  tasks:
+    - name: Include Secrets
+      ansible.builtin.include_vars:
+        file: "{{ inventory_dir }}/group_vars/secrets.yml"
+    - name: Debug secret_key_aws
+      ansible.builtin.debug:
+        msg: "The secret_key_aws is {{ secret_key_aws }}"
+      debugger: always
+  # The 'vpc' role is responsible for configuring the Virtual Private Cloud (VPC) settings.
+  # roles:
+  #   - vpc
