@@ -32,6 +32,8 @@ provisioner:
     defaults:
       library: ".venv/lib/python3.13/site-packages"
       verbosity: 2
+      private_key_file: ~/.ssh/ansible
+      vault_password_file: ~/.vault_pass.txt
   inventory:
     hosts:
       all:
