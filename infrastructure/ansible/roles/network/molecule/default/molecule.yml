@@ -30,7 +30,8 @@ provisioner:
   name: ansible
   config_options:
     defaults:
-      library: "/Users/terrydrymonacos/develop/tarot/.venv/lib/python3.13/site-packages"
+      library: ".venv/lib/python3.13/site-packages"
+      verbosity: 2
   inventory:
     hosts:
       all:

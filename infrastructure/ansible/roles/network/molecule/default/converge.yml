@@ -6,10 +6,15 @@
   hosts: all
   gather_facts: false
   tasks:
+
+    - name: Include secrets
+      ansible.builtin.include_vars:
+        file: /Users/terrydrymonacos/develop/tarot/infrastructure/ansible/inventories/dev/group_vars/secrets.yml
+
     - name: Replace this task with one that validates your content
       ansible.builtin.debug:
         msg: "This is the effective test"
 
     - name: The actual role
       ansible.builtin.import_role:
-        name: ../../../vpc
+        name: "../../../network"

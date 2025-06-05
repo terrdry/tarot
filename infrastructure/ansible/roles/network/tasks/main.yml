@@ -1,5 +1,8 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
+- name: Include secrets
+  ansible.builtin.include_vars:
+    file: /Users/terrydrymonacos/develop/tarot/infrastructure/ansible/inventories/dev/group_vars/secrets.yml
 
 - name: Debug
   ansible.builtin.debug:
@@ -9,18 +12,26 @@
 - name: Create Terraform var file from template
   ansible.builtin.template:
     src: terraform_vars.json.j2
-    dest: "{{ role_path }}/files/terraform/terraform.tfvars"
+    dest: "{{ role_path }}/files/terraform/terraform.tfvars.json"
     mode: '0644'
 
-# - name: Run Terraform Init
-#   ansible.builtin.command: terraform init
-#   args:
-#     chdir: "{{ role_path }}/files/terraform"
+- name: Run Terraform Init
+  community.general.terraform:
+    project_path: "{{ role_path }}/files/terraform"
+    state: present
+    force_init: false
+    lock: false
+    # variables_files:
+    #   - "{{ role_path }}/files/terraform/terraform.tfvars.json"
 
-# - name: Run Terraform Apply with vars
-#   ansible.builtin.command: terraform apply -auto-approve -var-file="terraform_vars.json"
-#   args:
-#     chdir: "{{ role_path }}/files/terraform"
+- name: Run Terraform Apply with vars
+  community.general.terraform:
+    project_path: "{{ role_path }}/files/terraform"
+    plan_file: "{{ role_path }}/files/terraform/teerr.dry"
+    state: planned
+    variables_files:
+      - "{{ role_path }}/files/terraform/terraform.tfvars.json"
+
 
 # - name: Get Terraform outputs as JSON
 #   ansible.builtin.command: terraform output -json

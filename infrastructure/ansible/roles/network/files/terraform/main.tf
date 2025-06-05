@@ -41,10 +41,10 @@ resource "aws_security_group" "lb_sg" {
 
 resource "aws_instance" "tarot" {
   count         = 2
-  ami           = "ami-0c55b159cbfafe1f0" # Amazon Linux 2 AMI
+  ami           = "ami-0418306302097dbff" # Amazon Linux 2 AMI
   instance_type = "t2.micro"
   subnet_id     = aws_subnet.public.id
-  security_groups = [aws_security_group.lb_sg.name]
+  vpc_security_group_ids = [aws_security_group.lb_sg.id]
 
   user_data = <<-EOF
               #!/bin/bash

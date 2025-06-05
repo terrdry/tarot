@@ -37,3 +37,5 @@ coverage
 .vagrant
 .terraform/
 .ansible/
+*.hcl
+**/terraform.tfstate
