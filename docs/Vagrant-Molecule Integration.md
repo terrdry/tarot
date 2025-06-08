@@ -1,3 +1,8 @@
+<!--
+ MIT License
+ Copyright (c) 2025 Terry Drymonacos
+ -->
+
 ---
 creation date: 2025-05-24 16:26
 date: 2025-05-24T00:00:00Z
@@ -8,6 +13,7 @@ type: document
 ---
 
 # Vagrant - Molecule Integration
+
 ## Intro
 
 Despite reviewing extensive documentation, running various queries, and using AI tools, it took a considerable amount of time to figure out the exact conditions causing the issue. AI tools weren't particularly effective in identifying the problem or providing actionable insights.
@@ -180,6 +186,15 @@ Modify the Create instance config by activating the commented out code
     register: server
 ```
 
+If you need data from outside the ephemeral directory
+Just add var_files: to your converge.py to get that kind of inclusion; see below
+
+```code-referencing
+  vars_files:
+    - "../../../../inventories/dev/group_vars/all.yml"
+    - "../../../../inventories/dev/group_vars/dev.yml"
+```
+
 We have the same issue with the destroy command
 
 ### destroy
@@ -306,13 +321,13 @@ There is ansible.cfg file that is used by the molecule test in progress; you may
 Notice the provisioner's library contents and how they connect with the molecule generated ansible.cfg
 
 provisioner:
-  name: ansible
-  config_options:
-    defaults
-      library: //Users/terrydrymonacos//develop/tarot/.venv/lib/python3.13/site-packages
-
+name: ansible
+config_options:
+defaults
+library: //Users/terrydrymonacos//develop/tarot/.venv/lib/python3.13/site-packages
 
 cat ansible.cfg
+
 # Molecule managed
 
 [defaults]

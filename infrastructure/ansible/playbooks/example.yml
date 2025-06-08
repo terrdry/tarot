@@ -10,10 +10,11 @@
     - name: Include Secrets
       ansible.builtin.include_vars:
         file: "{{ inventory_dir }}/group_vars/secrets.yml"
+      debugger: always
+
     - name: Debug secret_key_aws
       ansible.builtin.debug:
         msg: "The secret_key_aws is {{ secret_key_aws }}"
-      debugger: always
   # The 'vpc' role is responsible for configuring the Virtual Private Cloud (VPC) settings.
   # roles:
   #   - vpc

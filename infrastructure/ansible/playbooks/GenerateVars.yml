@@ -1,13 +1,30 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
-
 ---
 - name: Generate Terraform variables file
   hosts: localhost
   gather_facts: false
   tasks:
+    - name: Include secrets
+      ansible.builtin.include_vars:
+        file: "{{ inventory_dir }}/group_vars/secrets.yml"
+
+    - name: deb
+      ansible.builtin.debug:
+        msg: "hello"
+      debugger: always
+
+    - name: Ensure directory exists for terraform.tfvars
+      ansible.builtin.file:
+        path: "{{ inventory_dir }}/files/terraform"
+        state: directory
+        mode: "0755"
+
     - name: Create terraform.tfvars from secrets.yml
+      # This task uses the template module to generate the terraform.tfvars file
+      # from a Jinja2 template. The terraform.tfvars file is essential for Terraform
+      # to configure infrastructure based on the variables defined in secrets.yml.
       ansible.builtin.template:
-        src: /Users/terrydrymonacos/develop/tarot/infrastructure/ansible/roles/vpc/templates/terraform_vars.json.j2
-        dest: /Users/terrydrymonacos/develop/tarot/infrastructure/ansible/roles/vpc/files/terraform/terraform.tfvars
+        src: "/Users/terrydrymonacos/develop/tarot/infrastructure/ansible/roles/network/templates/terraform_vars.json.j2"
+        dest: "{{ inventory_dir }}/files/terraform/terraform.tfvars.json"
         mode: "0644"

@@ -1,8 +1,8 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
-- name: Include secrets
-  ansible.builtin.include_vars:
-    file: ../../inventories/dev/group_vars/secrets.yml
+# - name: Include secrets
+#   ansible.builtin.include_vars:
+#     file: ../../inventories/dev/group_vars/secrets.yml
 
 - name: Debug
   ansible.builtin.debug:
@@ -30,11 +30,6 @@
       - "{{ role_path }}/files/terraform/terraform.tfvars.json"
   register: tf_output
 
-- name: Debug me billy
-  ansible.builtin.debug:
-    msg: "{{ tf_output.outputs }}"
-  debugger: always
-
 - name: Run Terraform Destroy
   community.general.terraform:
     project_path: "{{ role_path }}/files/terraform"
@@ -44,8 +39,8 @@
 
 - name: Set outputs as Ansible facts
   ansible.builtin.set_fact:
-    tf_outputs: "{{ tf_output.stdout | from_json }}"
+    tf_output: "{{ tf_output.stdout | from_json }}"
 
 - name: Debug VPC ID
   ansible.builtin.debug:
-    msg: "The created VPC ID is {{ tf_outputs.vpc_id.value }}"
+    msg: "The created VPC ID is {{ tf_output.vpc_id.value }}"

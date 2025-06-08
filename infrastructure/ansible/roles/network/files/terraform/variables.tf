@@ -35,6 +35,34 @@ variable "tags" {
   default     = {}
 }
 
+variable "vpc_cidr" {
+  type        = string
+  description = "VPC cidr"
+}
+
+variable "subnetA_cidr" {
+  type        = string
+  description = "Subnet A cidr"
+}
+
+variable "subnetB_cidr" {
+  type        = string
+  description = "Subnet B cidr"
+}
+
+variable "availability_zone_a" {
+  type        = string
+  description = "Availability Zone A"
+}
+
+variable "availability_zone_b" {
+  type        = string
+  description = "Availability Zone B"
+}
+variable "instance_type" {
+  type        = string
+  description = "Instance type for the EC2 instances"
+}
 # The `secret_key` variable is used to provide the AWS Secret Key required for authentication.
 # Type: string
 # Description: AWS Secret Key

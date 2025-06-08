@@ -31,7 +31,7 @@ provisioner:
   config_options:
     defaults:
       library: ".venv/lib/python3.13/site-packages"
-      verbosity: 2
+      verbosity: 5
       private_key_file: ~/.ssh/ansible
       vault_password_file: ~/.vault_pass.txt
   inventory:
@@ -40,10 +40,12 @@ provisioner:
         hosts:
           localhost:
             ansible_connection: local
-  lint: |
-    set -e
-    yamllint .
-    ansible-lint
+    # group_vars:
+    #   all: ../../inventories/dev/group_vars/all.yml
+    lint: |
+      set -e
+      yamllint .
+      ansible-lint
 
 scenario:
   name: default

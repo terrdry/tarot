@@ -2,4 +2,9 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
 
-include_vars: secrets.yml
+vpc_cidr: "10.0.0.0/16"
+subnetA_cidr: "10.0.1.0/24"
+subnetB_cidr: "10.0.2.0/24"
+availability_zone_a: "us-west-2a"
+availability_zone_b: "us-west-2b"
+instance_type: "t2.micro"
