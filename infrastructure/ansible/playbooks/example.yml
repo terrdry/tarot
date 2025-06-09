@@ -15,6 +15,6 @@
     - name: Debug secret_key_aws
       ansible.builtin.debug:
         msg: "The secret_key_aws is {{ secret_key_aws }}"
-  # The 'vpc' role is responsible for configuring the Virtual Private Cloud (VPC) settings.
-  # roles:
-  #   - vpc
+  # The network' role is responsible for configuring the Virtual Private Cloud (VPC) settings.
+  roles:
+    - network

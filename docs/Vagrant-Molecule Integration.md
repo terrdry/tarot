@@ -4,13 +4,13 @@
  -->
 
 ---
-creation date: 2025-05-24 16:26
+
+## creation date: 2025-05-24 16:26
 date: 2025-05-24T00:00:00Z
 modification date: 2025-05-24 16:26
 tags: null
 title: null
 type: document
----
 
 # Vagrant - Molecule Integration
 
@@ -191,7 +191,7 @@ Just add var_files: to your converge.py to get that kind of inclusion; see below
 
 ```code-referencing
   vars_files:
-    - "../../../../inventories/dev/group_vars/all.yml"
+    - "../../../../inventories/dev/group_vars/secrets.yml"
     - "../../../../inventories/dev/group_vars/dev.yml"
 ```
 
@@ -338,7 +338,7 @@ retry_files_enabled = False
 host_key_checking = False
 nocows = 1
 interpreter_python = auto_silent
-library = //Users/terrydrymonacos//develop/tarot/.venv/lib/python3.13/site-packages  #--->
+
 [ssh_connection]
 scp_if_ssh = True
 control_path = %(directory)s/%%h-%%p-%%r

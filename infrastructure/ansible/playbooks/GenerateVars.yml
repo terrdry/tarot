@@ -5,15 +5,17 @@
   hosts: localhost
   gather_facts: false
   tasks:
+    # This task includes sensitive variables from the 'secrets.yml' file located in the 'group_vars' directory
+    # within the current inventory directory. It uses the 'include_vars' module to load these secrets into the
+    # playbook, making them available for subsequent tasks. Ensure that 'secrets.yml' is properly secured and
+    # not committed to version control.
     - name: Include secrets
       ansible.builtin.include_vars:
         file: "{{ inventory_dir }}/group_vars/secrets.yml"
 
-    - name: deb
-      ansible.builtin.debug:
-        msg: "hello"
-      debugger: always
-
+    # This task ensures that the directory for storing the terraform.tfvars file exists.
+    # It creates the directory at "{{ inventory_dir }}/files/terraform" with permissions set to 0755.
+    # If the directory already exists, no changes are made.
     - name: Ensure directory exists for terraform.tfvars
       ansible.builtin.file:
         path: "{{ inventory_dir }}/files/terraform"
@@ -25,6 +27,6 @@
       # from a Jinja2 template. The terraform.tfvars file is essential for Terraform
       # to configure infrastructure based on the variables defined in secrets.yml.
       ansible.builtin.template:
-        src: "/Users/terrydrymonacos/develop/tarot/infrastructure/ansible/roles/network/templates/terraform_vars.json.j2"
+        src: "roles/network/templates/terraform_vars.json.j2"
         dest: "{{ inventory_dir }}/files/terraform/terraform.tfvars.json"
         mode: "0644"
