@@ -3,7 +3,7 @@
 
 ---
 galaxy_info:
-  author: 'terrydrymonacos'
+  author: 'terryd'
   description: 'VPC creation/deletion via terraform'
   company: 'DryDock Pty Ltd'
 

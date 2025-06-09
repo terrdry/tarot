@@ -16,10 +16,10 @@
 # This configuration is intended for local testing of the role with custom library paths and linting enabled.
 dependency:
   name: galaxy
-# driver:
-#   name: default
-#   options:
-#     managed: false
+driver:
+  name: default
+  options:
+    managed: false
 
 platforms:
   - name: localhost
@@ -30,17 +30,22 @@ provisioner:
   name: ansible
   config_options:
     defaults:
-      library: "/Users/terrydrymonacos/develop/tarot/.venv/lib/python3.13/site-packages"
+      library: ".venv/lib/python3.13/site-packages"
+      verbosity: 5
+      private_key_file: ~/.ssh/ansible
+      vault_password_file: ~/.vault_pass.txt
   inventory:
     hosts:
       all:
         hosts:
           localhost:
             ansible_connection: local
-  lint: |
-    set -e
-    yamllint .
-    ansible-lint
+    # group_vars:
+    #   all: ../../inventories/dev/group_vars/all.yml
+    lint: |
+      set -e
+      yamllint .
+      ansible-lint
 
 scenario:
   name: default

@@ -1,0 +1,46 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+# - name: Include secrets
+#   ansible.builtin.include_vars:
+#     file: ../../inventories/dev/group_vars/secrets.yml
+
+- name: Debug
+  ansible.builtin.debug:
+    msg: "{{ role_path }}"
+
+- name: Create Terraform var file from template
+  ansible.builtin.template:
+    src: terraform_vars.json.j2
+    dest: "{{ role_path }}/files/terraform/terraform.tfvars.json"
+    mode: "0644"
+
+- name: Run Terraform Init/Apply
+  community.general.terraform:
+    project_path: "{{ role_path }}/files/terraform"
+    state: present
+    force_init: false
+    lock: false
+
+- name: Run Terraform Apply with vars
+  community.general.terraform:
+    project_path: "{{ role_path }}/files/terraform"
+    plan_file: "{{ role_path }}/files/terraform/teerr.dry"
+    state: planned
+    variables_files:
+      - "{{ role_path }}/files/terraform/terraform.tfvars.json"
+  register: tf_output
+
+- name: Run Terraform Destroy
+  community.general.terraform:
+    project_path: "{{ role_path }}/files/terraform"
+    plan_file: "{{ role_path }}/files/terraform/teerr.dry"
+    state: absent
+  register: tf_output
+
+- name: Set outputs as Ansible facts
+  ansible.builtin.set_fact:
+    tf_output: "{{ tf_output.stdout | from_json }}"
+
+- name: Debug VPC ID
+  ansible.builtin.debug:
+    msg: "The created VPC ID is {{ tf_output.vpc_id.value }}"

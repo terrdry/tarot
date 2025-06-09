@@ -4,6 +4,6 @@
 ---
 - name: Test VPC role
   hosts: localhost
-  remote_user: root
+
   roles:
-    - vpc
+    - ../../network
