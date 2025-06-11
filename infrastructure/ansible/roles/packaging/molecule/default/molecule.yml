@@ -1,0 +1,10 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
+---
+driver:
+  name: docker
+platforms:
+  - name: instance
+    image: docker.io/geerlingguy/docker-ubuntu2004-ansible:latest
+    pre_build_image: true

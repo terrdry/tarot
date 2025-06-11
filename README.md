@@ -1,3 +1,8 @@
+<!--
+ MIT License
+ Copyright (c) 2025 Terry Drymonacos
+ -->
+
 # Tarot Project Outline
 
 Tarot-root
@@ -25,6 +30,10 @@ source .venv/bin/activate
 pip install -r requirements.txt
 
 Prompt: `(.venv)`
+
+```sh
+
+```
 
 ```sh
 source .venv/bin/activate
