@@ -39,3 +39,4 @@ coverage
 .ansible/
 *.hcl
 **/terraform.tfstate
+infrastructure/docker

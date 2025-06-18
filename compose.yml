@@ -1,0 +1,35 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
+name: tarot
+volumes:
+  tarot-data:
+services:
+  flask-app:
+    build:
+      context: ./infrastructure/ansible/roles/packaging/files/docker/
+      dockerfile: build-flask.dockerfile
+      tags:
+        - latest
+        - development
+        - flask
+    container_name: flask_container
+
+    # volumes:
+    #   - .:/app
+    # restart: always
+
+    # volumes:
+    #   - ../../../../../../backend:/app
+
+  # vu:
+  #   image: nodep
+  #   container_name: vu-container
+  #   working_dir: /vue-dir
+  #   volumes:
+  #     - .:/app_vue
+  #   ports:
+  #     - "3000:3000"
+  #   environment:
+  #     - NODE_ENV=development
+  #   command: sh -c "npm install && npm run dev"
