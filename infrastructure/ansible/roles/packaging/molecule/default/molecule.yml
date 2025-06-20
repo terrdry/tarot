@@ -10,14 +10,19 @@ driver:
   options:
     requirements_file: requirements.yml
 platforms:
-  - name: molecule-ubuntu
-    image: python:3.11.13-bookworm
+  - name: mod1-1
+    image: terrdry.01:latest
     build:
-      context: "./backend/"
+      context: "./backend"
       dockerfile: "build-flask.dockerfile"
     pre_build_image: false
-  # - name: molecule-flask
-  #   image: python:slim
+  # - name: molecule-flask-container
+  #   image: terrdry.01:latest
+  #   build:
+  #     context: "./backend"
+  #     dockerfile: "build-flask.dockerfile"
+  #   pre_build_image: true
+      # - name: terryd-flask
   #   build:
   #     context: "./backend"
   #     dockerfile: "build-flask.dockerfile"

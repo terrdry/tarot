@@ -7,12 +7,11 @@ volumes:
 services:
   flask-app:
     build:
-      context: ./infrastructure/ansible/roles/packaging/files/docker/
-      dockerfile: build-flask.dockerfile
+      context: .
+      # context: ./infrastructure/ansible/roles/packaging/files/docker/
+      dockerfile: ./infrastructure/ansible/roles/packaging/files/docker/build-flask.dockerfile
       tags:
         - latest
-        - development
-        - flask
     container_name: flask_container
 
     # volumes:
