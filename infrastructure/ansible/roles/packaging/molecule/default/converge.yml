@@ -5,8 +5,10 @@
 - name: Converge
   hosts: all
   gather_facts: false
+  vars_files:
+    - "../../../../inventories/dev/group_vars/secrets.yml"
+    - "../../../../inventories/dev/group_vars/dev.yml"
   tasks:
-    - name: Replace this task with one that validates your content
-      ansible.builtin.debug:
-        msg: "This is the effective test"
-      debugger: always
+    - name: Task being tested # noqa: role-name[path]
+      ansible.builtin.import_role:
+        name: "../../../packaging"

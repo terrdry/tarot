@@ -5,3 +5,23 @@
 # tasks file for packaging
 # package the Flask application
 # package the Vue application
+
+- name: check out output
+  ansible.builtin.debug:
+    var: "role_name"
+  debugger: always
+
+- name: Bring up existing services
+  community.docker.docker_compose_v2:
+    project_src: "../../.."
+    # docker_cli: "{{ docker_cli }}"
+    build: always
+    # pull: always
+    state: present
+    # check_files_existing: true
+    # cli_context: default
+  register: docker_output
+
+- name: check out output
+  ansible.builtin.debug:
+    var: docker_output

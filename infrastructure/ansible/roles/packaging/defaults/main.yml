@@ -3,3 +3,8 @@
 
 ---
 # defaults file for packaging
+# project_name: tarot
+docker_path: /usr/local/bin/docker
+
+
+docker_cli: /usr/local/bin/docker

@@ -1,6 +1,12 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
 ---
 
 collections:
   - name: community.general
     type: galaxy
     version: 10.7.0
+  - name: community.docker
+    type: galaxy
+    version: 4.6.1

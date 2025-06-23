@@ -1,0 +1,22 @@
+# MIT License
+# Copyright (c) 2025 Terry Drymonacos
+
+---
+- name: Verify role functionality
+  hosts: localhost
+  gather_facts: false
+  tasks:
+    - name: Check if the expected file exists (example)
+      ansible.builtin.stat:
+        path: Users/terrydrymonacos/develop/tarot/infrastructure/ansible/roles/packaging/READ.ME
+      register: result
+
+    - name: Fail if the file does not exist
+      ansible.builtin.fail:
+        msg: "Role did not create the expected file."
+      when: not result.stat.exists
+
+    - name: Success message
+      ansible.builtin.debug:
+        msg: "Role functionality verified: expected file exists."
+      when: result.stat.exists

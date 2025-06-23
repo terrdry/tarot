@@ -3,3 +3,4 @@
 
 ---
 # vars file for packaging
+# ansible_python_interpreter: /Users/terrydrymonacos/develop/tarot/.venv/bin/python3.13

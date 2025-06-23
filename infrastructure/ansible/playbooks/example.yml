@@ -6,15 +6,20 @@
   hosts: localhost
   # Fact gathering is disabled because this playbook does not require host-specific facts.
   gather_facts: false
-  tasks:
-    - name: Include Secrets
-      ansible.builtin.include_vars:
-        file: "{{ inventory_dir }}/group_vars/secrets.yml"
-      debugger: always
+  # tasks:
+  #   - name: Include Secrets
+  #     ansible.builtin.include_vars:
+  #       file: "{{ inventory_dir }}/group_vars/secrets.yml"
+  #     debugger: always
 
-    - name: Debug secret_key_aws
-      ansible.builtin.debug:
-        msg: "The secret_key_aws is {{ secret_key_aws }}"
-  # The network' role is responsible for configuring the Virtual Private Cloud (VPC) settings.
-  roles:
-    - network
+  #   - name: Debug secret_key_aws
+  #     ansible.builtin.debug:
+  #       msg: "The secret_key_aws is {{ secret_key_aws }}"
+  # # The network' role is responsible for configuring the Virtual Private Cloud (VPC) settings.
+  # roles:
+  #   - packaging
+
+  tasks:
+    - name: Task being tested # noqa: role-name[path]
+      ansible.builtin.import_role:
+        name: "../roles/packaging"

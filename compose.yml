@@ -1,21 +1,26 @@
 # MIT License
 # Copyright (c) 2025 Terry Drymonacos
 
+
 name: tarot
 volumes:
   tarot-data:
 services:
   flask-app:
+    image: terrydry.01:latest
     build:
       context: .
-      # context: ./infrastructure/ansible/roles/packaging/files/docker/
       dockerfile: ./infrastructure/ansible/roles/packaging/files/docker/build-flask.dockerfile
       tags:
+        - "1.1.4"
         - latest
-    container_name: flask_container
+      # privileged: true
+      # additional_contexts:
+      #   base: python:3.13-alpine
+    container_name: tarot-flask
 
-    # volumes:
-    #   - .:/app
+    volumes:
+      - .:/app  # Map only the source directory; adjust as needed
     # restart: always
 
     # volumes:
